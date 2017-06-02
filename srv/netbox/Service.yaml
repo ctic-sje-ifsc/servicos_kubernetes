@@ -1,0 +1,22 @@
+# _http._tcp.netbox.dafault.svc.cluster.local
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: netbox
+  name: netbox-nginx
+spec:
+  externalIPs:
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.8"
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: netbox
+  type: LoadBalancer
