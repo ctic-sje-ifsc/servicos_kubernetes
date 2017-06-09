@@ -25,7 +25,7 @@ spec:
           volumeMounts:
             - name: netbox-postgresql-base
               mountPath: /var/lib/postgresql/data/pgdata
-        - image: digitalocean/netbox:v1.9.6
+        - image: digitalocean/netbox:v1.6.3
           name: netbox-netbox
           env:
             - name: SUPERUSER_NAME
