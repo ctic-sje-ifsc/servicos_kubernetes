@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx
 spec:
-  replicas: 1
+  replicas: 4
   template:
     metadata:
       labels:
@@ -20,6 +20,7 @@ spec:
           #  timeoutSeconds: 1
           ports:
             - containerPort: 80
+            - containerPort: 443
           volumeMounts:
             - name: nginx-nginx-conf
               mountPath: /etc/nginx/

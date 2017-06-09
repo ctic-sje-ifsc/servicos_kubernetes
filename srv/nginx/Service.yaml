@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: nginx
-  name: nginx
+  name: nginx-http
 spec:
   externalIPs:
     - "191.36.8.4"
@@ -16,6 +16,30 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 80
+  selector:
+    app: nginx
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx
+  name: nginx-https
+spec:
+  externalIPs:
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    #- "191.36.8.8" conflito com API Server
+  ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
   selector:
     app: nginx
   type: LoadBalancer

@@ -10,4 +10,4 @@ create:
 	kubectl create -f PersistentVolume.yaml
 	kubectl create -f PersistentVolumeClaim.yaml
 	kubectl create -f Deployment.yaml
-    kubectl create -f Service.yaml
+	kubectl create -f Service.yaml
