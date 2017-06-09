@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: nginx:1.13.1
+          name: nginx-nginx
+          #livenessProbe:
+          #  httpGet:
+          #    path: /
+          #    port: 80
+          #  initialDelaySeconds: 30
+          #  timeoutSeconds: 1
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-nginx-conf
+              mountPath: /etc/nginx/
+      restartPolicy: Always
+      volumes:
+      - name: nginx-nginx-conf
+        persistentVolumeClaim:
+          claimName: nginx-nginx-conf

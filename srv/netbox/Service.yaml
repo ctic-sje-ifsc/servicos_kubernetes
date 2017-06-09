@@ -4,14 +4,8 @@ kind: Service
 metadata:
   labels:
     app: netbox
-  name: netbox-nginx
+  name: netbox
 spec:
-  externalIPs:
-    - "191.36.8.4"
-    - "191.36.8.5"
-    - "191.36.8.6"
-    - "191.36.8.7"
-    - "191.36.8.8"
   ports:
     - name: http
       port: 80
@@ -19,4 +13,3 @@ spec:
       targetPort: 80
   selector:
     app: netbox
-  type: LoadBalancer
