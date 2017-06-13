@@ -12,15 +12,16 @@ spec:
       containers:
         - image: nginx:1.13.1
           name: nginx-nginx
-          #livenessProbe:
-          #  httpGet:
-          #    path: /
-          #    port: 80
-          #  initialDelaySeconds: 30
-          #  timeoutSeconds: 1
           ports:
             - containerPort: 80
             - containerPort: 443
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
           volumeMounts:
             - name: nginx-nginx-conf
               mountPath: /etc/nginx/
