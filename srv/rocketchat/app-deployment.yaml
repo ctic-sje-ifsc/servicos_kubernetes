@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rocketchat-app
+spec:
+  template:
+    metadata:
+      labels:
+        app: rocketchat
+        tier: frontend
+    spec:
+      containers:
+      - name: rocketchat-app
+        image: rocketchat/rocket.chat:latest
+        env:
+        - name: ROOT_URL
+          value: "https://rocketchat.sj.ifsc.edu.br"
+        - name: MONGO_URL
+          value: "mongodb://rocketchat-database:27017/rocketchat"
+        ports:
+          - name: http
+            containerPort: 3000
