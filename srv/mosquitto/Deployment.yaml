@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mosquitto
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      containers:
+        - image: eclipse-mosquitto:1.4.10
+          name: mosquitto-mosquitto
+          ports:
+            - containerPort: 1883
+            - containerPort: 9001
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 2
+              memory: 512Mi
+          volumeMounts:
+            - name: mosquitto-mosquitto-conf
+              mountPath: /mosquitto/config/
+            - name: mosquitto-mosquitto-data
+              mountPath: /mosquitto/data/
+      restartPolicy: Always
+      volumes:
+      - name: mosquitto-mosquitto-conf
+        persistentVolumeClaim:
+          claimName: mosquitto-mosquitto-conf
+      - name: mosquitto-mosquitto-data
+        persistentVolumeClaim:
+          claimName: mosquitto-mosquitto-data
