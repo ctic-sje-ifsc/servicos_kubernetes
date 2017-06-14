@@ -21,10 +21,10 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /data/db
-          name: mongo-claim0
+          name: sharelatex-mongo-pvc
       restartPolicy: Always
       volumes:
-      - name: mongo-claim0
+      - name: sharelatex-mongo-pvc
         persistentVolumeClaim:
-          claimName: mongo-claim0
+          claimName: sharelatex-mongo-pvc
 status: {}
