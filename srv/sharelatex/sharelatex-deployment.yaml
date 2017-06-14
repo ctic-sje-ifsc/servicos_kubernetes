@@ -54,10 +54,9 @@ spec:
           privileged: true
         volumeMounts:
         - mountPath: /var/lib/sharelatex
-          name: sharelatex-claim0
+          name: sharelatex-storage
       restartPolicy: Always
       volumes:
-      - name: sharelatex-claim0
+      - name: sharelatex-storage
         persistentVolumeClaim:
-          claimName: sharelatex-claim0
-status: {}
+          claimName: sharelatex-storage-pcv
