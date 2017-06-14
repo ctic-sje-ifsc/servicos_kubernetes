@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mosquitto
+  name: mosquitto-mqtt
+spec:
+  externalIPs:
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.8"
+  ports:
+    - name: mqtt
+      port: 1883
+      protocol: TCP
+      targetPort: 1883
+  selector:
+    app: mosquitto
+  type: LoadBalancer
+
+---
+
+# _mqtt-ws._tcp.mosquitto.default.svc.cluster.local
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mosquitto
+  name: mosquitto-ws
+spec:
+  ports:
+    - name: mqtt-ws
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+  selector:
+    app: mosquitto
