@@ -21,10 +21,10 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /data
-          name: redis-claim0
+          name: sharelatex-redis-pvc
       restartPolicy: Always
       volumes:
-      - name: redis-claim0
+      - name: sharelatex-redis-pvc
         persistentVolumeClaim:
-          claimName: redis-claim0
+          claimName: sharelatex-redis-pvc
 status: {}
