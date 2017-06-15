@@ -1,0 +1,205 @@
+#baseado https://github.com/wernight/kubernetes-che
+# We only need this Ingress rule to generate a TLS certificate.
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: che-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+    - secretName: che-tls-certificate
+      hosts:
+          # TODO: Put your hostname
+        - che.example.com
+  rules:
+      # TODO: Put your hostname
+    - host: che.example.com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spdyproxy
+spec:
+  type: LoadBalancer
+  # Should be the same IP as the Ingress controller.
+  # loadBalancerIP: 10.10.10.10
+  ports:
+    - port: 44300
+  selector:
+    app: che
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: che
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  # Pod template (contains same fields as a normal Pod)
+  template:
+    metadata:
+      labels:
+        app: che
+    spec:
+      # Resolve "che" to localhost on these containers.
+      # This is so that trying to access http://che/ through speedy will
+      # let SPDY point to localhost, and that way all ports opened by
+      # Docker:DinD will also be accessible, e.g. http://che:32650.
+      hostname: che
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: spdyproxy
+          image: wernight/spdyproxy
+          imagePullPolicy: Always
+          args:
+            - --key=/var/run/secrets/tls/tls.key
+            - --cert=/var/run/secrets/tls/tls.crt
+            # TODO: Set authentication.
+            #- --user=MY_USERNAME
+            #- --pass=MY_PASSWORD
+            - --verbose
+          ports:
+            - containerPort: 44300
+          readinessProbe:
+            tcpSocket:
+              port: 44300
+          livenessProbe:
+            tcpSocket:
+              port: 44300
+            initialDelaySeconds: 60
+          resources:
+            requests:
+              cpu: 5m
+              memory: "10Mi"
+            limits:
+              memory: "100Mi"
+          volumeMounts:
+            - name: tls-vol
+              mountPath: /var/run/secrets/tls
+              readOnly: true
+              # Security hack, see https://github.com/kubernetes/kubernetes/issues/16779
+            - name: no-service-account
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              readOnly: true
+        - name: che-server
+          # See documentation on https://eclipse.org/che/docs/setup/docker/index.html
+          # Latest tags: https://hub.docker.com/r/eclipse/che-server/tags/
+          image: eclipse/che-server:5.7.0
+          env:
+            - name: CHE_IP
+              value: che  # External hostname.
+            - name: CHE_PORT
+              value: "80"
+            - name: DOCKER_HOST
+              value: tcp://che:2375
+              # Asks workspaces to be persisted under storage so that
+              # only on directory is needed to persist Che data.
+            - name: CHE_WORKSPACE_STORAGE
+              value: /projects
+              # Uncomment to give access to a Google Container Registry
+              # See http://stackoverflow.com/a/43140504/167897 to see
+              # we cnnot use the UI because GCE passwords are too long
+              # See https://github.com/codenvy/codenvy/issues/1948
+            #- name: CHE_DOCKER_REGISTRY_AUTH_REGISTRY1_URL
+            #  value: gcr.io
+            #- name: CHE_DOCKER_REGISTRY_AUTH_REGISTRY1_USERNAME
+            #  value: _json_key
+            #- name: CHE_DOCKER_REGISTRY_AUTH_REGISTRY1_PASSWORD
+            #  valueFrom:
+            #    secretKeyRef:
+            #      name: container-registry-account
+            #      key: password
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            tcpSocket:
+              port: 80
+          # See also https://github.com/eclipse/che/issues/2761
+          #  httpGet:
+          #    path: /dashboard/
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 80
+          #  httpGet:
+          #    path: /dashboard/
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          lifecycle:
+            preStop:
+              exec:
+                # See https://github.com/eclipse/che-dockerfiles/blob/master/che-launcher/launcher_cmds.sh
+                command: ["/home/user/che/bin/che.sh", "-c", "-s:uid", "stop"]
+          resources:
+            requests:
+              cpu: 5m
+              memory: "300Mi"
+            limits:
+              memory: "1.0Gi"
+          volumeMounts:
+            - name: lib-vol
+              mountPath: /home/user/che/lib-copy
+            - name: storage-vol
+              mountPath: /home/user/che/storage
+              # Security hack, see https://github.com/kubernetes/kubernetes/issues/16779
+            - name: no-service-account
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              readOnly: true
+        - name: docker-dind
+          image: docker:dind
+          # TODO: You may add arg `--storage-driver=<DRIVER>` using the same driver as your host
+          # (which can be seen under `Storage Driver` in the output of `docker info`)
+          # for your Docker to be faster.
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 5m
+              memory: "1.0Gi"
+            limits:
+              # TODO: Remove or adjust to whatever you feel should be max.
+              cpu: 700m
+              memory: "3.0Gi"
+          securityContext:
+            privileged: true
+          readinessProbe:
+            exec:
+              command: ["docker", "info"]
+          livenessProbe:
+            exec:
+              command: ["docker", "info"]
+            periodSeconds: 30
+          lifecycle:
+            preStop:
+              exec:
+                # Wait a little so that Che server can gracefully exit.
+                command: ["sleep", "30"]
+          volumeMounts:
+            - name: lib-vol
+              mountPath: /home/user/che/lib
+              # Mounting storage is required for SSH key to work for example.
+              # Mounting also workspaces is optional for Che but required if you want to mount
+              # workspace directories like "docker run -v $PWD:..." from within a Che workspace.
+            - name: storage-vol
+              mountPath: /home/user/che/storage
+            - name: docker-vol
+              mountPath: /var/lib/docker
+              # Security hack, see https://github.com/kubernetes/kubernetes/issues/16779
+            - name: no-service-account
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              readOnly: true
+      volumes:
+        - name: tls-vol
+          secret:
+            secretName: che-tls-certificate
+        - name: lib-vol
+          emptyDir: {}
+        - name: storage-vol
+          # TODO: You may want to use persistent disk instead.
+          emptyDir: {}
+        - name: docker-vol
+          # TODO: You may want to use persistent disk instead to preserve Docker images cache.
+          emptyDir: {}
+        - name: no-service-account
+          emptyDir: {}
