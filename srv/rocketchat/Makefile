@@ -9,9 +9,14 @@ delete:
 	kubectl delete -f rocketchat-storage-pv.yaml
 
 create:
-	kubectl create -f app-service.yaml
-	kubectl create -f app-deployment.yaml
-	kubectl create -f database-service.yaml
-	kubectl create -f database-deployment.yaml
-	kubectl create -f rocketchat-storage-pvc.yaml
 	kubectl create -f rocketchat-storage-pv.yaml
+	kubectl create -f rocketchat-storage-pvc.yaml
+	kubectl create -f database-deployment.yaml
+	kubectl create -f database-service.yaml
+	kubectl create -f app-deployment.yaml
+		kubectl create -f app-service.yaml
+	
+	
+	
+	
+	
