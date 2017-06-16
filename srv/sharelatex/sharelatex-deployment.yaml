@@ -17,30 +17,18 @@ spec:
     spec:
       containers:
       - env:
-        - name: SHARELATEX_ADMIN_EMAIL
-          value: suporte.ti.sje@ifsc.edu.br
-        - name: SHARELATEX_APP_NAME
-          value: Our ShareLaTeX
-        - name: SHARELATEX_EMAIL_SMTP_HOST
-          value: smtp.ifsc.edu.br
+        - name: SHARELATEX_MONGO_URL
+          value: mongodb://mongo/sharelatex
         - name: SHARELATEX_REDIS_HOST
           value: redis
-        - name: SHARELATEX_EMAIL_FROM_ADDRESS
-          value: ctic.sje@listas.ifsc.edu.br
-        - name: SHARELATEX_EMAIL_SMTP_USER
-          value: ctic.sj
+        - name: SHARELATEX_APP_NAME
+          value: Our ShareLaTeX
+        - name: SHARELATEX_ADMIN_EMAIL
+          value: suporte.ti.sje@ifsc.edu.br
         - name: SHARELATEX_HEADER_IMAGE_URL
           value: http://www.sj.ifsc.edu.br/templates/campi/images/marca_saojose.png
         - name: SHARELATEX_CUSTOM_EMAIL_FOOTER
           value: <div>This system is run by department CTIC SJE </div>
-        - name: SHARELATEX_EMAIL_SMTP_PORT
-          value: "465"
-        - name: SHARELATEX_MONGO_URL
-          value: mongodb://mongo/sharelatex
-        - name: SHARELATEX_EMAIL_SMTP_PASS
-          value: lalala
-        - name: SHARELATEX_EMAIL_SMTP_SECURE
-          value: SSL
         - name: SHARELATEX_NAV_TITLE
           value: ShareLaTeX do IFSC SJE
         - name: SHARELATEX_SITE_URL
