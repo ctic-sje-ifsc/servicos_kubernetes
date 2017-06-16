@@ -1,9 +1,9 @@
 all: delete create
 
 delete:
-	make -C nginx delete
+	kubectl delete -f ingress.yaml
 	make -C netbox delete
 
 create:
 	make -C netbox create
-	make -C nginx create
+	kubectl create -f ingress.yaml
