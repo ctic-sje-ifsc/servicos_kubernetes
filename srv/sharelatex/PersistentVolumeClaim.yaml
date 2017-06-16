@@ -10,7 +10,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 150Mi
 status: {}
 ---
 apiVersion: v1
@@ -40,5 +40,5 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 200Mi
 status: {}

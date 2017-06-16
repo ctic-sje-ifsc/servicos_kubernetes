@@ -11,11 +11,15 @@ delete:
 	kubectl delete -f PersistentVolumeClaim.yaml
 
 create:
-	kubectl create -f sharelatex-service.yaml
-	kubectl create -f sharelatex-deployment.yaml
-	kubectl create -f redis-service.yaml
-	kubectl create -f redis-deployment.yaml
-	kubectl create -f mongo-service.yaml
-	kubectl create -f mongo-deployment.yaml
-	kubectl create -f PersistentVolume.yaml
 	kubectl create -f PersistentVolumeClaim.yaml
+	kubectl create -f PersistentVolume.yaml
+	kubectl create -f mongo-deployment.yaml
+	kubectl create -f mongo-service.yaml
+	kubectl create -f redis-deployment.yaml
+	kubectl create -f redis-service.yaml
+	kubectl create -f sharelatex-deployment.yaml		
+	kubectl create -f sharelatex-service.yaml
+	
+	
+	
+	

@@ -4,7 +4,7 @@ metadata:
   name: sharelatex-mongo-pv
 spec:
   capacity:
-    storage: 100Mi
+    storage: 150Mi
   accessModes:
     - ReadWriteOnce
   nfs:
@@ -32,7 +32,7 @@ metadata:
   name: sharelatex-sharelatex-pv
 spec:
   capacity:
-    storage: 100Mi
+    storage: 200Mi
   accessModes:
     - ReadWriteOnce
   nfs:
