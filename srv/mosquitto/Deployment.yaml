@@ -30,8 +30,11 @@ spec:
       restartPolicy: Always
       volumes:
       - name: mosquitto-mosquitto-conf
-        persistentVolumeClaim:
-          claimName: mosquitto-mosquitto-conf
+        configMap:
+          name: mosquitto-mosquitto-conf
+          items:
+          - path: "mosquitto.conf"
+            key: mosquitto.conf
       - name: mosquitto-mosquitto-data
         persistentVolumeClaim:
           claimName: mosquitto-mosquitto-data
