@@ -23,6 +23,33 @@ spec:
           value: mongodb://mongo/sharelatex
         - name: SHARELATEX_REDIS_HOST
           value: redis
+        - name: SHARELATEX_NAV_TITLE
+          value: 'ShareLaTeX do IFSC - SJE'
+        - name: SHARELATEX_HEADER_IMAGE_URL
+          value: 'http://www.sj.ifsc.edu.br/images/stories/siteimagens/sao_jose_horizontal_marca2015_png.png'
+        - name: SHARELATEX_ADMIN_EMAIL
+          value: 'ctic.sj@ifsc.edu.br'
+        - name: SHARELATEX_EMAIL_FROM_ADDRESS
+          value: 'suporte.ti.sje@ifsc.edu.br'
+        - name: SHARELATEX_EMAIL_SMTP_HOST
+          value: 'smtp.ifsc.edu.br'
+        - name: SHARELATEX_EMAIL_SMTP_PORT
+          value: '465'
+        - name: SHARELATEX_EMAIL_SMTP_USER
+          value: 'ctic.sj'
+        - name: SHARELATEX_EMAIL_SMTP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: ctic-secret
+              key: cticsj_email_password
+        - name: SHARELATEX_EMAIL_SMTP_SECURE
+          value: 'true'
+        - name: SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH
+          value: 'true'
+        - name: SHARELATEX_EMAIL_SMTP_IGNORE_TLS
+          value: 'true'
+        - name: SHARELATEX_SITE_LANGUAGE
+          value: 'pt'
         image: sharelatex/sharelatex
         name: sharelatex
         ports:
@@ -38,4 +65,7 @@ spec:
       - name: sharelatex-sharelatex-pvc
         persistentVolumeClaim:
           claimName: sharelatex-sharelatex-pvc
+      - name: ctic-secret
+        secret:
+          secretName: ctic-secret
 status: {}
