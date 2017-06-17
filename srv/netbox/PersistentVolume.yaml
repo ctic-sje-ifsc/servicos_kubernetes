@@ -10,18 +10,3 @@ spec:
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/netbox/postgresql/base
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: netbox-nginx-conf
-spec:
-  capacity:
-    storage: 1Mi
-  accessModes:
-    - ReadOnlyMany
-  nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/netbox/nginx/conf

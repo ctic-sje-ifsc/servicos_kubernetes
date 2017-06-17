@@ -5,8 +5,10 @@ delete:
 	kubectl delete -f Deployment.yaml
 	kubectl delete -f PersistentVolumeClaim.yaml
 	kubectl delete -f PersistentVolume.yaml
+	kubectl delete -f ConfigMap.yaml
 
 create:
+	kubectl create -f ConfigMap.yaml
 	kubectl create -f PersistentVolume.yaml
 	kubectl create -f PersistentVolumeClaim.yaml
 	kubectl create -f Deployment.yaml
