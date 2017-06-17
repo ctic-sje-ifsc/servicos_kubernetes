@@ -91,7 +91,12 @@ spec:
         persistentVolumeClaim:
           claimName: netbox-postgresql-base
       - name: netbox-nginx-conf
-        persistentVolumeClaim:
-          claimName: netbox-nginx-conf
+        configMap:
+          name: netbox-nginx-conf
+          items:
+          - path: "mime.types"
+            key: mime.types
+          - path: "nginx.conf"
+            key: nginx.conf
       - name: netbox-netbox-static
         emptyDir: {}
