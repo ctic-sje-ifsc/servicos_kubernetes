@@ -28,5 +28,22 @@ spec:
       restartPolicy: Always
       volumes:
       - name: nginx-nginx-conf
-        persistentVolumeClaim:
-          claimName: nginx-nginx-conf
+        configMap:
+          name: nginx-nginx-conf
+          items:
+          - path: "mime.types"
+            key: mime.types
+          - path: "nginx.conf"
+            key: nginx.conf
+          - path: "netbox.crt"
+            key: netbox.crt
+          - path: "netbox.key"
+            key: netbox.key
+          - path: "rocketchat.crt"
+            key: rocketchat.crt
+          - path: "rocketchat.key"
+            key: rocketchat.key
+          - path: "sharelatex.crt"
+            key: sharelatex.crt
+          - path: "sharelatex.key"
+            key: sharelatex.key
