@@ -14,7 +14,7 @@ create:
 	kubectl create -f database-deployment.yaml
 	kubectl create -f database-service.yaml
 	kubectl create -f app-deployment.yaml
-		kubectl create -f app-service.yaml
+	kubectl create -f app-service.yaml
 	
 	
 	

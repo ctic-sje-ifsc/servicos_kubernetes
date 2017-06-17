@@ -6,7 +6,7 @@ spec:
   capacity:
     storage: 150Mi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/sharelatex/mongo
@@ -20,7 +20,7 @@ spec:
   capacity:
     storage: 100Mi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/sharelatex/redis
@@ -34,7 +34,7 @@ spec:
   capacity:
     storage: 200Mi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/sharelatex/sharelatex

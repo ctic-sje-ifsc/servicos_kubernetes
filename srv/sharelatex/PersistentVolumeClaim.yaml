@@ -7,7 +7,7 @@ metadata:
   name: sharelatex-mongo-pvc
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 150Mi
@@ -22,7 +22,7 @@ metadata:
   name: sharelatex-redis-pvc
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 100Mi
@@ -37,7 +37,7 @@ metadata:
   name: sharelatex-sharelatex-pvc
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 200Mi
