@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: puppetdb
+  name: puppetdb
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: puppetdb
+    spec:
+      containers:
+      - image: puppet/puppetdb
+        name: puppetdb
+        ports:
+        - containerPort: 8080
+        - containerPort: 8081
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/puppetlabs/puppet/ssl/
+          name: puppetdb-claim0
+      restartPolicy: Always
+      volumes:
+      - name: puppetdb-claim0
+        persistentVolumeClaim:
+          claimName: puppetdb-claim0
+status: {}

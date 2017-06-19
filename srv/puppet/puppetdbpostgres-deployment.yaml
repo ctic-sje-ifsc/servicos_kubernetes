@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: puppetdbpostgres
+  name: puppetdbpostgres
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: puppetdbpostgres
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_PASSWORD
+          value: puppetdb
+        - name: POSTGRES_USER
+          value: puppetdb
+        image: puppet/puppetdb-postgres
+        name: postgres
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data/
+          name: puppetdbpostgres-claim0
+      restartPolicy: Always
+      volumes:
+      - name: puppetdbpostgres-claim0
+        persistentVolumeClaim:
+          claimName: puppetdbpostgres-claim0
+status: {}

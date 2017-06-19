@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: puppetexplorer
+  name: puppetexplorer
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: puppetexplorer
+    spec:
+      containers:
+      - image: puppet/puppetexplorer
+        name: puppetexplorer
+        ports:
+        - containerPort: 80
+        resources: {}
+      restartPolicy: Always
+status: {}
