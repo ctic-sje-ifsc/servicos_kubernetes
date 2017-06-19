@@ -32,7 +32,7 @@ spec:
         - name: SHARELATEX_ADMIN_EMAIL
           value: 'ctic.sj@ifsc.edu.br'
         - name: SHARELATEX_EMAIL_FROM_ADDRESS
-          value: 'suporte.ti.sje@ifsc.edu.br'
+          value: 'ctic.sj@ifsc.edu.br'
         - name: SHARELATEX_EMAIL_SMTP_HOST
           value: 'smtp.ifsc.edu.br'
         - name: SHARELATEX_EMAIL_SMTP_PORT
