@@ -5,8 +5,7 @@ A ideia é nos basearmos aqui [Puppet-in-Docker with Docker Compose](https://git
 
 
 Gerei os arquivos e deu essas mensagens:
-
-''''
+```bash
 gabriel_deepin@gabriel_deepin-pc:~/Música/puppet$ kompose convert -f docker-compose.yaml 
 WARN Unsupported hostname key - ignoring          
 WARN Unsupported read_only key - ignoring         
@@ -30,3 +29,4 @@ INFO file "puppetdb-claim0-persistentvolumeclaim.yaml" created
 INFO file "puppetdbpostgres-deployment.yaml" created 
 INFO file "puppetdbpostgres-claim0-persistentvolumeclaim.yaml" created 
 INFO file "puppetexplorer-deployment.yaml" created ''''
+```
