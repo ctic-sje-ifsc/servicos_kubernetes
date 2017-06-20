@@ -47,3 +47,11 @@ spec:
             key: sharelatex.crt
           - path: "sharelatex.key"
             key: sharelatex.key
+          - path: "che.crt"
+            key: che.crt
+          - path: "che.key"
+            key: che.key
+          - path: "mosquitto.crt"
+            key: mosquitto.crt
+          - path: "mosquitto.key"
+            key: mosquitto.key
