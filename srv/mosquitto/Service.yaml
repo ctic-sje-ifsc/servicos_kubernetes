@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: mosquitto
-  name: mosquitto-mqtt
+  name: mosquitto
 spec:
   externalIPs:
     - "191.36.8.4"
@@ -22,7 +22,7 @@ spec:
 
 ---
 
-# _mqtt-ws._tcp.mosquitto.default.svc.cluster.local
+# _mqtt-ws._tcp.mosquitto-ws.default.svc.cluster.local
 apiVersion: v1
 kind: Service
 metadata:
@@ -32,7 +32,7 @@ metadata:
 spec:
   ports:
     - name: mqtt-ws
-      port: 9001
+      port: 80
       protocol: TCP
       targetPort: 9001
   selector:
