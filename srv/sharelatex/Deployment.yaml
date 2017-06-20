@@ -1,0 +1,118 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sharelatex-mongo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sharelatex-mongo
+      labels:
+        app: sharelatex-mongo
+    spec:
+      containers:
+      - image: mongo
+        name: sharelatex-mongo
+        volumeMounts:
+        - mountPath: /data/db
+          name: sharelatex-mongo-base
+      restartPolicy: Always
+      volumes:
+      - name: sharelatex-mongo-base
+        persistentVolumeClaim:
+          claimName: sharelatex-mongo-base
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sharelatex-redis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sharelatex-redis
+      labels:
+        app: sharelatex-redis
+    spec:
+      containers:
+      - image: redis
+        name: sharelatex-redis
+        volumeMounts:
+        - mountPath: /data
+          name: sharelatex-redis-base
+      restartPolicy: Always
+      volumes:
+      - name: sharelatex-redis-base
+        persistentVolumeClaim:
+          claimName: sharelatex-redis-base
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sharelatex-sharelatex
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: sharelatex-sharelatex
+      labels:
+        app: sharelatex-sharelatex
+    spec:
+      containers:
+      - env:
+        - name: SHARELATEX_APP_NAME
+          value: "ShareLaTeX IFSC-SJE"
+        - name: SHARELATEX_MONGO_URL
+          value: "mongodb://sharelatex-mongo/sharelatex"
+        - name: SHARELATEX_REDIS_HOST
+          value: "sharelatex-redis"
+        - name: SHARELATEX_REDIS_PORT
+          value: "6379"
+        - name: SHARELATEX_SITE_URL
+          value: "https://sharelatex.sj.ifsc.edu.br"
+        - name: SHARELATEX_NAV_TITLE
+          value: "ShareLaTeX do IFSC - SJE"
+        - name: SHARELATEX_HEADER_IMAGE_URL
+          value: "http://www.sj.ifsc.edu.br/images/stories/siteimagens/sao_jose_horizontal_marca2015_png.png"
+        - name: SHARELATEX_ADMIN_EMAIL
+          value: "ctic.sj@ifsc.edu.br"
+        - name: SHARELATEX_EMAIL_FROM_ADDRESS
+          value: "ctic.sj@ifsc.edu.br"
+        - name: SHARELATEX_EMAIL_SMTP_HOST
+          value: "smtp.ifsc.edu.br"
+        - name: SHARELATEX_EMAIL_SMTP_PORT
+          value: "465"
+        - name: SHARELATEX_EMAIL_SMTP_USER
+          value: "ctic.sj"
+        - name: SHARELATEX_EMAIL_SMTP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: ctic-secret
+              key: cticsj_email_password
+        - name: SHARELATEX_EMAIL_SMTP_SECURE
+          value: "true"
+        - name: SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH
+          value: "true"
+        - name: SHARELATEX_EMAIL_SMTP_IGNORE_TLS
+          value: "true"
+        - name: SHARELATEX_SITE_LANGUAGE
+          value: "pt_BR"
+        image: sharelatex/sharelatex
+        name: sharelatex
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/lib/sharelatex
+          name: sharelatex-sharelatex-arquivos
+      restartPolicy: Always
+      volumes:
+      - name: sharelatex-sharelatex-arquivos
+        persistentVolumeClaim:
+          claimName: sharelatex-sharelatex-arquivos
+      - name: ctic-secret
+        secret:
+          secretName: ctic-secret
