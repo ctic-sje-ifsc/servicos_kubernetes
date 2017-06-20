@@ -100,7 +100,7 @@ spec:
         - name: SHARELATEX_EMAIL_SMTP_IGNORE_TLS
           value: "true"
         - name: SHARELATEX_SITE_LANGUAGE
-          value: "pt_BR"
+          value: "pt"
         image: sharelatex/sharelatex
         name: sharelatex
         ports:
