@@ -79,7 +79,7 @@ spec:
         - name: SHARELATEX_HEADER_IMAGE_URL
           value: "http://www.sj.ifsc.edu.br/images/stories/siteimagens/sao_jose_horizontal_marca2015_png.png"
         - name: SHARELATEX_ADMIN_EMAIL
-          value: "ctic.sj@ifsc.edu.br"
+          value: "suporte.ti.sje@ifsc.edu.br"
         - name: SHARELATEX_LEFT_FOOTER
           value: "[{\"text\": \"Implementado e mantido pela equipe da CTIC  - SJE\"} ]"   
         - name: SHARELATEX_EMAIL_FROM_ADDRESS
