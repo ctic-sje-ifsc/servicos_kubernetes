@@ -30,7 +30,7 @@ Nesse repositório estaremos colocando cada implementação desenvolvida. Estamo
 
 ## Armazenamento de estados e dados
 
-Utilizamos uma abordagem para armazenamento de estados e dados onde esses não são salvos na mesma estrutura onde roda o Kubernetes e sim em uma estrutura de armazenamento centralizada. Os PODS montam um armazenamento NFS e utilizam. A implementação do storage pode ser encontrada em [storage](https://github.com/ctic-sje-ifsc/storage) e são montados em cada pod por NFS.
+Utilizamos uma abordagem para armazenamento de estados e dados onde esses não são salvos na mesma estrutura onde roda o Kubernetes e sim em uma estrutura de armazenamento centralizada. Os PODS montam um armazenamento NFS e utilizam. A implementação do storage pode ser encontrada em [storage](https://github.com/ctic-sje-ifsc/storage).
 
 Podemos ver um exemplo em:
 
