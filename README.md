@@ -28,9 +28,9 @@ Nesse repositório estaremos colocando cada implementação desenvolvida. Estamo
 * Implementações novas importantes e críricas como fase de testes/migração
 * Implementar serviços internos para testes de estabilidade e desempenho da tecnologia
 
-## Armazenamento de estados e arquivos 
+## Armazenamento de estados e dados
 
-Todos os arquivos permanentes do Cluster Kubernetes estão no [storage](https://github.com/ctic-sje-ifsc/storage) e são montados em cada pod por NFS.
+Utilizamos uma abordagem para armazenamento de estados e dados onde esses não são salvos na mesma estrutura onde roda o Kubernetes e sim em uma estrutura de armazenamento centralizada. Os PODS montam um armazenamento NFS e utilizam. A implementação do storage pode ser encontrada em [storage](https://github.com/ctic-sje-ifsc/storage) e são montados em cada pod por NFS.
 
 Podemos ver um exemplo em:
 
@@ -49,7 +49,7 @@ spec:
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/netbox/postgresql/base
 ```
 
-# Serviços Implementados
+# Implementação/migração dos serviços
 
 ## Nginx Front-End
 
