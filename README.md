@@ -18,3 +18,54 @@ A implementação da estrutura kubernetes seguiu a [documentação oficial](http
 
 ## Estrutura do projeto macro:
 ![Projeto Macro](docs/projeto_macro_ctic.jpg)
+
+## Serviços que podemos/queremos orefecer:
+![Projeto Macro](docs/servicos_possiveis.png)
+
+Nesse repositório estaremos colocando cada implementação desenvolvida. Estamos utilizando a seguinte estratégia de atuação:
+* Migrar/instalar serviços já implementados em docker compose ou kubernetes
+* Migrar serviços não críticos para testar a tecnologia
+* Implementações novas importantes e críricas como fase de testes/migração
+* Implementar serviços internos para testes de estabilidade e desempenho da tecnologia
+
+## Armazenamento de estados e arquivos 
+
+Todos os arquivos permanentes do Cluster Kubernetes estão no [storage](https://github.com/ctic-sje-ifsc/storage) e são montados em cada pod por NFS.
+
+Podemos ver um exemplo em:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: netbox-postgresql-base
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/netbox/postgresql/base
+```
+
+# Serviços Implementados
+
+## Nginx Front-End
+
+(Boi Explicar)
+
+## Netbox https://netbox.sj.ifsc.edu.br
+
+O primeiro serviço migrado foi o [netbox](https://netbox.sj.ifsc.edu.br/), que já estava rodando em container em uma VM. Pode ser encontrado em [srv/netbox]https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/netbox.
+
+## Sharelatex https://netbox.sj.ifsc.edu.br
+
+Implementamos o [sharelatex](https://netbox.sj.ifsc.edu.br/). A implementação é encontrada em [srv/sharelatex](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/sharelatex)
+
+## Rochet.Chat https://rocketchat.sj.ifsc.edu.br
+
+Finalizamos a implementação do [Rocket.chat](https://rocketchat.sj.ifsc.edu.br/) e utilizaremos ele em substituição do Slack, assim poderemos estar testando a estabilidade do kubernetes. Implementação [srv/rocketchat](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/rocketchat).
+
+## Mosquitto
+Por necessidade do ensino foi implementado o Mosquitto. Implementação [srv/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/mosquitto).
