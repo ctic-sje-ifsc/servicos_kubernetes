@@ -25,7 +25,7 @@ A implementação da estrutura kubernetes seguiu a [documentação oficial](http
 Nesse repositório estaremos colocando cada implementação desenvolvida. Estamos utilizando a seguinte estratégia de atuação:
 * Migrar/instalar serviços já implementados em docker compose ou kubernetes
 * Migrar serviços não críticos para testar a tecnologia
-* Implementações novas importantes e críricas como fase de testes/migração
+* Implementações novas importantes e críticas como fase de testes/migração
 * Implementar serviços internos para testes de estabilidade e desempenho da tecnologia
 
 ## Armazenamento de estados e dados
