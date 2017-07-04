@@ -30,7 +30,7 @@ Nesse repositório estaremos colocando cada implementação desenvolvida. Estamo
 
 ## Armazenamento de estados e dados
 
-Utilizamos uma abordagem para armazenamento de estados e dados onde esses não são salvos na mesma estrutura onde roda o Kubernetes e sim em uma estrutura de armazenamento centralizada. Os PODS montam um armazenamento NFS e utilizam. A implementação do storage pode ser encontrada em [storage](https://github.com/ctic-sje-ifsc/storage).
+Utilizamos uma abordagem para armazenamento de estados e dados onde esses não são salvos na mesma estrutura onde roda o Kubernetes, e sim em uma estrutura de armazenamento centralizada. Os PODS montam um armazenamento NFS e utilizam. A implementação do storage pode ser encontrada em [storage](https://github.com/ctic-sje-ifsc/storage).
 
 Podemos ver um exemplo em:
 
@@ -63,7 +63,7 @@ O primeiro serviço migrado foi o [netbox](https://netbox.sj.ifsc.edu.br/), que 
 
 Implementamos o [sharelatex](https://netbox.sj.ifsc.edu.br/). A implementação é encontrada em [srv/sharelatex](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/sharelatex)
 
-## Rochet.Chat https://rocketchat.sj.ifsc.edu.br
+## Rocket.Chat https://rocketchat.sj.ifsc.edu.br
 
 Finalizamos a implementação do [Rocket.chat](https://rocketchat.sj.ifsc.edu.br/) e utilizaremos ele em substituição do Slack, assim poderemos estar testando a estabilidade do kubernetes. Implementação [srv/rocketchat](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/rocketchat).
 
