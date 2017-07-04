@@ -19,7 +19,7 @@ A implementação da estrutura kubernetes seguiu a [documentação oficial](http
 ## Estrutura do projeto macro:
 ![Projeto Macro](docs/projeto_macro_ctic.jpg)
 
-## Serviços que podemos/queremos orefecer:
+## Serviços que podemos/queremos oferecer:
 ![Projeto Macro](docs/servicos_possiveis.png)
 
 Nesse repositório estaremos colocando cada implementação desenvolvida. Estamos utilizando a seguinte estratégia de atuação:
