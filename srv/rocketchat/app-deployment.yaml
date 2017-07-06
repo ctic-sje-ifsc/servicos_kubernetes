@@ -14,7 +14,7 @@ spec:
         image: rocketchat/rocket.chat:latest
         env:
         - name: ROOT_URL
-          value: "https://rocketchat.sj.ifsc.edu.br"
+          value: "https://chat.sj.ifsc.edu.br"
         - name: MONGO_URL
           value: "mongodb://rocketchat-database:27017/rocketchat"
         ports:
