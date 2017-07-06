@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: mosquitto-mosquitto-conf
 data:
-  mosquitto.conf: "persistence true\npersistence_location /mosquitto/data/\nautosave_interval 60\nlog_dest stdout\nlistener 1883\nprotocol mqtt\nlistener 9001\nprotocol websockets"
+  mosquitto.conf: "persistence true\npersistence_location /mosquitto/data/\nautosave_interval 60\nlog_dest stdout\n\nlistener 1883\n\nlistener 8083\nprotocol websockets\n"

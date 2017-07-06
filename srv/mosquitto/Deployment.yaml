@@ -14,7 +14,7 @@ spec:
           name: mosquitto-mosquitto
           ports:
             - containerPort: 1883
-            - containerPort: 9001
+            - containerPort: 8083
           resources:
             requests:
               cpu: 100m

@@ -22,7 +22,7 @@ spec:
 
 ---
 
-# _mqtt-ws._tcp.mosquitto-ws.default.svc.cluster.local
+# _mqtt-wss._tcp.mosquitto-ws.default.svc.cluster.local
 apiVersion: v1
 kind: Service
 metadata:
@@ -31,9 +31,9 @@ metadata:
   name: mosquitto-ws
 spec:
   ports:
-    - name: mqtt-ws
-      port: 80
+    - name: mqtt-wss
+      port: 8083
       protocol: TCP
-      targetPort: 9001
+      targetPort: 8083
   selector:
     app: mosquitto
