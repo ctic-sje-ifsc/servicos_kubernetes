@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx
 spec:
-  replicas: 4
+  replicas: 1
   template:
     metadata:
       labels:
@@ -25,33 +25,25 @@ spec:
           volumeMounts:
             - name: nginx-nginx-conf
               mountPath: /etc/nginx/
+              readOnly: true
+            - name: nginx-nginx-ssl
+              mountPath: /etc/certs/
+              readOnly: true
       restartPolicy: Always
       volumes:
       - name: nginx-nginx-conf
         configMap:
           name: nginx-nginx-conf
           items:
-          - path: "mime.types"
-            key: mime.types
-          - path: "nginx.conf"
-            key: nginx.conf
-          - path: "netbox.crt"
-            key: netbox.crt
-          - path: "netbox.key"
-            key: netbox.key
-          - path: "rocketchat.crt"
-            key: rocketchat.crt
-          - path: "rocketchat.key"
-            key: rocketchat.key
-          - path: "sharelatex.crt"
-            key: sharelatex.crt
-          - path: "sharelatex.key"
-            key: sharelatex.key
-          - path: "che.crt"
-            key: che.crt
-          - path: "che.key"
-            key: che.key
-          - path: "mosquitto.crt"
-            key: mosquitto.crt
-          - path: "mosquitto.key"
-            key: mosquitto.key
+          - key: mime.types
+            path: "mime.types"
+          - key: nginx.conf
+            path: "nginx.conf"
+      - name: nginx-nginx-ssl
+        secret:
+          secretName: nginx-nginx-ssl
+          items:
+            - key: certificate.pem
+              path: "certificate.pem"
+            - key: key.pem
+              path: "key.pem"
