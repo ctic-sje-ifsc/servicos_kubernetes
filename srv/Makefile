@@ -6,8 +6,10 @@ delete:
 	make -C rocketchat delete
 	make -C sharelatex delete
 	make -C netbox delete
+	make -C puppet delete
 
 create:
+	make -C puppet create
 	make -C netbox create
 	make -C sharelatex create
 	make -C rocketchat create
