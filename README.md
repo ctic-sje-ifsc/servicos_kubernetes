@@ -57,15 +57,15 @@ spec:
 
 ## Netbox https://netbox.sj.ifsc.edu.br
 
-O primeiro serviço migrado foi o [netbox](https://netbox.sj.ifsc.edu.br/), que já estava rodando em container em uma VM. Pode ser encontrado em [srv/netbox]https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/netbox.
+O primeiro serviço migrado foi o [netbox](https://netbox.sj.ifsc.edu.br/), que já estava rodando em container em uma VM. Pode ser encontrado em [srv/netbox](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/netbox.
 
 ## Sharelatex https://netbox.sj.ifsc.edu.br
 
 Implementamos o [sharelatex](https://netbox.sj.ifsc.edu.br/). A implementação é encontrada em [srv/sharelatex](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/sharelatex)
 
-## Rocket.Chat https://rocketchat.sj.ifsc.edu.br
+## Rocket.Chat https://chat.sj.ifsc.edu.br
 
-Finalizamos a implementação do [Rocket.chat](https://rocketchat.sj.ifsc.edu.br/) e utilizaremos ele em substituição do Slack, assim poderemos estar testando a estabilidade do kubernetes. Implementação [srv/rocketchat](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/rocketchat).
+Finalizamos a implementação do [Rocket.chat](https://chat.sj.ifsc.edu.br/) e utilizaremos ele em substituição do Slack, assim poderemos estar testando a estabilidade do kubernetes. Implementação [srv/rocketchat](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/rocketchat).
 
 ## Mosquitto
 Por necessidade do ensino foi implementado o Mosquitto. Implementação [srv/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/mosquitto).
