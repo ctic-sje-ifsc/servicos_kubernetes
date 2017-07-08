@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mediawiki-mediawiki
+  labels:
+    app: mediawiki-mediawiki
+data:
+  my.cnf: |-

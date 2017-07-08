@@ -1,0 +1,42 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mediawiki-apache
+  labels:
+    app: mediawiki-apache
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+    
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mediawiki-mariadb
+  labels:
+    app: mediawiki-mariadb
+
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 9Gi
+      
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mediawiki-mediawiki
+  labels:
+    app: mediawiki-mediawiki
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
