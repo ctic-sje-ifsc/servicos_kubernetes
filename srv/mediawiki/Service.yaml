@@ -16,9 +16,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mediawiki-mediawiki
+  name: mediawiki
   labels:
-    app: mediawiki-mediawiki
+    app: mediawiki
 spec:
   ports:
   - name: http

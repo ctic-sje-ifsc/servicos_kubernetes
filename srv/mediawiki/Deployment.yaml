@@ -38,15 +38,13 @@ spec:
             secretKeyRef:
               name: mediawiki-mariadb
               key: mariadb-root-password
-        - name: MARIADB_USER
-          value:
-        - name: MARIADB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mediawiki-mariadb
-              key: mariadb-password
-        - name: MARIADB_DATABASE
-          value:
+#        - name: MARIADB_PASSWORD
+#          valueFrom:
+#            secretKeyRef:
+#              name: mediawiki-mariadb
+#              key: mariadb-password
+#        - name: ALLOW_EMPTY_PASSWORD
+#          value: "yes"
         ports:
         - name: mysql
           containerPort: 3306
@@ -66,8 +64,8 @@ spec:
           timeoutSeconds: 1
         resources:
           requests:
-          memory: 256Mi
-          cpu: 250m
+            memory: 256Mi
+            cpu: 250m
         volumeMounts:
         - name: data
           mountPath: /bitnami/mariadb
@@ -78,7 +76,6 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: mediawiki-mariadb
-        emptyDir: {}
 
 ---
 apiVersion: extensions/v1beta1
@@ -99,33 +96,33 @@ spec:
         image: "bitnami/mediawiki:1.28.2-r1"
         env:
         - name: MARIADB_HOST
-          value:
+          value: mediawiki-mariadb
         - name: MARIADB_PORT
           value: "3306"
         - name: MARIADB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name:
+              name: mediawiki-mariadb
               key: mariadb-root-password
         - name: MEDIAWIKI_USERNAME
-          value:
+          value: ctic
         - name: MEDIAWIKI_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mediawiki-mediawiki
               key: mediawiki-password
         - name: MEDIAWIKI_EMAIL
-          value:
+          value: "enviamail.sje@ifsc.edu.br"
         - name: MEDIAWIKI_WIKI_NAME
-          value:
+          value: "MediaWiki do Campus Sao Jose"
         - name: SMTP_HOST_ID
-          value:
+          value: smtp.ifsc.edu.br
         - name: SMTP_HOST
-          value:
+          value: "smtp.ifsc.edu.br"
         - name: SMTP_PORT
-          value:
+          value: "465"
         - name: SMTP_USER
-          value:
+          value: "enviamail.sje"
         - name: SMTP_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -150,8 +147,8 @@ spec:
           timeoutSeconds: 1
         resources:
           requests:
-          memory: 512Mi
-          cpu: 300m
+            memory: 512Mi
+            cpu: 300m
         volumeMounts:
         - name: mediawiki-data
           mountPath: /bitnami/mediawiki
@@ -161,8 +158,6 @@ spec:
       - name: mediawiki-data
         persistentVolumeClaim:
           claimName: mediawiki-mediawiki
-        emptyDir: {}
       - name: apache-data
         persistentVolumeClaim:
           claimName: mediawiki-apache
-        emptyDir: {}
