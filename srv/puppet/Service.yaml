@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: puppet-puppetdb-postgres
+  name: puppet-puppetdb-postgres
+spec:
+  ports:
+  - name: puppet-puppetdb-postgres
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: puppet-puppetdb-postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: puppet-puppetdb
+  name: puppet-puppetdb
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: "8081"
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: puppet-puppetdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: puppet-puppetboard
+  name: puppet-puppetboard
+spec:
+  ports:
+  - name: "8000"
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: puppet-puppetboard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: puppet-puppetexplorer
+  name: puppet-puppetexplorer
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: puppet-puppetexplorer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: puppet-puppet
+  name: puppet-puppet
+spec:
+  ports:
+  - name: "8140"
+    port: 8140
+    targetPort: 8140
+  selector:
+    app: puppet-puppet
