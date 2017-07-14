@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: puppet-puppetdbpostgres
+spec:
+  capacity:
+    storage: 2048Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/puppet/puppetdbpostgres
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: puppet-puppetdb
+spec:
+  capacity:
+    storage: 1500Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/puppet/puppetdb
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: puppet-puppet-code
+spec:
+  capacity:
+    storage: 850Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/puppet/puppet-code
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: puppet-puppet-ssl
+spec:
+  capacity:
+    storage: 90Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/puppet/puppet-ssl
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: puppet-puppet-data
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/puppet/puppet-data
+
+
+  

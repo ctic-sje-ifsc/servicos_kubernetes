@@ -30,3 +30,4 @@ INFO file "puppetdbpostgres-deployment.yaml" created
 INFO file "puppetdbpostgres-claim0-persistentvolumeclaim.yaml" created 
 INFO file "puppetexplorer-deployment.yaml" created ''''
 ```
+
