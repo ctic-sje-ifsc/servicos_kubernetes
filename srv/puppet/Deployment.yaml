@@ -128,7 +128,7 @@ spec:
       containers:
       - image: puppet/puppetserver
         name: puppet
-        - env:
+        env:
           - name: PUPPETDB_SERVER_URLS
             value: https://puppet-puppetdb:8081
         ports:
