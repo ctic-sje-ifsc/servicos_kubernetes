@@ -1,0 +1,155 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: puppet-puppetdb-postgres
+  name: postgres
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: puppet-puppetdb-postgres
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_PASSWORD
+          value: puppetdb
+        - name: POSTGRES_USER
+          value: puppetdb
+        image: puppet/puppetdb-postgres
+        name: postgres
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data/
+          name: puppet-puppetdb-postgres
+      restartPolicy: Always
+      volumes:
+      - name: puppet-puppetdb-postgres
+        persistentVolumeClaim:
+          claimName: puppet-puppetdb-postgres
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: puppet-puppetdb
+  name: puppetdb
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: puppet-puppetdb
+    spec:
+      containers:
+      - image: puppet/puppetdb
+        name: puppetdb
+        ports:
+        - containerPort: 8080
+        - containerPort: 8081
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/puppetlabs/puppet/ssl/
+          name: puppet-puppetdb
+      restartPolicy: Always
+      volumes:
+      - name: puppet-puppetdb
+        persistentVolumeClaim:
+          claimName: puppet-puppetdb
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: puppetexplorer
+  name: puppetexplorer
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: puppetexplorer
+    spec:
+      containers:
+      - image: puppet/puppetexplorer
+        name: puppetexplorer
+        ports:
+        - containerPort: 80
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: puppet-puppetboard
+  name: puppet-puppetboard
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: puppet-puppetboard
+    spec:
+      containers:
+      - image: puppet/puppetboard
+        name: puppet-puppetboard
+        ports:
+        - containerPort: 8000
+        resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: puppet
+  name: puppet
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: puppet
+    spec:
+      containers:
+      - image: puppet/puppetserver
+        name: puppet
+        env:
+          - name: PUPPETDB_SERVER_URLS
+            value: https://puppet-puppetdb:8081
+        ports:
+        - containerPort: 8140
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/puppetlabs/code/
+          name: puppet-puppet-code
+        - mountPath: /etc/puppetlabs/puppet/ssl/
+          name: puppet-puppet-ssl
+        - mountPath: /opt/puppetlabs/server/data/puppetserver/
+          name: puppet-puppet-data
+      restartPolicy: Always
+      volumes:
+      - name: puppet-puppet-code
+        persistentVolumeClaim:
+          claimName: puppet-puppet-code
+      - name: puppet-puppet-ssl
+        persistentVolumeClaim:
+          claimName: puppet-puppet-ssl
+      - name: puppet-puppet-data
+        persistentVolumeClaim:
+          claimName: puppet-puppet-data
+status: {}

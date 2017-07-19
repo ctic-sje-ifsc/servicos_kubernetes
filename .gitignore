@@ -4,3 +4,5 @@
 *.pem
 Secret.yaml
 Secrets.yaml
+secret.yaml
+secrets.yaml

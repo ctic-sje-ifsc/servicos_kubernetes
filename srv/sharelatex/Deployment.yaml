@@ -81,20 +81,20 @@ spec:
         - name: SHARELATEX_ADMIN_EMAIL
           value: "suporte.ti.sje@ifsc.edu.br"
         - name: SHARELATEX_LEFT_FOOTER
-          value: "[{\"text\": \"Implementado e mantido pela equipe da CTIC  - SJE\"} ]"   
+          value: "[{\"text\": \"Implementado e mantido pela equipe da CTIC  - SJE\"} ]"
         - name: SHARELATEX_EMAIL_FROM_ADDRESS
-          value: "ctic.sj@ifsc.edu.br"
+          value: "enviamail.sje@ifsc.edu.br"
         - name: SHARELATEX_EMAIL_SMTP_HOST
           value: "smtp.ifsc.edu.br"
         - name: SHARELATEX_EMAIL_SMTP_PORT
           value: "465"
         - name: SHARELATEX_EMAIL_SMTP_USER
-          value: "ctic.sj"
+          value: "enviamail.sje"
         - name: SHARELATEX_EMAIL_SMTP_PASS
           valueFrom:
             secretKeyRef:
-              name: ctic-secret
-              key: cticsj_email_password
+              name: enviaemail-sje
+              key: enviaemail_sje_password
         - name: SHARELATEX_EMAIL_SMTP_SECURE
           value: "true"
         - name: SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH
@@ -107,6 +107,13 @@ spec:
         name: sharelatex
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: "3"
+            memory: 3Gi
+          limits:
+            cpu: "6"
+            memory: 6Gi
         volumeMounts:
         - mountPath: /var/lib/sharelatex
           name: sharelatex-sharelatex-arquivos
