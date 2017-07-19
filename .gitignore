@@ -3,3 +3,4 @@
 *.pfx
 *.pem
 Secret.yaml
+Secrets.yaml
