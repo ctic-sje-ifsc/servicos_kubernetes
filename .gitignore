@@ -1,3 +1,5 @@
 *~
 *.sw*
+*.pfx
+*.pem
 Secret.yaml
