@@ -12,6 +12,12 @@ spec:
       containers:
         - image: nginx:1.13.1
           name: nginx-nginx
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 80
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
           ports:
             - containerPort: 80
             - containerPort: 443
