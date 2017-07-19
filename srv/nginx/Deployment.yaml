@@ -43,7 +43,9 @@ spec:
         secret:
           secretName: nginx-nginx-ssl
           items:
-            - key: certificate.pem
-              path: "certificate.pem"
+            - key: ca.pem
+              path: "ca.pem"
+            - key: cert.pem
+              path: "cert.pem"
             - key: key.pem
               path: "key.pem"
