@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: puppet-puppetdb-postgres
+  name: puppet-puppetdb-postgres
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2048Mi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: puppet-puppetdb
+  name: puppet-puppetdb
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1500Mi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: puppet-puppet-code
+  name: puppet-puppet-code
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 850Mi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: puppet-puppet-ssl
+  name: puppet-puppet-ssl
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 90Mi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: puppet-puppet-data
+  name: puppet-puppet-data
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+status: {}
+  
