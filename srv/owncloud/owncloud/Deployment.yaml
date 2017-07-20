@@ -1,0 +1,156 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: owncloud-mariadb
+  labels:
+    app: owncloud-mariadb
+spec:
+  template:
+    metadata:
+      labels:
+        app: owncloud-mariadb
+      annotations:
+        pod.alpha.kubernetes.io/init-containers: '
+          [
+            {
+              "name": "copy-custom-config",
+              "image": "bitnami/mariadb:10.1.23-r2",
+              "command": ["sh", "-c", "mkdir -p /bitnami/mariadb/conf && cp -n /bitnami/mariadb_config/my.cnf /bitnami/mariadb/conf/my_custom.cnf"],
+              "volumeMounts": [
+                {
+                  "name": "config",
+                  "mountPath": "/bitnami/mariadb_config"
+                },
+                {
+                  "name": "data",
+                  "mountPath": "/bitnami/mariadb"
+                }
+              ]
+            }
+          ]'
+    spec:
+      containers:
+      - name: owncloud-mariadb
+        image: "bitnami/mariadb:10.1.23-r2"
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: owncloud-mariadb
+              key: mariadb-root-password
+#        - name: MARIADB_PASSWORD
+#          valueFrom:
+#            secretKeyRef:
+#              name: owncloud-mariadb
+#              key: mariadb-password
+#        - name: ALLOW_EMPTY_PASSWORD
+#          value: "yes"
+        ports:
+        - name: mysql
+          containerPort: 3306
+        livenessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 250m
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/mariadb
+      volumes:
+      - name: config
+        configMap:
+          name: owncloud-mariadb
+      - name: data
+        persistentVolumeClaim:
+          claimName: owncloud-mariadb
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: owncloud-owncloud
+  labels:
+    app: owncloud-owncloud
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: owncloud-owncloud
+    spec:
+      containers:
+      - name: owncloud-owncloud
+        image: bitnami/owncloud:10.0.2-r0
+        env:
+        - name: MARIADB_HOST
+          value: owncloud-mariadb
+        - name: MARIADB_PORT_NUMBER
+          value: "3306"
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: owncloud-mariadb
+              key: mariadb-root-password
+        - name: OWNCLOUD_HOST
+          value: owncloud.sj.ifsc.edu.br
+        - name: OWNCLOUD_USERNAME
+          value: ctic
+        - name: OWNCLOUD_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: owncloud-owncloud
+              key: owncloud-password
+        - name: OWNCLOUD_EMAIL
+          value: ctic.sj@ifsc.edu.br
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /status.php
+            port: http
+            httpHeaders:
+            - name: Host
+              value: owncloud.sj.ifsc.edu.br
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: /status.php
+            port: http
+            httpHeaders:
+            - name: Host
+              value: owncloud.sj.ifsc.edu.br
+          initialDelaySeconds: 30
+          timeoutSeconds: 3
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: 512Mi
+            cpu: 300m
+        volumeMounts:
+        - name: owncloud-data
+          mountPath: /bitnami/owncloud
+        - name: apache-data
+          mountPath: /bitnami/apache
+      volumes:
+      - name: owncloud-data
+        persistentVolumeClaim:
+          claimName: owncloud-owncloud
+      - name: apache-data
+        persistentVolumeClaim:
+          claimName: owncloud-apache

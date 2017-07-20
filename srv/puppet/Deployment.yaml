@@ -21,7 +21,6 @@ spec:
           value: puppetdb
         image: puppet/puppetdb-postgres
         name: postgres
-        resources: {}
         volumeMounts:
         - mountPath: /var/lib/postgresql/data/
           name: puppet-puppetdb-postgres
@@ -30,13 +29,12 @@ spec:
       - name: puppet-puppetdb-postgres
         persistentVolumeClaim:
           claimName: puppet-puppetdb-postgres
-status: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: puppet-puppetdb
+    app: puppetdb
   name: puppetdb
 spec:
   replicas: 1
@@ -53,7 +51,6 @@ spec:
         ports:
         - containerPort: 8080
         - containerPort: 8081
-        resources: {}
         volumeMounts:
         - mountPath: /etc/puppetlabs/puppet/ssl/
           name: puppet-puppetdb
@@ -62,30 +59,26 @@ spec:
       - name: puppet-puppetdb
         persistentVolumeClaim:
           claimName: puppet-puppetdb
-status: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: puppet-puppetexplorer
-  name: puppet-puppetexplorer
+    app: puppetexplorer
+  name: puppetexplorer
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
       labels:
-        app: puppet-puppetexplorer
+        app: puppetexplorer
     spec:
       containers:
       - image: puppet/puppetexplorer
-        name: puppet-puppetexplorer
+        name: puppetexplorer
         ports:
         - containerPort: 80
-        resources: {}
       restartPolicy: Always
-status: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -95,7 +88,6 @@ metadata:
   name: puppet-puppetboard
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
       labels:
@@ -111,9 +103,7 @@ spec:
             value: "8081"
         ports:
         - containerPort: 8000
-        resources: {}
       restartPolicy: Always
-status: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -135,10 +125,9 @@ spec:
         name: puppet
         env:
           - name: PUPPETDB_SERVER_URLS
-            value: https://puppet-puppetdb:8081
+            value: https://puppetdb:8081
         ports:
         - containerPort: 8140
-        resources: {}
         volumeMounts:
         - mountPath: /etc/puppetlabs/code/
           name: puppet-puppet-code
@@ -157,4 +146,3 @@ spec:
       - name: puppet-puppet-data
         persistentVolumeClaim:
           claimName: puppet-puppet-data
-status: {}
