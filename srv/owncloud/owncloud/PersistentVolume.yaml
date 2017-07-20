@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: owncloud-apache
+spec:
+  capacity:
+    storage: 1200Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/owncloud/apache
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: owncloud-mariadb
+spec:
+  capacity:
+    storage: 8500Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/owncloud/mariadb
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: owncloud-owncloud
+spec:
+  capacity:
+    storage: 8600Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/owncloud/owncloud
+
+      

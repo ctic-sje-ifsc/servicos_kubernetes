@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: owncloud-mariadb
+  labels:
+    app: owncloud-mariadb
+data:
+  my.cnf: |-
+    [mysqld]
+    max_allowed_packet = 64M
+    sql_mode=STRICT_ALL_TABLES
+    ft_stopword_file=/etc/mysql/stopwords.txt
+    ft_min_word_len=3
+    ft_boolean_syntax=' |-><()~*:""&^'
+    innodb_buffer_pool_size=2G
