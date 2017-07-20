@@ -2,11 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: puppet-puppetdb-postgres
+    app: postgres
   name: postgres
 spec:
   ports:
-  - name: puppet-puppetdb-postgres
+  - name: postgres
     port: 5432
     protocol: TCP
     targetPort: 5432
@@ -17,7 +17,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: puppet-puppetdb
+    app: puppetdb
   name: puppetdb
 spec:
   ports:
@@ -69,9 +69,17 @@ metadata:
     app: puppet
   name: puppet
 spec:
+  externalIPs:
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.8"
   ports:
-  - name: "8140"
+  - name: "puppet"
     port: 8140
+    protocol: TCP
     targetPort: 8140
   selector:
     app: puppet
+  type: LoadBalancer

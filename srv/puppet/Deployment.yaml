@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: puppet-puppetdb-postgres
+    app: postgres
   name: postgres
 spec:
   replicas: 1
@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       labels:
-        app: puppet-puppetdb-postgres
+        app: postgres
     spec:
       containers:
       - env:
@@ -45,7 +45,7 @@ spec:
   template:
     metadata:
       labels:
-        app: puppet-puppetdb
+        app: puppetdb
     spec:
       containers:
       - image: puppet/puppetdb
@@ -68,19 +68,19 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: puppetexplorer
-  name: puppetexplorer
+    app: puppet-puppetexplorer
+  name: puppet-puppetexplorer
 spec:
   replicas: 1
   strategy: {}
   template:
     metadata:
       labels:
-        app: puppetexplorer
+        app: puppet-puppetexplorer
     spec:
       containers:
       - image: puppet/puppetexplorer
-        name: puppetexplorer
+        name: puppet-puppetexplorer
         ports:
         - containerPort: 80
         resources: {}
@@ -104,6 +104,11 @@ spec:
       containers:
       - image: puppet/puppetboard
         name: puppet-puppetboard
+        env:
+          - name: PUPPETDB_HOST
+            value: "puppetdb"
+          - name: PUPPETDB_PORT
+            value: "8081"
         ports:
         - containerPort: 8000
         resources: {}
