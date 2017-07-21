@@ -36,8 +36,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: puppet-puppetboard
-  name: puppet-puppetboard
+    app: puppetboard
+  name: puppetboard
 spec:
   ports:
   - name: "8000"
@@ -51,8 +51,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: puppet-puppetexplorer
-  name: puppet-puppetexplorer
+    app: puppetexplorer
+  name: puppetexplorer
 spec:
   ports:
   - name: http

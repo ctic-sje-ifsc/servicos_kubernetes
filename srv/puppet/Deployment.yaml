@@ -64,18 +64,18 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: puppetexplorer
-  name: puppetexplorer
+    app: puppet-puppetexplorer
+  name: puppet-puppetexplorer
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: puppetexplorer
+        app: puppet-puppetexplorer
     spec:
       containers:
       - image: puppet/puppetexplorer
-        name: puppetexplorer
+        name: puppet-puppetexplorer
         ports:
         - containerPort: 80
       restartPolicy: Always
@@ -125,7 +125,7 @@ spec:
         name: puppet
         env:
           - name: PUPPETDB_SERVER_URLS
-            value: https://puppetdb:8081
+            value: https://puppetdb.local:8081
         ports:
         - containerPort: 8140
         volumeMounts:
