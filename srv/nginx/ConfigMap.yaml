@@ -68,7 +68,6 @@ data:
         gzip on;
         server {
             listen 80 default_server;
-            listen [::]:80 default_server;
             location /metrics {
                 stub_status on;
                 access_log off;
@@ -84,7 +83,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name netbox;
             server_name netbox.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
@@ -111,7 +109,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name chat;
             server_name chat.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
@@ -139,7 +136,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name sharelatex;
             server_name sharelatex.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
@@ -165,7 +161,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name cicd;
             server_name cicd.sj.ifsc.edu.br;
             server_name mediawiki;
@@ -193,7 +188,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name owncloud;
             server_name owncloud.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
@@ -219,7 +213,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name puppetdb;
             server_name puppetdb.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
@@ -245,7 +238,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name puppetexplorer;
             server_name puppetexplorer.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
@@ -267,11 +259,10 @@ data:
             }
         }
         upstream puppetboard {
-            server puppetboard;
+            server puppetboard:8000;
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name puppetdashboard;
             server_name puppetdashboard.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
@@ -297,7 +288,6 @@ data:
         }
         server {
             listen 443 ssl http2;
-            listen [::]:443 ssl http2;
             server_name mqtt;
             server_name mqtt.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
