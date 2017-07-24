@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wordpress-mariadb
+spec:
+  capacity:
+    storage: 8400Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/wordpress/mariadb
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wordpress-wordpress
+spec:
+  capacity:
+    storage: 10100Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/wordpress/wordpress
+
+      
