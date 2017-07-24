@@ -1,0 +1,165 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress-mariadb
+  labels:
+    app: wordpress-mariadb
+spec:
+  template:
+    metadata:
+      labels:
+        app: wordpress-mariadb
+      annotations:
+        pod.alpha.kubernetes.io/init-containers: '
+          [
+            {
+              "name": "copy-custom-config",
+              "image": "bitnami/mariadb:10.1.23-r2",
+              "command": ["sh", "-c", "mkdir -p /bitnami/mariadb/conf && cp -n /bitnami/mariadb_config/my.cnf /bitnami/mariadb/conf/my_custom.cnf"],
+              "volumeMounts": [
+                {
+                  "name": "config",
+                  "mountPath": "/bitnami/mariadb_config"
+                },
+                {
+                  "name": "data",
+                  "mountPath": "/bitnami/mariadb"
+                }
+              ]
+            }
+          ]'
+    spec:
+      containers:
+      - name: wordpress-mariadb
+        image: "bitnami/mariadb:10.1.23-r2"
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        - name: MARIADB_USER
+          value: bn_wordpress
+        - name: MARIADB_DATABASE
+          value: bitnami_wordpress
+        ports:
+        - name: mysql
+          containerPort: 3306
+        livenessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - mysqladmin
+            - ping
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 250m
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/mariadb
+      volumes:
+      - name: config
+        configMap:
+          name: wordpress-mariadb
+      - name: data
+        persistentVolumeClaim:
+          claimName: wordpress-mariadb
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress-wordpress
+  labels:
+    app: wordpress-wordpress
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wordpress-wordpress
+    spec:
+      containers:
+      - name: wordpress-wordpress
+        image: "bitnami/wordpress:4.8.0-r2"
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        - name: MARIADB_HOST
+          value: wordpress-mariadb
+        - name: MARIADB_PORT_NUMBER
+          value: "3306"
+        - name: WORDPRESS_DATABASE_NAME
+          value: bitnami_wordpress
+        - name: WORDPRESS_DATABASE_USER
+          value: bn_wordpress
+        - name: WORDPRESS_USERNAME
+          value: ctic
+        - name: WORDPRESS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wordpress-wordpress
+              key: wordpress-password
+        - name: WORDPRESS_EMAIL
+          value: ctic.sje@ifsc.edu.br
+        - name: WORDPRESS_FIRST_NAME
+          value: ctic
+        - name: WORDPRESS_LAST_NAME
+          value: sje
+        - name: WORDPRESS_BLOG_NAME
+          value: "Wordpress do IFSC SJE"
+        - name: SMTP_HOST
+          value: "smtp.ifsc.edu.br"
+        - name: SMTP_PORT
+          value: "465"
+        - name: SMTP_USER
+          value: "enviamail.sje@ifsc.edu.br"
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wordpress-wordpress
+              key: smtp-password
+        - name: SMTP_PROTOCOL
+          value: "ssl"
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        livenessProbe:
+          httpGet:
+            path: /wp-login.php
+            port: http
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: /wp-login.php
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 3
+          periodSeconds: 5
+        volumeMounts:
+        - mountPath: /bitnami/apache
+          name: wordpress-data
+          subPath: apache
+        - mountPath: /bitnami/wordpress
+          name: wordpress-data
+          subPath: wordpress
+        - mountPath: /bitnami/php
+          name: wordpress-data
+          subPath: php
+        resources:
+          requests:
+            memory: 512Mi
+            cpu: 300m
+      volumes:
+      - name: wordpress-data
+        persistentVolumeClaim:
+          claimName: wordpress-wordpress
