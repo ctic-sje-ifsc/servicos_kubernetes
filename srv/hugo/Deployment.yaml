@@ -1,0 +1,78 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hugo-hugo
+  name: hugo-hugo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hugo-hugo
+    spec:
+      containers:
+      - env:
+        - name: HUGO_BASEURL
+          value: nuvem.sj.ifsc.edu.br
+        - name: HUGO_REFRESH_TIME
+          value: "20"
+        - name: HUGO_THEME
+          value: hugrid
+        image: jojomi/hugo:latest
+        name: hugo-hugo
+        resources: {}
+        volumeMounts:
+        - mountPath: /src
+          name: hugo-hugo-src
+        - mountPath: /output
+          name: hugo-hugo-output
+      restartPolicy: Always
+      volumes:
+      - name: hugo-hugo-src
+        persistentVolumeClaim:
+          claimName: hugo-hugo-src
+      - name: hugo-hugo-output
+        persistentVolumeClaim:
+          claimName: hugo-hugo-output
+status: {}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hugo-web
+  name: hugo-web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hugo-web
+    spec:
+      containers:
+      - env:
+        - name: VIRTUAL_HOST
+          value: nuvem.sj.ifsc.edu.br
+        image: jojomi/nginx-static
+        name: hugo-web
+        ports:
+        - containerPort: 80
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/www
+          name: hugo-web
+      restartPolicy: Always
+      volumes:
+      - name: hugo-web
+        persistentVolumeClaim:
+          claimName: hugo-web
+status: {}
