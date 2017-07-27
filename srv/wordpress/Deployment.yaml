@@ -118,12 +118,14 @@ spec:
         - name: SMTP_PORT
           value: "465"
         - name: SMTP_USER
-          value: "enviamail.sje@ifsc.edu.br"
+          value: "enviamail.sje"
         - name: SMTP_PASSWORD
           valueFrom:
             secretKeyRef:
               name: wordpress-wordpress
               key: smtp-password
+        - name: SMTP_USERNAME
+          value: enviamail.sje
         - name: SMTP_PROTOCOL
           value: "ssl"
         ports:

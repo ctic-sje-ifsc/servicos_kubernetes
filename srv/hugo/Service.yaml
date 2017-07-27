@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hugo
+  name: hugo
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app: hugo-web
