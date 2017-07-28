@@ -68,7 +68,7 @@ data:
         gzip on;
         server {
             listen 80 default_server;
-            location /metrics {
+            location /status {
                 stub_status on;
                 access_log off;
                 allow 10.0.0.0/8;
