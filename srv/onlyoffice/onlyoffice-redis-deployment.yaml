@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: onlyoffice-redis
+  name: onlyoffice-redis
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: onlyoffice-redis
+    spec:
+      containers:
+      - image: redis
+        name: onlyoffice-redis
+        resources: {}
+      restartPolicy: Always
+status: {}

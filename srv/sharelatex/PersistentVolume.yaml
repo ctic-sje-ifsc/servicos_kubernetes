@@ -4,7 +4,7 @@ metadata:
   name: sharelatex-mongo-base
 spec:
   capacity:
-    storage: 150Mi
+    storage: 5022Mi
   accessModes:
     - ReadWriteMany
   nfs:
@@ -19,7 +19,7 @@ metadata:
   name: sharelatex-redis-base
 spec:
   capacity:
-    storage: 100Mi
+    storage: 8520Mi
   accessModes:
     - ReadWriteMany
   nfs:
@@ -34,7 +34,7 @@ metadata:
   name: sharelatex-sharelatex-arquivos
 spec:
   capacity:
-    storage: 200Mi
+    storage: 10018Mi
   accessModes:
     - ReadWriteMany
   nfs:

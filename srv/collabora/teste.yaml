@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+
+  collabora:
+    image: collabora/code
+    expose:
+      - 9980
+    cap_add:
+      - MKNOD
+    environment:
+      - domain=nextcloud.sj.ifsc.edu.br
+      - VIRTUAL_HOST=colabora.sj.ifsc.edu.br
+      - VIRTUAL_NETWORK=proxy-ssl
+      - VIRTUAL_PORT=9980
+      - VIRTUAL_PROTO=https
