@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: collabora
+  name: collabora
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: collabora
+    spec:
+      containers:
+      - env:
+        - name: VIRTUAL_HOST
+          value: colabora.sj.ifsc.edu.br
+        - name: VIRTUAL_NETWORK
+          value: proxy-ssl
+        - name: VIRTUAL_PORT
+          value: "9980"
+        - name: VIRTUAL_PROTO
+          value: https
+        - name: domain
+          value: nextcloud.sj.ifsc.edu.br
+        image: collabora/code
+        name: collabora
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - MKNOD
+      restartPolicy: Always
+status: {}

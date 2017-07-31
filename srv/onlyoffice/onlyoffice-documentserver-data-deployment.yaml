@@ -1,0 +1,68 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: onlyoffice-documentserver-data
+  name: onlyoffice-documentserver-data
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: onlyoffice-documentserver-data
+    spec:
+      containers:
+      - env:
+        - name: ONLYOFFICE_DATA_CONTAINER
+          value: "true"
+        - name: POSTGRESQL_SERVER_DB_NAME
+          value: onlyoffice
+        - name: POSTGRESQL_SERVER_HOST
+          value: onlyoffice-postgresql
+        - name: POSTGRESQL_SERVER_PORT
+          value: "5432"
+        - name: POSTGRESQL_SERVER_USER
+          value: onlyoffice
+        - name: RABBITMQ_SERVER_URL
+          value: amqp://guest:guest@onlyoffice-rabbitmq
+        - name: REDIS_SERVER_HOST
+          value: onlyoffice-redis
+        - name: REDIS_SERVER_PORT
+          value: "6379"
+        image: onlyoffice/documentserver:latest
+        name: onlyoffice-documentserver-data
+        resources: {}
+        stdin: true
+        volumeMounts:
+        - mountPath: /var/www/onlyoffice/Data
+          name: onlyoffice-documentserver-data-claim0
+        - mountPath: /var/log/onlyoffice
+          name: onlyoffice-documentserver-data-claim1
+        - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
+          name: onlyoffice-documentserver-data-claim2
+        - mountPath: /var/www/onlyoffice/documentserver-example/public/files
+          name: onlyoffice-documentserver-data-claim3
+        - mountPath: /usr/share/fonts
+          name: onlyoffice-documentserver-data-claim4
+      restartPolicy: Always
+      volumes:
+      - name: onlyoffice-documentserver-data-claim0
+        persistentVolumeClaim:
+          claimName: onlyoffice-documentserver-data-claim0
+      - name: onlyoffice-documentserver-data-claim1
+        persistentVolumeClaim:
+          claimName: onlyoffice-documentserver-data-claim1
+      - name: onlyoffice-documentserver-data-claim2
+        persistentVolumeClaim:
+          claimName: onlyoffice-documentserver-data-claim2
+      - name: onlyoffice-documentserver-data-claim3
+        persistentVolumeClaim:
+          claimName: onlyoffice-documentserver-data-claim3
+      - name: onlyoffice-documentserver-data-claim4
+        persistentVolumeClaim:
+          claimName: onlyoffice-documentserver-data-claim4
+status: {}

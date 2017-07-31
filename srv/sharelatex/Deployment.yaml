@@ -13,6 +13,10 @@ spec:
       containers:
       - image: mongo
         name: sharelatex-mongo
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
         volumeMounts:
         - mountPath: /data/db
           name: sharelatex-mongo-base
@@ -42,6 +46,10 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: sharelatex-redis-base
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
       restartPolicy: Always
       volumes:
       - name: sharelatex-redis-base
