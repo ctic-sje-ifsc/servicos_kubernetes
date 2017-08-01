@@ -132,6 +132,7 @@ spec:
           httpGet:
             path: /wp-login.php
             port: 443
+            scheme: HTTPS
           initialDelaySeconds: 120
           timeoutSeconds: 5
           failureThreshold: 6

@@ -7,8 +7,10 @@ delete:
 	make -C sharelatex delete
 	make -C netbox delete
 	make -C puppet delete
+	make -C wordpress delete
 
 create:
+	make -C wordpress create
 	make -C puppet create
 	make -C netbox create
 	make -C sharelatex create
