@@ -49,13 +49,6 @@ spec:
             - ping
           initialDelaySeconds: 30
           timeoutSeconds: 5
-        readinessProbe:
-          exec:
-            command:
-            - mysqladmin
-            - ping
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
         resources:
           requests:
             memory: 256Mi
@@ -70,7 +63,9 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: wordpress-mariadb
+
 ---
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -131,24 +126,15 @@ spec:
         - name: SMTP_PROTOCOL
           value: "ssl"
         ports:
-        - name: http
-          containerPort: 80
         - name: https
           containerPort: 443
         livenessProbe:
           httpGet:
             path: /wp-login.php
-            port: http
+            port: 443
           initialDelaySeconds: 120
           timeoutSeconds: 5
           failureThreshold: 6
-        readinessProbe:
-          httpGet:
-            path: /wp-login.php
-            port: http
-          initialDelaySeconds: 30
-          timeoutSeconds: 3
-          periodSeconds: 5
         volumeMounts:
         - mountPath: /bitnami/apache
           name: wordpress-data

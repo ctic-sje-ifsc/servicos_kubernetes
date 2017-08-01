@@ -25,5 +25,3 @@ spec:
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/wordpress/wordpress
-
-      

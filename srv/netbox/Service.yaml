@@ -1,4 +1,3 @@
-# _http._tcp.netbox.default.svc.cluster.local
 apiVersion: v1
 kind: Service
 metadata:
