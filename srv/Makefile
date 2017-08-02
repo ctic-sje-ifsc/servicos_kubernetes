@@ -8,8 +8,10 @@ delete:
 	make -C netbox delete
 	make -C puppet delete
 	make -C wordpress delete
+	make -C nextcloud delete
 
 create:
+	make -C nextcloud create
 	make -C wordpress create
 	make -C puppet create
 	make -C netbox create
