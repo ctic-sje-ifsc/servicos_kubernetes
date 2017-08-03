@@ -11,7 +11,9 @@ spec:
     targetPort: mysql
   selector:
     app: nextcloud-mariadb
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -24,8 +26,9 @@ spec:
     targetPort: 6379
   selector:
     app: nextcloud-redis
-    
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -39,7 +42,9 @@ spec:
     targetPort: collabora
   selector:
     app: nextcloud-collabora
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:

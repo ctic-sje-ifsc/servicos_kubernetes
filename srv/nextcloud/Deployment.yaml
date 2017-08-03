@@ -78,8 +78,9 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: nextcloud-mariadb
-          
+
 ---
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -110,8 +111,9 @@ spec:
       - name: nextcloud-redis
         persistentVolumeClaim:
           claimName: nextcloud-redis
-          
+
 ---
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -120,7 +122,6 @@ metadata:
   name: nextcloud-collabora
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
       labels:
@@ -146,7 +147,9 @@ spec:
             add:
             - MKNOD
       restartPolicy: Always
+
 ---
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:

@@ -1,7 +1,6 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: hugo-hugo
   name: hugo-hugo
@@ -11,7 +10,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: hugo-hugo
     spec:
@@ -23,9 +21,8 @@ spec:
           value: "20"
         - name: HUGO_THEME
           value: hugrid
-        image: jojomi/hugo:latest
+        image: jojomi/hugo:0.25.1
         name: hugo-hugo
-        resources: {}
         volumeMounts:
         - mountPath: /src
           name: hugo-hugo-src
@@ -39,12 +36,12 @@ spec:
       - name: hugo-hugo-output
         persistentVolumeClaim:
           claimName: hugo-hugo-output
-status: {}
+
 ---
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: hugo-web
   name: hugo-web
@@ -54,7 +51,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: hugo-web
     spec:
@@ -62,11 +58,10 @@ spec:
       - env:
         - name: VIRTUAL_HOST
           value: nuvem.sj.ifsc.edu.br
-        image: jojomi/nginx-static
+        image: jojomi/nginx-static:latest
         name: hugo-web
         ports:
         - containerPort: 80
-        resources: {}
         volumeMounts:
         - mountPath: /var/www
           name: hugo-web
@@ -75,4 +70,3 @@ spec:
       - name: hugo-web
         persistentVolumeClaim:
           claimName: hugo-web
-status: {}
