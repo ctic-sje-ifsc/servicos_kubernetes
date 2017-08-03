@@ -65,7 +65,7 @@ Implementamos o [sharelatex](https://sharelatex.sj.ifsc.edu.br/). A implementaç
 
 ## Rocket.Chat https://chat.sj.ifsc.edu.br
 
-Finalizamos a implementação do [Rocket.chat](https://chat.sj.ifsc.edu.br/) e utilizaremos ele em substituição do Slack, assim poderemos estar testando a estabilidade do kubernetes. O acesso é feito com o usuário do LDAP, tanto para aluno quando para Servidores. Implementação [srv/rocketchat](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/rocketchat).
+Finalizamos a implementação do [Rocket.chat](https://chat.sj.ifsc.edu.br/) e utilizaremos ele em substituição do Slack, assim poderemos estar testando a estabilidade do kubernetes. O acesso é feito com o usuário do LDAP, tanto para alunos quando para Servidores. Implementação [srv/rocketchat](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/rocketchat).
 
 ## Mosquitto
 
@@ -73,7 +73,7 @@ Por necessidade do ensino foi implementado o Mosquitto. Implementação [srv/mos
 
 ## Nextcloud https://nextcloud.sj.ifsc.edu.br
 
-O [Nextcloud](https://nextcloud.com) é um serviço Open Source de armazenamento e sincronização de arquivos privados, similar ao Dropbox (proprietário). O acesso é feito com o usuário do LDAP, tanto para aluno quando para Servidores. Implementação do Nextcloud [srv/nextcloud](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/nextcloud).
+O [Nextcloud](https://nextcloud.com) é um serviço Open Source de armazenamento e sincronização de arquivos privados, similar ao Dropbox (proprietário). O acesso é feito com o usuário do LDAP, tanto para alunos quando para Servidores. Implementação do Nextcloud [srv/nextcloud](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/nextcloud).
 
 ## Wordpress https://wordpress.sj.ifsc.edu.br
 
