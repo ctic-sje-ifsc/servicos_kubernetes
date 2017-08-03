@@ -59,9 +59,9 @@ spec:
 
 O primeiro serviço migrado foi o [netbox](https://netbox.sj.ifsc.edu.br/), que já estava rodando em container em uma VM. Pode ser encontrado em [srv/netbox](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/netbox).
 
-## Sharelatex https://netbox.sj.ifsc.edu.br
+## Sharelatex https://sharelatex.sj.ifsc.edu.br
 
-Implementamos o [sharelatex](https://netbox.sj.ifsc.edu.br/). A implementação é encontrada em [srv/sharelatex](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/sharelatex)
+Implementamos o [sharelatex](https://sharelatex.sj.ifsc.edu.br/). A implementação é encontrada em [srv/sharelatex](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/sharelatex)
 
 ## Rocket.Chat https://chat.sj.ifsc.edu.br
 
