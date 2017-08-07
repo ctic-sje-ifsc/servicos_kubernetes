@@ -10,7 +10,7 @@ spec:
         app: mosquitto
     spec:
       containers:
-        - image: eclipse-mosquitto:1.4.10
+        - image: boidacarapreta/mosquitto:latest
           name: mosquitto-mosquitto
           ports:
             - containerPort: 1883
