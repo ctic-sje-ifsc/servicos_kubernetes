@@ -20,7 +20,7 @@ spec:
         - name: HUGO_REFRESH_TIME
           value: "20"
         - name: HUGO_THEME
-          value: hugrid
+          value: slate
         image: jojomi/hugo:0.25.1
         name: hugo-hugo
         volumeMounts:
