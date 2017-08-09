@@ -1,3 +1,4 @@
+# subpath https://kubernetes.io/docs/concepts/storage/volumes/#using-subpath
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
