@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octave-home
+spec:
+  capacity:
+    storage: 10011Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/home
+    
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octave-users
+spec:
+  capacity:
+    storage: 94Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/users

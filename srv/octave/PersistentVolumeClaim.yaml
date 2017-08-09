@@ -1,0 +1,25 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octave-home
+  labels:
+    app: octave-home
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10011Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octave-users
+  labels:
+    app: octave-users
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 94Mi

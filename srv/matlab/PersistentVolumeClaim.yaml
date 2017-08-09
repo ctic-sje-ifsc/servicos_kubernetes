@@ -1,0 +1,38 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: matlab-root
+  labels:
+    app: matlab-root
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8205Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: matlab-home
+  labels:
+    app: matlab-home
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10011Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: matlab-users
+  labels:
+    app: matlab-users
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 94Mi
