@@ -22,7 +22,10 @@ spec:
           - name: ZS_DBUser
             value: zabbix
           - name: ZS_DBPassword
-            value: my_password
+            valueFrom:
+              secretKeyRef:
+                name: zabbixdb-password
+                key: zabbixdb-password
           - name: ZS_DBHost
             value: zabbix-db
           - name: ZW_ZBX_SERVER
@@ -60,7 +63,10 @@ spec:
           - name: MARIADB_USER
             value: zabbix
           - name: MARIADB_PASS
-            value: my_password
+            valueFrom:
+              secretKeyRef:
+                name: zabbixdb-password
+                key: zabbixdb-password
           volumeMounts:
           - name: zabbix-db-storage
             mountPath: /var/lib/mysql
@@ -97,7 +103,10 @@ spec:
           - name: ZS_DBUser
             value: zabbix
           - name: ZS_DBPassword
-            value: my_password
+            valueFrom:
+              secretKeyRef:
+                name: zabbixdb-password
+                key: zabbixdb-password
           - name: ZS_DBHost
             value: zabbix-db
           - name: ZS_enabled
