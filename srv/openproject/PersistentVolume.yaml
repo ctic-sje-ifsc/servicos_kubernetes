@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openproject-log
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/openproject/log
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openproject-openproject
+spec:
+  capacity:
+    storage: 2667Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/openproject/openproject
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: openproject-postgresql
+spec:
+  capacity:
+    storage: 2666Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/openproject/postgresql

@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: openproject-openproject
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: openproject-openproject
+      labels:
+        app: openproject-openproject
+    spec:
+      containers:
+      - env:
+        - name: EMAIL_DELIVERY_METHOD
+          value: "smtp"
+        - name: SMTP_ADDRESS
+          value: "smtp.ifsc.edu.br"
+        - name: SMTP_PORT
+          value: "465"
+        - name: SMTP_DOMAIN
+          value: "ifsc.edu.br"
+        - name: SMTP_AUTHENTICATION
+          value: "login"
+        - name: SMTP_USER_NAME
+          value: "enviamail.sje"
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: openproject-smtp
+              key: smtp-password
+        image: openproject/community
+        name: openproject-openproject
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 250m
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/9.4/main
+          name: openproject-postgresql
+        - mountPath: /var/log/supervisor
+          name: openproject-log
+        - mountPath: /var/db/openproject
+          name: openproject-openproject
+      restartPolicy: Always
+      volumes:
+      - name: openproject-postgresql
+        persistentVolumeClaim:
+          claimName: openproject-postgresql
+      - name: openproject-log
+        persistentVolumeClaim:
+          claimName: openproject-log
+      - name: openproject-openproject
+        persistentVolumeClaim:
+          claimName: openproject-openproject
+      - name: openproject-smtp
+        secret:
+          secretName: openproject-smtp

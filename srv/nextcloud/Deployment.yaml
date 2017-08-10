@@ -170,26 +170,6 @@ spec:
         name: nextcloud-nextcloud
         ports:
         - containerPort: 80
-        livenessProbe:
-          httpGet:
-            path: /status.php
-            port: http
-            httpHeaders:
-            - name: Host
-              value: nextcloud.sj.ifsc.edu.br
-          initialDelaySeconds: 120
-          timeoutSeconds: 5
-          failureThreshold: 6
-        readinessProbe:
-          httpGet:
-            path: /status.php
-            port: http
-            httpHeaders:
-            - name: Host
-              value: nextcloud.sj.ifsc.edu.br
-          initialDelaySeconds: 30
-          timeoutSeconds: 3
-          periodSeconds: 5
         resources:
           requests:
             memory: 512Mi
