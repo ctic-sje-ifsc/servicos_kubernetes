@@ -9,7 +9,7 @@ RUN apt update && \
     apt -y install gnupg1 && \
     apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E && \
     apt update && \
-    apt -y install x2goserver && \
+    apt -y install x2goserver libglu1-mesa && \
     mkdir /var/run/sshd && \
     apt clean all
 
