@@ -3,9 +3,7 @@
 FROM alpine:3.6
 MAINTAINER Ederson Torresini <boidacarapreta@gmail.com>
 
-ADD docker-entrypoint.sh /usr/bin/
-RUN chmod 0755 /usr/bin/docker-entrypoint.sh && \
-    apk add --update build-base git openssl-dev c-ares-dev util-linux-dev libwebsockets-dev && \
+RUN apk add --update build-base git openssl-dev c-ares-dev util-linux-dev libwebsockets-dev && \
     mkdir -p src && \
     cd src && \
     git clone https://github.com/eclipse/mosquitto.git && \
@@ -25,5 +23,4 @@ RUN chmod 0755 /usr/bin/docker-entrypoint.sh && \
     chown -R mosquitto:mosquitto /mosquitto
 
 VOLUME ["/mosquitto/config", "/mosquitto/data"]
-ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
 CMD ["/usr/local/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
