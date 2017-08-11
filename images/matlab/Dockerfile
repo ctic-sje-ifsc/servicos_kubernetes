@@ -11,8 +11,6 @@ RUN apt update && \
     apt update && \
     apt -y install x2goserver && \
     mkdir /var/run/sshd && \
-    ssh-keygen -b 2048 -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' && \
-    ssh-keygen -b 521 -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N '' && \
     apt clean all
 
 CMD ["/usr/sbin/sshd", "-D"]
