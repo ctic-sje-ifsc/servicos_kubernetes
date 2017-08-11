@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zabbix-db
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 162Mi
