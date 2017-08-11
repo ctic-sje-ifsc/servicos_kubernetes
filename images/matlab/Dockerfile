@@ -1,12 +1,18 @@
-FROM centos:centos7
-MAINTAINER Ederson Torresini <boidacarapreta@gmail.com>
+FROM debian:stretch
+MAINTAINER Gabriel de Souza <souzagaabriel@gmail.com> e João Pedro Menegali Salvan Bitencourt <jpcatarinense@gmail.com>
 
-RUN yum -y update && \
-    yum -y install openssh-server && \
-    yum -y install libXext libXt mesa-libGL mesa-libGLU xorg-x11-xauth libXrandr && \
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt update && \
+    apt -y upgrade && \
+    echo -e "# X2Go Repository (release builds)\ndeb http://packages.x2go.org/debian stretch main\n# X2Go Repository (sources of release builds)\ndeb-src http://packages.x2go.org/debian stretch main" >> /etc/apt/sources.list && \
+    apt -y install gnupg1 && \
+    apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E && \
+    apt update && \
+    apt -y install x2goserver && \
     mkdir /var/run/sshd && \
     ssh-keygen -b 2048 -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' && \
     ssh-keygen -b 521 -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N '' && \
-    yum clean all
+    apt clean all
 
 CMD ["/usr/sbin/sshd", "-D"]
