@@ -10,7 +10,9 @@ spec:
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/matlab/root
+
 ---
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -23,8 +25,9 @@ spec:
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/home
-    
+
 ---
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
