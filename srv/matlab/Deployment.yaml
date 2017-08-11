@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: matlab
-        image: ??????????
+        image: boidacarapreta/matlab:latest
         ports:
         - name: ssh
           containerPort: 22
@@ -34,7 +34,7 @@ spec:
           mountPath: /etc/shadow
           subPath: shadow
         - name: matlab-users
-          mountPath: cat /etc/passwd
+          mountPath: /etc/passwd
           subPath: passwd
         - name: matlab-users
           mountPath: /etc/group

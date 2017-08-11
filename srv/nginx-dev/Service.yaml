@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx-dev
+  name: nginx-dev
+spec:
+  externalIPs:
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.8"
+  ports:
+    - name: https-alt
+      port: 8443
+      protocol: TCP
+      targetPort: 443
+  selector:
+    app: nginx-dev
+  type: LoadBalancer
