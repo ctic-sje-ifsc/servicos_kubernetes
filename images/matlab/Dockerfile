@@ -3,14 +3,15 @@ MAINTAINER Gabriel de Souza <souzagaabriel@gmail.com> e João Pedro Menegali Sal
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt update && \
-    apt -y upgrade && \
-    echo -e "# X2Go Repository (release builds)\ndeb http://packages.x2go.org/debian stretch main\n# X2Go Repository (sources of release builds)\ndeb-src http://packages.x2go.org/debian stretch main" >> /etc/apt/sources.list && \
-    apt -y install gnupg1 && \
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    echo 'deb http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
+    echo 'deb-src http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
+    apt-get -y install gnupg1 apt-utils && \
     apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E && \
-    apt update && \
-    apt -y install x2goserver libglu1-mesa && \
+    apt-get update && \
+    apt-get -y install x2go-keyring x2goserver x2goserver-xsession libglu1-mesa && \
     mkdir /var/run/sshd && \
-    apt clean all
+    apt-get clean all
 
 CMD ["/usr/sbin/sshd", "-D"]
