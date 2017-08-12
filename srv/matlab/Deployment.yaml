@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: matlab
-        image: boidacarapreta/matlab:latest
+        image: souzagaabriel/matlab
         ports:
         - name: ssh
           containerPort: 22
