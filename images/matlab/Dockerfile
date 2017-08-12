@@ -9,7 +9,6 @@ RUN apt-get update && \
     echo 'deb-src http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
     apt-get -y -q install gpg2 apt-utils && \
     gpg2 --keyserver hkp://keys.gnupg.net --recv-keys E1F958385BFE2B6E && \
-    apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E && \
     apt-get update && \
     apt-get -y -q install openssh-server x2go-keyring x2goserver x2goserver-xsession libglu1-mesa && \
     apt-get clean && \
