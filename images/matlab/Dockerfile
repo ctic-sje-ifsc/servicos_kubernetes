@@ -4,13 +4,14 @@ MAINTAINER Gabriel de Souza <souzagaabriel@gmail.com> e João Pedro Menegali Sal
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get -y upgrade && \
+    apt-get -y -q upgrade && \
     echo 'deb http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
     echo 'deb-src http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
-    apt-get -y install gnupg1 apt-utils && \
+    apt-get -y -q install gpg2 apt-utils && \
+    gpg2 --keyserver hkp://keys.gnupg.net --recv-keys E1F958385BFE2B6E && \
     apt-key adv --recv-keys --keyserver keys.gnupg.net E1F958385BFE2B6E && \
     apt-get update && \
-    apt-get -y install --no-install-recommends openssh-server x2go-keyring x2goserver x2goserver-xsession libglu1-mesa && \
+    apt-get -y -q install openssh-server x2go-keyring x2goserver x2goserver-xsession libglu1-mesa && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
