@@ -14,17 +14,14 @@ spec:
     spec:
       containers:
       - name: matlab
-        image: souzagaabriel/matlab
+        image: cticsjeifsc/matlab
         ports:
         - name: ssh
           containerPort: 22
         resources:
           requests:
-            cpu: "1"
-            memory: 2Gi
-          limits:
-            cpu: "2"
-            memory: 5Gi
+            cpu: "10"
+            memory: 16Gi
         volumeMounts:
         - name: matlab-root
           mountPath: /opt
