@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get -y -q upgrade && \
     echo 'deb http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
     echo 'deb-src http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
-    apt-get -y -q install --no-install-recommends xterm curl gnupg apt-utils && \
+    apt-get -y -q install xterm curl gnupg apt-utils && \
     curl 'https://pgp.mit.edu/pks/lookup?op=get&search=0xE1F958385BFE2B6E' | apt-key add - && \
     apt-get update && \
     apt-get -y -q install --no-install-recommends \
