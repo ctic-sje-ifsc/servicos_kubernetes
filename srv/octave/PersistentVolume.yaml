@@ -9,9 +9,10 @@ spec:
     - ReadWriteOnce
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/home
-    
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/home
+
 ---
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -23,4 +24,4 @@ spec:
     - ReadWriteOnce
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/users
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users
