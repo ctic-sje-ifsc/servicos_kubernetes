@@ -12,17 +12,18 @@ spec:
     metadata:
       labels:
         app: hugo-hugo
+      name: hugo-hugo
     spec:
       containers:
-      - env:
+      - image: jojomi/hugo:0.25.1
+        name: hugo-hugo
+        env:
         - name: HUGO_BASEURL
-          value: nuvem.sj.ifsc.edu.br
+          value: "https://nuvem.sj.ifsc.edu.br/"
         - name: HUGO_REFRESH_TIME
           value: "20"
         - name: HUGO_THEME
-          value: slate
-        image: jojomi/hugo:0.25.1
-        name: hugo-hugo
+          value: "hugrid"
         volumeMounts:
         - mountPath: /src
           name: hugo-hugo-src
@@ -53,12 +54,10 @@ spec:
     metadata:
       labels:
         app: hugo-web
+      name: hugo-web
     spec:
       containers:
-      - env:
-        - name: VIRTUAL_HOST
-          value: nuvem.sj.ifsc.edu.br
-        image: jojomi/nginx-static:latest
+      - image: jojomi/nginx-static:latest
         name: hugo-web
         ports:
         - containerPort: 80
