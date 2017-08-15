@@ -3,7 +3,24 @@ kind: Service
 metadata:
   labels:
     app: nginx-dev
-  name: nginx-dev
+  name: nginx-dev-http
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: nginx-dev
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx-dev
+  name: nginx-dev-https
 spec:
   externalIPs:
     - "191.36.8.4"
