@@ -85,8 +85,8 @@ data:
         }
         server {
             listen 443 ssl http2;
-            server_name zabbixteste;
-            server_name zabbixteste.sj.ifsc.edu.br;
+            server_name zabbix;
+            server_name zabbix.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
             ssl_certificate_key /etc/certs/key.pem;
             ssl_session_timeout 1d;
