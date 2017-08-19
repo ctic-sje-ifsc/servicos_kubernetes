@@ -34,7 +34,7 @@ spec:
       storage: 1Gi
 ```
 
-Editamos o arquivo values.yaml:
+Editamos o arquivo [values.yaml](values.yaml):
 ```yaml
     existingClaim: "grafana"
 ```
