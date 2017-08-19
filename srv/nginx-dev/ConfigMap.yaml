@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-nginx-conf
+  name: nginx-dev-nginx-conf
 data:
   nginx.conf: |-
     # https://mozilla.github.io/server-side-tls/ssl-config-generator/
