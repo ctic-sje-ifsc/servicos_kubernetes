@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hub-db-dir
+spec:
+  capacity:
+    storage: 11002Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/jupyter/db

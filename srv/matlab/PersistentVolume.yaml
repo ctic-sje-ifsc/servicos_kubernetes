@@ -8,8 +8,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/matlab/root
+    server: coreos0
+    path: /mnt/ssd/matlab
 
 ---
 

@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
       - name: wordpress-wordpress
-        image: "bitnami/wordpress:4.8.0-r2"
+        image: "bitnami/wordpress:4.8.1-r0"
         env:
         - name: ALLOW_EMPTY_PASSWORD
           value: "yes"
