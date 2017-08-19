@@ -29,10 +29,10 @@ spec:
         stdin: true
         volumeMounts:
         - mountPath: /var/run/docker.sock
-          name: onlyoffice-haproxy-claim0
+          name: onlyoffice-haproxy
       restartPolicy: Always
       volumes:
-      - name: onlyoffice-haproxy-claim0
+      - name: onlyoffice-haproxy
         persistentVolumeClaim:
-          claimName: onlyoffice-haproxy-claim0
+          claimName: onlyoffice-haproxy
 status: {}

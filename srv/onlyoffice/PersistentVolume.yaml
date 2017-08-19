@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: onlyoffice-onlyoffice-data
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/data
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: onlyoffice-onlyoffice-log
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/log
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: onlyoffice-onlyoffice-app
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/app
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: onlyoffice-example
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/example
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: onlyoffice-onlyoffice-fonts
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/fonts
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: onlyoffice-haproxy
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/haproxy
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: onlyoffice-postgresql
+spec:
+  capacity:
+    storage: 158Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/postgresql

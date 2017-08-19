@@ -26,10 +26,10 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /var/lib/postgresql
-          name: postgresql-data
+          name: onlyoffice-postgresql
       restartPolicy: Always
       volumes:
-      - name: postgresql-data
+      - name: onlyoffice-postgresql
         persistentVolumeClaim:
-          claimName: postgresql-data
+          claimName: onlyoffice-postgresql
 status: {}

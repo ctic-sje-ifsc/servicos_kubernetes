@@ -32,30 +32,30 @@ spec:
         stdin: true
         volumeMounts:
         - mountPath: /var/www/onlyoffice/Data
-          name: onlyoffice-documentserver-data-claim0
+          name: onlyoffice-onlyoffice-data
         - mountPath: /var/log/onlyoffice
-          name: onlyoffice-documentserver-data-claim1
+          name: onlyoffice-onlyoffice-log
         - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
-          name: onlyoffice-documentserver-data-claim2
+          name: onlyoffice-onlyoffice-app
         - mountPath: /var/www/onlyoffice/documentserver-example/public/files
-          name: onlyoffice-documentserver-data-claim3
+          name: onlyoffice-example
         - mountPath: /usr/share/fonts
-          name: onlyoffice-documentserver-data-claim4
+          name: onlyoffice-onlyoffice-fonts
       restartPolicy: Always
       volumes:
-      - name: onlyoffice-documentserver-data-claim0
+      - name: onlyoffice-onlyoffice-data
         persistentVolumeClaim:
-          claimName: onlyoffice-documentserver-data-claim0
-      - name: onlyoffice-documentserver-data-claim1
+          claimName: onlyoffice-onlyoffice-data
+      - name: onlyoffice-onlyoffice-log
         persistentVolumeClaim:
-          claimName: onlyoffice-documentserver-data-claim1
-      - name: onlyoffice-documentserver-data-claim2
+          claimName: onlyoffice-onlyoffice-log
+      - name: onlyoffice-onlyoffice-app
         persistentVolumeClaim:
-          claimName: onlyoffice-documentserver-data-claim2
-      - name: onlyoffice-documentserver-data-claim3
+          claimName: onlyoffice-onlyoffice-app
+      - name: onlyoffice-example
         persistentVolumeClaim:
-          claimName: onlyoffice-documentserver-data-claim3
-      - name: onlyoffice-documentserver-data-claim4
+          claimName: onlyoffice-example
+      - name: onlyoffice-onlyoffice-fonts
         persistentVolumeClaim:
-          claimName: onlyoffice-documentserver-data-claim4
+          claimName: onlyoffice-onlyoffice-fonts
 status: {}
