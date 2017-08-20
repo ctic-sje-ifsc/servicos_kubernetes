@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  
   labels:
     io.kompose.service: onlyoffice-onlyoffice-data
   name: onlyoffice-onlyoffice-data
@@ -11,12 +11,12 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  
   labels:
     io.kompose.service: onlyoffice-onlyoffice-log
   name: onlyoffice-onlyoffice-log
@@ -26,12 +26,12 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  
   labels:
     io.kompose.service: onlyoffice-onlyoffice-app
   name: onlyoffice-onlyoffice-app
@@ -41,12 +41,12 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  
   labels:
     io.kompose.service: onlyoffice-example
   name: onlyoffice-example
@@ -56,12 +56,12 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  
   labels:
     io.kompose.service: onlyoffice-onlyoffice-fonts
   name: onlyoffice-onlyoffice-fonts
@@ -71,14 +71,14 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  
   labels:
-    io.kompose.service: onlyoffice-haproxy
+    app: onlyoffice-haproxy
   name: onlyoffice-haproxy
 spec:
   accessModes:
@@ -86,14 +86,14 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
+  
   labels:
-    io.kompose.service: onlyoffice-postgresql
+    app: onlyoffice-postgresql
   name: onlyoffice-postgresql
 spec:
   accessModes:
@@ -101,5 +101,5 @@ spec:
   resources:
     requests:
       storage: 100Mi
-status: {}
+
     
