@@ -1,0 +1,234 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: onlyoffice-redis
+  name: onlyoffice-redis
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: onlyoffice-redis
+    spec:
+      containers:
+      - image: redis
+        name: onlyoffice-redis
+        resources: {}
+      restartPolicy: Always
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: onlyoffice-rabbitmq
+  name: onlyoffice-rabbitmq
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: onlyoffice-rabbitmq
+    spec:
+      containers:
+      - image: rabbitmq
+        name: onlyoffice-rabbitmq
+        resources: {}
+      restartPolicy: Always
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: onlyoffice-postgresql
+  name: onlyoffice-postgresql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: onlyoffice-postgresql
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          value: onlyoffice
+        - name: POSTGRES_USER
+          value: onlyoffice
+        image: postgres:9.5
+        name: onlyoffice-postgresql
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql
+          name: onlyoffice-postgresql
+      restartPolicy: Always
+      volumes:
+      - name: onlyoffice-postgresql
+        persistentVolumeClaim:
+          claimName: onlyoffice-postgresql
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: onlyoffice-haproxy
+  name: onlyoffice-haproxy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: onlyoffice-haproxy
+    spec:
+      containers:
+      - env:
+        - name: MODE
+          value: http
+        image: dockercloud/haproxy:1.5.1
+        name: onlyoffice-haproxy
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        - containerPort: 1936
+        resources: {}
+        stdin: true
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: onlyoffice-haproxy
+      restartPolicy: Always
+      volumes:
+      - name: onlyoffice-haproxy
+        persistentVolumeClaim:
+          claimName: onlyoffice-haproxy
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: onlyoffice-documentserver-data
+  name: onlyoffice-documentserver-data
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: onlyoffice-documentserver-data
+    spec:
+      containers:
+      - env:
+        - name: ONLYOFFICE_DATA_CONTAINER
+          value: "true"
+        - name: POSTGRESQL_SERVER_DB_NAME
+          value: onlyoffice
+        - name: POSTGRESQL_SERVER_HOST
+          value: onlyoffice-postgresql
+        - name: POSTGRESQL_SERVER_PORT
+          value: "5432"
+        - name: POSTGRESQL_SERVER_USER
+          value: onlyoffice
+        - name: RABBITMQ_SERVER_URL
+          value: amqp://guest:guest@onlyoffice-rabbitmq
+        - name: REDIS_SERVER_HOST
+          value: onlyoffice-redis
+        - name: REDIS_SERVER_PORT
+          value: "6379"
+        image: onlyoffice/documentserver:latest
+        name: onlyoffice-documentserver-data
+        resources: {}
+        stdin: true
+        volumeMounts:
+        - mountPath: /var/www/onlyoffice/Data
+          name: onlyoffice-onlyoffice-data
+        - mountPath: /var/log/onlyoffice
+          name: onlyoffice-onlyoffice-log
+        - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
+          name: onlyoffice-onlyoffice-app
+        - mountPath: /var/www/onlyoffice/documentserver-example/public/files
+          name: onlyoffice-example
+        - mountPath: /usr/share/fonts
+          name: onlyoffice-onlyoffice-fonts
+      restartPolicy: Always
+      volumes:
+      - name: onlyoffice-onlyoffice-data
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-data
+      - name: onlyoffice-onlyoffice-log
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-log
+      - name: onlyoffice-onlyoffice-app
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-app
+      - name: onlyoffice-example
+        persistentVolumeClaim:
+          claimName: onlyoffice-example
+      - name: onlyoffice-onlyoffice-fonts
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-fonts
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: onlyoffice-documentserver
+  name: onlyoffice-documentserver
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: onlyoffice-documentserver
+    spec:
+      containers:
+      - env:
+        - name: BALANCE
+          value: uri depth 3
+        - name: EXCLUDE_PORTS
+          value: "443"
+        - name: EXTRA_SETTINGS
+          value: http-check expect string true
+        - name: HTTP_CHECK
+          value: GET /healthcheck
+        - name: ONLYOFFICE_DATA_CONTAINER_HOST
+          value: onlyoffice-documentserver-data
+        image: onlyoffice/documentserver:latest
+        name: onlyoffice-documentserver
+        resources: {}
+        stdin: true
+        volumeMounts:
+        - mountPath: /var/www/onlyoffice/Data
+          name: onlyoffice-onlyoffice-data
+        - mountPath: /var/log/onlyoffice
+          name: onlyoffice-onlyoffice-log
+        - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
+          name: onlyoffice-onlyoffice-app
+        - mountPath: /var/www/onlyoffice/documentserver-example/public/files
+          name: onlyoffice-example
+        - mountPath: /usr/share/fonts
+          name: onlyoffice-onlyoffice-fonts
+      restartPolicy: Always
+      volumes:
+      - name: onlyoffice-onlyoffice-data
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-data
+      - name: onlyoffice-onlyoffice-log
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-log
+      - name: onlyoffice-onlyoffice-app
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-app
+      - name: onlyoffice-example
+        persistentVolumeClaim:
+          claimName: onlyoffice-example
+      - name: onlyoffice-onlyoffice-fonts
+        persistentVolumeClaim:
+          claimName: onlyoffice-onlyoffice-fonts
