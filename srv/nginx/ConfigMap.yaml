@@ -137,25 +137,6 @@ data:
                 proxy_pass https://wordpress/;
                 proxy_set_header Host $http_host;
             }
-            location ~ ^(/[^/]+/)?files/(.+) {
-                try_files /wp-content/blogs.dir/$blogid/files/$2 /wp-includes/ms-files.php?file=$2 ;
-                access_log off;     log_not_found off; expires max;
-            }
-
-            #avoid php readfile()
-            location ^~ /blogs.dir {
-                internal;
-                alias /var/www/example.com/htdocs/wp-content/blogs.dir ;
-                access_log off;     log_not_found off; expires max;
-            }
-
-            # Add trailing slash to */wp-admin requests.
-            rewrite /wp-admin$ $scheme://$host$uri/ permanent;
-            if (!-e $request_filename) {
-                rewrite /wp-admin$ $scheme://$host$uri/ permanent;
-                rewrite ^(/[^/]+)?(/wp-.*) $2 last;
-                rewrite ^(/[^/]+)?(/.*\.php) $2 last;
-            }
         }
         upstream rocketchat {
             server rocketchat:3000;
