@@ -1,20 +1,32 @@
 # Nuvem Privada com Kubernetes
 
-Neste repositório é descrito o projeto de migração e implementação dos serviços para uma infraestrutura com contêineres “orquestrados” pelo Kubernetes. Está sendo implementado uma nuvem prívada em cima do projeto [coreos](https://github.com/ctic-sje-ifsc/coreos)
+Neste repositório é descrito o projeto de migração e implementação dos serviços
+para uma infraestrutura com contêineres “orquestrados” pelo
+[Kubernetes](https://k8s.io).
+Está sendo implementado uma nuvem privada em cima do projeto
+[cticsjeifsc/coreos](https://github.com/ctic-sje-ifsc/coreos).
 
-A implementação da estrutura kubernetes seguiu a [documentação oficial](https://coreos.com/kubernetes/docs/latest/getting-started.html). As configurações do kubernetes em si estão no projeto [coreos](https://github.com/ctic-sje-ifsc/coreos) em cada pasta no arquivo cloud-confid dos nós. Por exemplo: [aqui](https://github.com/ctic-sje-ifsc/coreos/blob/master/coreos0/user_data). O coreos0 é o master-API e os outros são workers.
+A implementação da estrutura Kubernetes seguiu a
+[documentação oficial](https://coreos.com/kubernetes/docs/latest/getting-started.html).
+As configurações do kubernetes em si estão no projeto
+[cticsjeifsc/coreos](https://github.com/ctic-sje-ifsc/coreos) em cada pasta no arquivo
+`cloud-config` para cada nó, como por exemplo
+[coreos0](https://github.com/ctic-sje-ifsc/coreos/blob/master/coreos0/user_data).
+O `coreos0`, cabe ressaltar, é o servidor API e os todos os demais são _workers_.
 
 
-## Porque migrar para container e k8s?
-* Fluxo natural da tecnologia
-* Economia de recurso/hardware
-* Facilidade de agregar e manter novos serviços
-* Centralização de gerência, monitoramento, administração...
-* Serviços encapsulados podem ser movidos mais facilmente  local<=>nuvem privada<=> nuvem pública
-* Controle de versão + moderação + automação de testes = CI
-* Alta disponibilidade fácil
-* Auto escalonamento fácil
-* Google usa há 15 anos em todos os seus serviços, bilhões de containers por semana
+## Porque migrar para contêiner e Kubernetes?
+* Fluxo natural da tecnologia.
+* Economia de recurso/_hardware_.
+* Facilidade de agregar e manter novos serviços.
+* Centralização de gerência, monitoramento, administração etc.
+* Serviços encapsulados podem ser movidos mais facilmente
+local <=> nuvem privada <=> nuvem pública.
+* Controle de versão + moderação + automação de testes = CI/CD.
+* Alta disponibilidade, fácil, fácil.
+* Auto escalonamento, fácil, fácil.
+* Google usa há 15 anos em todos os seus serviços, bilhões de contêineres por
+semana. Se eles podem, nós também pode(re)mos.
 
 
 ## Estrutura do projeto macro:
@@ -24,18 +36,27 @@ A implementação da estrutura kubernetes seguiu a [documentação oficial](http
 ## Serviços que podemos/queremos oferecer:
 ![Projeto Macro](docs/servicos_possiveis.png)
 
-Nesse repositório estaremos colocando cada implementação desenvolvida.
+Nesse repositório estamos colocando cada implementação desenvolvida.
 Estamos utilizando a seguinte estratégia de atuação:
-* Migrar/instalar serviços já implementados em docker compose ou kubernetes
-* Migrar serviços não críticos para testar a tecnologia
-* Implementações novas importantes e críticas como fase de testes/migração
-* Implementar serviços internos para testes de estabilidade e desempenho da tecnologia
+* Migrar/instalar serviços já implementados em `docker compose` ou Kubernetes.
+* Migrar serviços não críticos para testar a tecnologia.
+* Implementações novas importantes e críticas como fase de testes/migração.
+* Implementar serviços internos para testes de estabilidade e desempenho da
+tecnologia.
 
 ## Armazenamento de estados e dados
 
-Utilizamos uma abordagem para armazenamento de estados e dados onde esses não são salvos na mesma estrutura onde roda o Kubernetes, e sim em uma estrutura de armazenamento centralizada. Os PODS montam um armazenamento NFS e utilizam. A implementação do storage pode ser encontrada em [storage](https://github.com/ctic-sje-ifsc/storage).
+Utilizamos uma abordagem para armazenamento de estados e dados onde esses não
+são salvos na mesma estrutura onde roda o Kubernetes, e sim em uma estrutura de
+armazenamento centralizada. Os
+[pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) montam um
+armazenamento NFS e utilizam.
+A implementação do storage pode ser encontrada em
+[cticsjeifsc/storage](https://github.com/ctic-sje-ifsc/storage).
 
-Podemos ver um exemplo em:
+Podemos ver um exemplo a seguir de um
+[volume persistente](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+(PV):
 
 ```yaml
 apiVersion: v1
@@ -56,7 +77,22 @@ spec:
 
 ## _Front-end_ Nginx
 
-(Boi Explicar)
+A proposta básica é oferecer os serviços preferencialmente na modalidade
+[SaaS](https://pt.wikipedia.org/wiki/Software_como_servi%C3%A7o) com:
+1. Disponibilidade: uso de vários servidores físicos e/ou virtuais para manter 
+os serviços operando sem sobressaltos.
+1. Segurança: uso exclusivo de transmissão criptografada, como
+[HTTPS](https://www.ssllabs.com/ssltest/analyze.html?d=projetos.sj.ifsc.edu.br&latest),
+WebSocket sobre TLS, SSH e outros.
+1. Desempenho: [HTTP/2](https://http2.github.io/), balanceamento de carga, cache
+HTTP etc.
+
+A grande maioria dos serviços aqui listados são baseados em HTTP.
+Para garantir que todos esses atenderão aos requisitos anteriores
+(independente de serem projetados para tal), existe um _front-end_ distribuído
+(e escalável), o 
+[srv/nginx](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/nginx),
+de forma a padronizar o acesso.
 
 
 ## [Netbox](https://netbox.sj.ifsc.edu.br)
@@ -66,7 +102,9 @@ O primeiro serviço migrado foi o [netbox](https://netbox.sj.ifsc.edu.br/), que 
 
 ## [Sharelatex](https://sharelatex.sj.ifsc.edu.br)
 
-Implementamos o [sharelatex](https://sharelatex.sj.ifsc.edu.br/). A implementação é encontrada em [srv/sharelatex](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/sharelatex)
+Implementamos o [sharelatex](https://sharelatex.sj.ifsc.edu.br/).
+A implementação está em
+[srv/sharelatex](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/sharelatex).
 
 
 ## [Rocket.Chat](https://chat.sj.ifsc.edu.br)
@@ -81,10 +119,13 @@ O acesso é feito com o usuário do LDAP, tanto para alunos quando para Servidor
 Utilizada a implementação [Mosquitto](https://mosquitto.org/) para MQTT _Broker_.
 
 Para o serviço, que por enquanto opera apenas com protocolos MQTT v3.1 e v3.1.1,
-foi criada uma imagem [srv/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/mosquitto)
+foi criada uma imagem
+[srv/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/mosquitto).
+
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own image badge on microbadger.com")
+
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own version badge on microbadger.com")
-.
+
 
 ## [Nextcloud](https://nextcloud.sj.ifsc.edu.br)
 
