@@ -36,6 +36,8 @@ data:
             listen 443 ssl http2;
             server_name nuvem;
             server_name nuvem.sj.ifsc.edu.br;
+            server_name projetos;
+            server_name projetos.sj.ifsc.edu.br;
             ssl_certificate /etc/certs/cert.pem;
             ssl_certificate_key /etc/certs/key.pem;
             ssl_session_timeout 1d;
