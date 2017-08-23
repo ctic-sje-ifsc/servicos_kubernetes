@@ -22,4 +22,4 @@ RUN apk add --update openldap && \
 EXPOSE 389
 VOLUME ["/etc/openldap", "//var/lib/openldap"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/usr/sbin/slapd", "-f", "/etc/openldap/slapd.conf"]
+CMD ["/usr/sbin/slapd", "-d", "512", "-f", "/etc/openldap/slapd.conf"]
