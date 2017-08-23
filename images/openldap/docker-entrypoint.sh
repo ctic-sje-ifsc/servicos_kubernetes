@@ -3,6 +3,7 @@ set -e
 
 config="/etc/openldap/slapd.conf"
 init_ldif=$(mktemp)
+database="/var/lib/openldap/openldap-data/data.mdb"
 
 if [ "${domain}" = "" ]
 then
@@ -51,6 +52,12 @@ directory /var/lib/openldap/openldap-data
 index   objectClass eq
 EOF
 
+if [ -e "${database}" ]
+then
+    exec "$@"
+    exit
+fi
+
 cat > ${init_ldif} <<EOF
 # Domain
 dn: ${domain}
@@ -66,7 +73,7 @@ cn: ${admin_cn}
 objectclass: organizationalRole
 EOF
 
-slapadd -c -l ${init_ldif}
+slapadd -l ${init_ldif}
 rm -f ${init_ldif}
 
 exec "$@"

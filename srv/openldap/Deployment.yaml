@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: openldap-openldap
+  name: openldap-openldap
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: openldap-openldap
+      name: openldap-openldap
+    spec:
+      containers:
+      - image: cticsjeifsc/openldap:latest
+        name: openldap-openldap
+        env:
+        - name: domain
+          value: "dc=sj,dc=ifsc,dc=edu,dc=br"
+        - name: admin
+          value: "cn=admin,dc=sj,dc=ifsc,dc=edu,dc=br"
+        - name: admin_pass
+          valueFrom:
+            secretKeyRef:
+              name: openldap-openldap
+              key: rootpw
+        - name: org
+          value: "CTIC - SJE - IFSC"
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: openldap-openldap-data
+            mountPath: /var/lib/openldap/openldap-data/
+      restartPolicy: Always
+      volumes:
+      - name: openldap-openldap
+        secret:
+          secretName: openldap-openldap
+      - name: openldap-openldap-data
+        persistentVolumeClaim:
+          claimName: openldap-openldap-data
