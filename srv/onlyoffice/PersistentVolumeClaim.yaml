@@ -20,31 +20,6 @@ spec:
   resources:
     requests:
       storage: 1029Mi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: onlyoffice-onlyoffice-app
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 3096Mi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: onlyoffice-onlyoffice-example
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 196Mi
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -68,15 +43,4 @@ spec:
   resources:
     requests:
       storage: 1030Mi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: onlyoffice-haproxy
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 230Mi
     

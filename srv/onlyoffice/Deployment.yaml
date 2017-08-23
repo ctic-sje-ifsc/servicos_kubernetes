@@ -71,73 +71,6 @@ spec:
         persistentVolumeClaim:
           claimName: onlyoffice-postgresql
 ---
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    app: onlyoffice-documentserver-data
-  name: onlyoffice-documentserver-data
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: onlyoffice-documentserver-data
-    spec:
-      containers:
-      - env:
-        - name: ONLYOFFICE_DATA_CONTAINER
-          value: "true"
-        - name: POSTGRESQL_SERVER_DB_NAME
-          value: onlyoffice
-        - name: POSTGRESQL_SERVER_HOST
-          value: onlyoffice-postgresql
-        - name: POSTGRESQL_SERVER_PORT
-          value: "5432"
-        - name: POSTGRESQL_SERVER_USER
-          value: onlyoffice
-        - name: RABBITMQ_SERVER_URL
-          value: amqp://guest:guest@onlyoffice-rabbitmq
-        - name: REDIS_SERVER_HOST
-          value: onlyoffice-redis
-        - name: REDIS_SERVER_PORT
-          value: "6379"
-        image: onlyoffice/documentserver:latest
-        name: onlyoffice-documentserver-data
-        resources: {}
-        stdin: true
-        volumeMounts:
-        - mountPath: /var/www/onlyoffice/Data
-          name: onlyoffice-onlyoffice-data
-        - mountPath: /var/log/onlyoffice
-          name: onlyoffice-onlyoffice-log
-        - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
-          name: onlyoffice-onlyoffice-app
-        - mountPath: /var/www/onlyoffice/documentserver-example/public/files
-          name: onlyoffice-onlyoffice-example
-        - mountPath: /usr/share/fonts
-          name: onlyoffice-onlyoffice-fonts
-      restartPolicy: Always
-      volumes:
-      - name: onlyoffice-onlyoffice-data
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-data
-      - name: onlyoffice-onlyoffice-log
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-log
-      - name: onlyoffice-onlyoffice-app
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-app
-      - name: onlyoffice-onlyoffice-example
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-example
-      - name: onlyoffice-onlyoffice-fonts
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-fonts
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -146,7 +79,8 @@ metadata:
   name: onlyoffice-documentserver
 spec:
   replicas: 1
-  strategy: {}
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -154,82 +88,55 @@ spec:
     spec:
       containers:
       - env:
-        - name: BALANCE
-          value: uri depth 3
-        - name: EXCLUDE_PORTS
-          value: "443"
-        - name: EXTRA_SETTINGS
-          value: http-check expect string true
-        - name: HTTP_CHECK
-          value: GET /healthcheck
-        - name: ONLYOFFICE_DATA_CONTAINER_HOST
-          value: onlyoffice-documentserver-data
+        - name: SSL_CERTIFICATE_PATH
+          value: /mnt/cert.pem
+        - name: SSL_KEY_PATH
+          value: /mnt/key.pem
+        - name: POSTGRESQL_SERVER_DB_NAME
+          value: onlyoffice
+        - name: POSTGRESQL_SERVER_HOST
+          value: onlyoffice-postgresql
+        - name: POSTGRESQL_SERVER_PORT
+          value: "5432"
+        - name: POSTGRESQL_SERVER_USER
+          value: onlyoffice
+        - name: REDIS_SERVER_HOST
+          value: onlyoffice-redis
+        - name: REDIS_SERVER_PORT
+          value: "6379"
         image: onlyoffice/documentserver:latest
         name: onlyoffice-documentserver
         resources: {}
         stdin: true
+        tty: true
         volumeMounts:
         - mountPath: /var/www/onlyoffice/Data
           name: onlyoffice-onlyoffice-data
+        - mountPath: /usr/share/fonts/truetype/custom
+          name: onlyoffice-onlyoffice-fonts
         - mountPath: /var/log/onlyoffice
           name: onlyoffice-onlyoffice-log
-        - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
-          name: onlyoffice-onlyoffice-app
-        - mountPath: /var/www/onlyoffice/documentserver-example/public/files
-          name: onlyoffice-onlyoffice-example
-        - mountPath: /usr/share/fonts
-          name: onlyoffice-onlyoffice-fonts
+        - mountPath: /mnt/
+          name: nginx-nginx-ssl
+          readOnly: true
       restartPolicy: Always
       volumes:
       - name: onlyoffice-onlyoffice-data
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-data
-      - name: onlyoffice-onlyoffice-log
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-log
-      - name: onlyoffice-onlyoffice-app
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-app
-      - name: onlyoffice-onlyoffice-example
-        persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-example
       - name: onlyoffice-onlyoffice-fonts
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-fonts
-
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    app: onlyoffice-haproxy
-  name: onlyoffice-haproxy
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: onlyoffice-haproxy
-    spec:
-      containers:
-      - env:
-        - name: MODE
-          value: http
-        image: dockercloud/haproxy:1.5.1
-        name: onlyoffice-haproxy
-        ports:
-        - containerPort: 80
-        - containerPort: 443
-        - containerPort: 1936
-        resources: {}
-        stdin: true
-        volumeMounts:
-        - mountPath: /var/run/docker.sock
-          name: onlyoffice-haproxy
-      restartPolicy: Always
-      volumes:
-      - name: onlyoffice-haproxy
+      - name: onlyoffice-onlyoffice-log
         persistentVolumeClaim:
-          claimName: onlyoffice-haproxy
+          claimName: onlyoffice-onlyoffice-log
+      - name: nginx-nginx-ssl
+        secret:
+          secretName: nginx-nginx-ssl
+          items:
+            - key: ca.pem
+              path: "ca.pem"
+            - key: cert.pem
+              path: "cert.pem"
+            - key: key.pem
+              path: "key.pem"

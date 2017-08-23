@@ -13,28 +13,8 @@ spec:
     port: 443
     targetPort: 443
   selector:
-    app: onlyoffice-documentserver-data
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-      app: onlyoffice-documentserver
-  name: onlyoffice-documentserver
-spec:
-  ports:
-  - name: "80"
-    port: 80
-    targetPort: 80
-  - name: "443"
-    port: 443
-    targetPort: 443
-  selector:
     app: onlyoffice-documentserver
-
 ---
-    
 apiVersion: v1
 kind: Service
 metadata:
@@ -49,7 +29,6 @@ spec:
     targetPort: 5432
   selector:
       app: onlyoffice-postgresql
-
 ---
 apiVersion: v1
 kind: Service
@@ -59,9 +38,10 @@ metadata:
   name: onlyoffice-rabbitmq
 spec:
   ports:
-  - name: headless
-    port: 55555
-    targetPort: 0
+  - name: rabbitmq
+    port: 5672
+    protocol: TCP
+    targetPort: 5432
   selector:
       app: onlyoffice-rabbitmq
 
@@ -80,24 +60,4 @@ spec:
     targetPort: 6379
   selector:
       app: onlyoffice-redis
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: onlyoffice-haproxy
-  name: onlyoffice-haproxy
-spec:
-  ports:
-  - name: "80"
-    port: 80
-    targetPort: 80
-  - name: "443"
-    port: 443
-    targetPort: 443
-  - name: "1936"
-    port: 1936
-    targetPort: 1936
-  selector:
-    app: onlyoffice-haproxy
       

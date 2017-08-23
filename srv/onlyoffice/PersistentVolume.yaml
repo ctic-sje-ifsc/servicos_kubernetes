@@ -24,35 +24,6 @@ spec:
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/log
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: onlyoffice-onlyoffice-app
-spec:
-  capacity:
-    storage: 3096Mi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/app
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: onlyoffice-onlyoffice-onlyoffice-example
-spec:
-  capacity:
-    storage: 196Mi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/example
-
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -66,7 +37,6 @@ spec:
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/fonts
-
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -80,16 +50,3 @@ spec:
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/postgresql
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: onlyoffice-haproxy
-spec:
-  capacity:
-    storage: 230Mi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/haproxy
