@@ -1,105 +1,82 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  
-  labels:
-    io.kompose.service: onlyoffice-onlyoffice-data
   name: onlyoffice-onlyoffice-data
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
+      storage: 4096Mi
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  
-  labels:
-    io.kompose.service: onlyoffice-onlyoffice-log
   name: onlyoffice-onlyoffice-log
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
+      storage: 1029Mi
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  
-  labels:
-    io.kompose.service: onlyoffice-onlyoffice-app
   name: onlyoffice-onlyoffice-app
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
+      storage: 3096Mi
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  
-  labels:
-    io.kompose.service: onlyoffice-example
-  name: onlyoffice-example
+  name: onlyoffice-onlyoffice-example
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
+      storage: 196Mi
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  
-  labels:
-    io.kompose.service: onlyoffice-onlyoffice-fonts
   name: onlyoffice-onlyoffice-fonts
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
+      storage: 258Mi
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  
-  labels:
-    app: onlyoffice-haproxy
-  name: onlyoffice-haproxy
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  
-  labels:
-    app: onlyoffice-postgresql
   name: onlyoffice-postgresql
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 100Mi
-
+      storage: 1030Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: onlyoffice-haproxy
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 230Mi
     

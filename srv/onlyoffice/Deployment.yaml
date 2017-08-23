@@ -71,43 +71,7 @@ spec:
         persistentVolumeClaim:
           claimName: onlyoffice-postgresql
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    app: onlyoffice-haproxy
-  name: onlyoffice-haproxy
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: onlyoffice-haproxy
-    spec:
-      containers:
-      - env:
-        - name: MODE
-          value: http
-        image: dockercloud/haproxy:1.5.1
-        name: onlyoffice-haproxy
-        ports:
-        - containerPort: 80
-        - containerPort: 443
-        - containerPort: 1936
-        resources: {}
-        stdin: true
-        volumeMounts:
-        - mountPath: /var/run/docker.sock
-          name: onlyoffice-haproxy
-      restartPolicy: Always
-      volumes:
-      - name: onlyoffice-haproxy
-        persistentVolumeClaim:
-          claimName: onlyoffice-haproxy
 
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -153,7 +117,7 @@ spec:
         - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
           name: onlyoffice-onlyoffice-app
         - mountPath: /var/www/onlyoffice/documentserver-example/public/files
-          name: onlyoffice-example
+          name: onlyoffice-onlyoffice-example
         - mountPath: /usr/share/fonts
           name: onlyoffice-onlyoffice-fonts
       restartPolicy: Always
@@ -167,9 +131,9 @@ spec:
       - name: onlyoffice-onlyoffice-app
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-app
-      - name: onlyoffice-example
+      - name: onlyoffice-onlyoffice-example
         persistentVolumeClaim:
-          claimName: onlyoffice-example
+          claimName: onlyoffice-onlyoffice-example
       - name: onlyoffice-onlyoffice-fonts
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-fonts
@@ -212,7 +176,7 @@ spec:
         - mountPath: /var/lib/onlyoffice/documentserver/App-Data/cache/files
           name: onlyoffice-onlyoffice-app
         - mountPath: /var/www/onlyoffice/documentserver-example/public/files
-          name: onlyoffice-example
+          name: onlyoffice-onlyoffice-example
         - mountPath: /usr/share/fonts
           name: onlyoffice-onlyoffice-fonts
       restartPolicy: Always
@@ -226,9 +190,46 @@ spec:
       - name: onlyoffice-onlyoffice-app
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-app
-      - name: onlyoffice-example
+      - name: onlyoffice-onlyoffice-example
         persistentVolumeClaim:
-          claimName: onlyoffice-example
+          claimName: onlyoffice-onlyoffice-example
       - name: onlyoffice-onlyoffice-fonts
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-fonts
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: onlyoffice-haproxy
+  name: onlyoffice-haproxy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: onlyoffice-haproxy
+    spec:
+      containers:
+      - env:
+        - name: MODE
+          value: http
+        image: dockercloud/haproxy:1.5.1
+        name: onlyoffice-haproxy
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        - containerPort: 1936
+        resources: {}
+        stdin: true
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: onlyoffice-haproxy
+      restartPolicy: Always
+      volumes:
+      - name: onlyoffice-haproxy
+        persistentVolumeClaim:
+          claimName: onlyoffice-haproxy
