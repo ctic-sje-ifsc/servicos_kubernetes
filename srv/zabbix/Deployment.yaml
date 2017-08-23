@@ -36,6 +36,8 @@ spec:
             value: "false"
           - name: ZW_enabled
             value: "true"
+          - name: PHP_date_timezone
+            value: "America/Sao_Paulo"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -117,3 +119,5 @@ spec:
             value: "false"
           - name: SNMPTRAP_enabled
             value: "true"
+          - name: PHP_date_timezone
+            value: "America/Sao_Paulo"
