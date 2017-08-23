@@ -113,20 +113,6 @@ Finalizamos a implementação do [Rocket.chat](https://chat.sj.ifsc.edu.br/) e u
 em substituição do Slack, assim poderemos estar testando a estabilidade do kubernetes.
 O acesso é feito com o usuário do LDAP, tanto para alunos quando para Servidores. Implementação [srv/rocketchat](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/rocketchat).
 
-
-## Mosquitto
-
-Utilizada a implementação [Mosquitto](https://mosquitto.org/) para MQTT _Broker_.
-
-Para o serviço, que por enquanto opera apenas com protocolos MQTT v3.1 e v3.1.1,
-foi criada uma imagem
-[srv/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/mosquitto).
-
-[![](https://images.microbadger.com/badges/image/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own image badge on microbadger.com")
-
-[![](https://images.microbadger.com/badges/version/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own version badge on microbadger.com")
-
-
 ## [Nextcloud](https://nextcloud.sj.ifsc.edu.br)
 
 O [Nextcloud](https://nextcloud.com) é um serviço Open Source de armazenamento e
@@ -142,3 +128,27 @@ gerenciamento de conteúdo para web, escrito em PHP com banco de dados MySQL,
 voltado principalmente para a criação de sites e blogs via web.  Implementação
 do Wordpress
 [srv/wordpress](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/wordpress).
+
+## Mosquitto
+
+Utilizada a implementação [Mosquitto](https://mosquitto.org/) para MQTT _Broker_.
+
+Para o serviço, que por enquanto opera apenas com protocolos MQTT v3.1 e v3.1.1,
+foi criada uma imagem
+[images/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/mosquitto).
+
+[![](https://images.microbadger.com/badges/image/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/license/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own license badge on microbadger.com")
+
+## Matlab
+
+Utilizada a imagem
+[images/openldap](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/openldap)
+para base de usuários.
+ 
+[![](https://images.microbadger.com/badges/image/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/license/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own license badge on microbadger.com")
