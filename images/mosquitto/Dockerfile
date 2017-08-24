@@ -16,7 +16,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version="1.4.14" \
       org.label-schema.schema-version="1.0"
 
-RUN apk add --update build-base git openssl-dev c-ares-dev util-linux-dev libwebsockets-dev && \
+COPY ./docker-entrypoint.sh /
+RUN chmod 0755 /docker-entrypoint.sh && \
+    apk add --update build-base git openssl-dev c-ares-dev util-linux-dev libwebsockets-dev && \
     mkdir -p src && \
     cd src && \
     git clone https://github.com/eclipse/mosquitto.git && \
@@ -36,4 +38,5 @@ RUN apk add --update build-base git openssl-dev c-ares-dev util-linux-dev libweb
     chown -R mosquitto:mosquitto /mosquitto
 
 VOLUME ["/mosquitto/config", "/mosquitto/data"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/local/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
