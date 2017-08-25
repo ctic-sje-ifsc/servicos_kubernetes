@@ -142,7 +142,7 @@ foi criada uma imagem
 [![](https://images.microbadger.com/badges/commit/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own commit badge on microbadger.com")
 [![](https://images.microbadger.com/badges/license/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own license badge on microbadger.com")
 
-## Matlab
+## OpenLDAP
 
 Utilizada a imagem
 [images/openldap](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/openldap)
@@ -152,3 +152,25 @@ para base de usuários.
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own commit badge on microbadger.com")
 [![](https://images.microbadger.com/badges/license/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own license badge on microbadger.com")
+
+## Matlab
+
+Utilizada a imagem
+[images/matlab](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/matlab)
+para execução remota da aplicação via SSH. 
+ 
+[![](https://images.microbadger.com/badges/image/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/license/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own license badge on microbadger.com")
+
+## Octave
+
+Utilizada a imagem
+[images/octave](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/octave)
+para execução remota da aplicação via SSH. 
+ 
+[![](https://images.microbadger.com/badges/image/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/license/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own license badge on microbadger.com")

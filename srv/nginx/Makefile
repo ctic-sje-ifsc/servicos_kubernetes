@@ -8,8 +8,8 @@ delete:
 	kubectl delete -f Secret.yaml
 
 create:
-	kubectl create --save-config=true -f Secret.yaml
-	kubectl create --save-config=true -f ConfigMap.yaml
-	kubectl create --save-config=true -f Deployment.yaml
-	kubectl create --save-config=true -f Service.yaml
-	kubectl create --save-config=true -f HorizontalPodAutoscaler.yaml
+	kubectl create -f Secret.yaml
+	kubectl create -f ConfigMap.yaml
+	kubectl create -f Deployment.yaml
+	kubectl create -f Service.yaml
+	kubectl create -f HorizontalPodAutoscaler.yaml

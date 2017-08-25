@@ -15,11 +15,11 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 COPY ./docker-entrypoint.sh /
-RUN apk add --update openldap && \
-    chmod 0755 /docker-entrypoint.sh && \
+RUN chmod 0755 /docker-entrypoint.sh && \
+    apk add --update openldap && \
     rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 EXPOSE 389
-VOLUME ["/etc/openldap", "//var/lib/openldap"]
+VOLUME ["/etc/openldap", "/var/lib/openldap"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/usr/sbin/slapd", "-d", "512", "-f", "/etc/openldap/slapd.conf"]
