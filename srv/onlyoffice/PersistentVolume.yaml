@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/data
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/data
 
 ---
 apiVersion: v1
@@ -23,12 +23,12 @@ spec:
     - ReadWriteMany
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/log
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/log
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: onlyoffice-onlyoffice-fonts
+  name: onlyoffice-onlyoffice-cache
 spec:
   capacity:
     storage: 258Mi
@@ -36,7 +36,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/fonts
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/cache
 ---
 apiVersion: v1
 kind: PersistentVolume

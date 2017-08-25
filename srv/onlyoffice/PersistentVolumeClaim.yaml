@@ -24,7 +24,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: onlyoffice-onlyoffice-fonts
+  name: onlyoffice-onlyoffice-cache
 spec:
   accessModes:
   - ReadWriteMany

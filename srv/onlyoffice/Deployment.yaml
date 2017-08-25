@@ -2,79 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: onlyoffice-redis
-  name: onlyoffice-redis
-spec:
-  replicas: 1
-  strategy: {}
-  template:
-    metadata:
-      labels:
-        app: onlyoffice-redis
-    spec:
-      containers:
-      - image: redis
-        name: onlyoffice-redis
-        resources: {}
-      restartPolicy: Always
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    app: onlyoffice-rabbitmq
-  name: onlyoffice-rabbitmq
-spec:
-  replicas: 1
-  strategy: {}
-  template:
-    metadata:
-      labels:
-        app: onlyoffice-rabbitmq
-    spec:
-      containers:
-      - image: rabbitmq
-        name: onlyoffice-rabbitmq
-        resources: {}
-      restartPolicy: Always
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    app: onlyoffice-postgresql
-  name: onlyoffice-postgresql
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: onlyoffice-postgresql
-    spec:
-      containers:
-      - env:
-        - name: POSTGRES_DB
-          value: onlyoffice
-        - name: POSTGRES_USER
-          value: onlyoffice
-        image: postgres:9.5
-        name: onlyoffice-postgresql
-        resources: {}
-        volumeMounts:
-        - mountPath: /var/lib/postgresql
-          name: onlyoffice-postgresql
-      restartPolicy: Always
-      volumes:
-      - name: onlyoffice-postgresql
-        persistentVolumeClaim:
-          claimName: onlyoffice-postgresql
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
     app: onlyoffice-documentserver
   name: onlyoffice-documentserver
 spec:
@@ -92,18 +19,17 @@ spec:
           value: /mnt/cert.pem
         - name: SSL_KEY_PATH
           value: /mnt/key.pem
-        - name: POSTGRESQL_SERVER_DB_NAME
-          value: onlyoffice
-        - name: POSTGRESQL_SERVER_HOST
-          value: onlyoffice-postgresql
-        - name: POSTGRESQL_SERVER_PORT
-          value: "5432"
-        - name: POSTGRESQL_SERVER_USER
-          value: onlyoffice
-        - name: REDIS_SERVER_HOST
-          value: onlyoffice-redis
-        - name: REDIS_SERVER_PORT
-          value: "6379"
+          POSTGRESQL_SERVER_HOST:
+          POSTGRESQL_SERVER_PORT:
+          POSTGRESQL_SERVER_DB_NAME:
+          POSTGRESQL_SERVER_USER:
+          POSTGRESQL_SERVER_PASS:
+          RABBITMQ_SERVER_HOST:
+          RABBITMQ_SERVER_USER:
+          RABBITMQ_SERVER_PASS:
+          REDIS_SERVER_HOST: 
+          REDIS_SERVER_PORT:
+          
         image: onlyoffice/documentserver:latest
         name: onlyoffice-documentserver
         resources: {}
@@ -112,10 +38,12 @@ spec:
         volumeMounts:
         - mountPath: /var/www/onlyoffice/Data
           name: onlyoffice-onlyoffice-data
-        - mountPath: /usr/share/fonts/truetype/custom
-          name: onlyoffice-onlyoffice-fonts
+        - mountPath: /var/lib/onlyoffice
+          name: onlyoffice-onlyoffice-cache
         - mountPath: /var/log/onlyoffice
           name: onlyoffice-onlyoffice-log
+        - mountPath: /var/lib/postgresql
+          name: onlyoffice-postgresql
         - mountPath: /mnt/
           name: nginx-nginx-ssl
           readOnly: true
@@ -124,12 +52,15 @@ spec:
       - name: onlyoffice-onlyoffice-data
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-data
-      - name: onlyoffice-onlyoffice-fonts
+      - name: onlyoffice-onlyoffice-cache
         persistentVolumeClaim:
-          claimName: onlyoffice-onlyoffice-fonts
+          claimName: onlyoffice-onlyoffice-cache
       - name: onlyoffice-onlyoffice-log
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-log
+      - name: onlyoffice-postgresql
+        persistentVolumeClaim:
+          claimName: onlyoffice-postgresql
       - name: nginx-nginx-ssl
         secret:
           secretName: nginx-nginx-ssl
