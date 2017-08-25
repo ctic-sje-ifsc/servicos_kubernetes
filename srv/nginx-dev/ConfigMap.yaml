@@ -111,12 +111,6 @@ data:
         upstream wordpress {
             server wordpress:443;
         }
-        
-        map $http_host $blogid {
-            default       -999;
-        #Ref: http://wordpress.org/extend/plugins/nginx-helper/
-        #include /var/www/wordpress/wp-content/plugins/nginx-helper/map.conf ;
-        }
         server {
             index index.php;
             listen 443 ssl http2;
@@ -138,25 +132,6 @@ data:
                 proxy_http_version 1.1;
                 proxy_pass https://wordpress/;
                 proxy_set_header Host $http_host;
-            }
-            location ~ ^(/[^/]+/)?files/(.+) {
-                try_files /wp-content/blogs.dir/$blogid/files/$2 /wp-includes/ms-files.php?file=$2 ;
-                access_log off;     log_not_found off; expires max;
-            }
-
-            #avoid php readfile()
-            location ^~ /blogs.dir {
-                internal;
-                alias /var/www/example.com/htdocs/wp-content/blogs.dir ;
-                access_log off;     log_not_found off; expires max;
-            }
-
-            # Add trailing slash to */wp-admin requests.
-            rewrite /wp-admin$ $scheme://$host$uri/ permanent;
-            if (!-e $request_filename) {
-                rewrite /wp-admin$ $scheme://$host$uri/ permanent;
-                rewrite ^(/[^/]+)?(/wp-.*) $2 last;
-                rewrite ^(/[^/]+)?(/.*\.php) $2 last;
             }
         }
         upstream rocketchat {
@@ -212,58 +187,6 @@ data:
                 proxy_set_header Connection "upgrade";
             }
         }
-        upstream onlyoffice {
-            server onlyoffice;
-        }
-        server {
-            listen 443 ssl http2;
-            server_name onlyoffice;
-            server_name onlyoffice.sj.ifsc.edu.br;
-            ssl_certificate /etc/certs/cert.pem;
-            ssl_certificate_key /etc/certs/key.pem;
-            ssl_session_timeout 1d;
-            ssl_session_cache shared:SSL:50m;
-            ssl_session_tickets off;
-            ssl_protocols TLSv1.2;
-            ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
-            ssl_prefer_server_ciphers on;
-            add_header Strict-Transport-Security max-age=15768000;
-            ssl_stapling on;
-            ssl_stapling_verify on;
-            ssl_trusted_certificate /etc/certs/ca.pem;
-            location / {
-                proxy_http_version 1.1;
-                proxy_pass http://onlyoffice/;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-            }
-        }
-        upstream onlyoffice {
-            server onlyoffice:443;
-        }
-        server {
-            listen 443 ssl http2;
-            server_name onlyoffice;
-            server_name onlyoffice.sj.ifsc.edu.br;
-            ssl_certificate /etc/certs/cert.pem;
-            ssl_certificate_key /etc/certs/key.pem;
-            ssl_session_timeout 1d;
-            ssl_session_cache shared:SSL:50m;
-            ssl_session_tickets off;
-            ssl_protocols TLSv1.2;
-            ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
-            ssl_prefer_server_ciphers on;
-            add_header Strict-Transport-Security max-age=15768000;
-            ssl_stapling on;
-            ssl_stapling_verify on;
-            ssl_trusted_certificate /etc/certs/ca.pem;
-            location / {
-                proxy_http_version 1.1;
-                proxy_pass https://onlyoffice/;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-            }
-        }        
         upstream mediawiki {
             server mediawiki;
         }
@@ -291,31 +214,6 @@ data:
                 proxy_set_header Host $http_host;
             }
         }
-        upstream owncloud {
-            server owncloud;
-        }
-        server {
-            listen 443 ssl http2;
-            server_name owncloud;
-            server_name owncloud.sj.ifsc.edu.br;
-            ssl_certificate /etc/certs/cert.pem;
-            ssl_certificate_key /etc/certs/key.pem;
-            ssl_session_timeout 1d;
-            ssl_session_cache shared:SSL:50m;
-            ssl_session_tickets off;
-            ssl_protocols TLSv1.2;
-            ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
-            ssl_prefer_server_ciphers on;
-            add_header Strict-Transport-Security max-age=15768000;
-            ssl_stapling on;
-            ssl_stapling_verify on;
-            ssl_trusted_certificate /etc/certs/ca.pem;
-            location / {
-                proxy_http_version 1.1;
-                proxy_pass http://owncloud/;
-                proxy_set_header Host $http_host;
-            }
-        }
         upstream nextcloud {
             server nextcloud:8080;
         }
@@ -338,7 +236,8 @@ data:
             location / {
                 proxy_http_version 1.1;
                 proxy_pass http://nextcloud/;
-                proxy_set_header Host $http_host;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
             }
         }
         upstream openproject {
@@ -366,6 +265,60 @@ data:
                 proxy_set_header Host $http_host;
             }
         }
+        upstream grafana-grafana {
+            server grafana-grafana;
+        }
+        server {
+            listen 443 ssl http2;
+            server_name grafana;
+            server_name grafana.sj.ifsc.edu.br;
+            ssl_certificate /etc/certs/cert.pem;
+            ssl_certificate_key /etc/certs/key.pem;
+            ssl_session_timeout 1d;
+            ssl_session_cache shared:SSL:50m;
+            ssl_session_tickets off;
+            ssl_protocols TLSv1.2;
+            ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+            ssl_prefer_server_ciphers on;
+            add_header Strict-Transport-Security max-age=15768000;
+            ssl_stapling on;
+            ssl_stapling_verify on;
+            ssl_trusted_certificate /etc/certs/ca.pem;
+            location / {
+                proxy_http_version 1.1;
+                proxy_pass http://grafana-grafana/;
+                proxy_set_header Host $http_host;
+            }
+        }
+        upstream mosquitto {
+            server mosquitto-ws:8083;
+        }
+        server {
+            listen 443 ssl http2;
+            server_name mqtt;
+            server_name mqtt.sj.ifsc.edu.br;
+            ssl_certificate /etc/certs/cert.pem;
+            ssl_certificate_key /etc/certs/key.pem;
+            ssl_session_timeout 1d;
+            ssl_session_cache shared:SSL:50m;
+            ssl_session_tickets off;
+            ssl_protocols TLSv1.2;
+            ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
+            ssl_prefer_server_ciphers on;
+            add_header Strict-Transport-Security max-age=15768000;
+            ssl_stapling on;
+            ssl_stapling_verify on;
+            ssl_trusted_certificate /etc/certs/ca.pem;
+            location / {
+                proxy_http_version 1.1;
+                proxy_pass https://mosquitto/;
+                proxy_set_header Host $http_host;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+           }
+        }
+
+    }
         upstream puppetdb {
             server puppetdb:8080;
         }
@@ -441,57 +394,3 @@ data:
                 proxy_set_header Host $http_host;
             }
         }
-        upstream grafana-grafana {
-            server grafana-grafana;
-        }
-        server {
-            listen 443 ssl http2;
-            server_name grafana;
-            server_name grafana.sj.ifsc.edu.br;
-            ssl_certificate /etc/certs/cert.pem;
-            ssl_certificate_key /etc/certs/key.pem;
-            ssl_session_timeout 1d;
-            ssl_session_cache shared:SSL:50m;
-            ssl_session_tickets off;
-            ssl_protocols TLSv1.2;
-            ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
-            ssl_prefer_server_ciphers on;
-            add_header Strict-Transport-Security max-age=15768000;
-            ssl_stapling on;
-            ssl_stapling_verify on;
-            ssl_trusted_certificate /etc/certs/ca.pem;
-            location / {
-                proxy_http_version 1.1;
-                proxy_pass http://grafana-grafana/;
-                proxy_set_header Host $http_host;
-            }
-        }
-        upstream mosquitto {
-            server mosquitto-ws:8083;
-        }
-        server {
-            listen 443 ssl http2;
-            server_name mqtt;
-            server_name mqtt.sj.ifsc.edu.br;
-            ssl_certificate /etc/certs/cert.pem;
-            ssl_certificate_key /etc/certs/key.pem;
-            ssl_session_timeout 1d;
-            ssl_session_cache shared:SSL:50m;
-            ssl_session_tickets off;
-            ssl_protocols TLSv1.2;
-            ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
-            ssl_prefer_server_ciphers on;
-            add_header Strict-Transport-Security max-age=15768000;
-            ssl_stapling on;
-            ssl_stapling_verify on;
-            ssl_trusted_certificate /etc/certs/ca.pem;
-            location / {
-                proxy_http_version 1.1;
-                proxy_pass https://mosquitto/;
-                proxy_set_header Host $http_host;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
-           }
-        }
-
-    }
