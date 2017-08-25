@@ -2,6 +2,7 @@
 *.sw*
 *.pfx
 *.pem
+*.tgz
 values*.yaml
 Secret.yaml
 Secrets.yaml
