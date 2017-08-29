@@ -79,7 +79,9 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: netbox-nginx-conf
-              mountPath: /etc/nginx/
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
             - name: netbox-netbox-static
               mountPath: /opt/netbox/netbox/static
       restartPolicy: Always
@@ -93,10 +95,5 @@ spec:
       - name: netbox-nginx-conf
         configMap:
           name: netbox-nginx-conf
-          items:
-          - path: "mime.types"
-            key: mime.types
-          - path: "nginx.conf"
-            key: nginx.conf
       - name: netbox-netbox-static
         emptyDir: {}
