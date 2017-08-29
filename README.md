@@ -29,11 +29,11 @@ local <=> nuvem privada <=> nuvem pública.
 semana. Se eles podem, nós também pode(re)mos.
 
 
-## Estrutura do projeto macro:
+## Estrutura do projeto macro
 ![Projeto Macro](docs/projeto_macro_ctic.jpg)
 
 
-## Serviços que podemos/queremos oferecer:
+## Serviços que podemos/queremos oferecer
 ![Projeto Macro](docs/servicos_possiveis.png)
 
 Nesse repositório estamos colocando cada implementação desenvolvida.
@@ -73,7 +73,7 @@ spec:
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/netbox/postgresql/base
 ```
 
-# Implementação/migração dos serviços
+# Serviços Web
 
 ## _Front-end_ Nginx
 
@@ -129,18 +129,8 @@ voltado principalmente para a criação de sites e blogs via web.  Implementaç�
 do Wordpress
 [srv/wordpress](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/wordpress).
 
-## Mosquitto
 
-Utilizada a implementação [Mosquitto](https://mosquitto.org/) para MQTT _Broker_.
-
-Para o serviço, que por enquanto opera apenas com protocolos MQTT v3.1 e v3.1.1,
-foi criada uma imagem
-[images/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/mosquitto).
-
-[![](https://images.microbadger.com/badges/image/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own image badge on microbadger.com")
-[![](https://images.microbadger.com/badges/version/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/commit/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own commit badge on microbadger.com")
-[![](https://images.microbadger.com/badges/license/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own license badge on microbadger.com")
+# Serviços baseados em SSH
 
 ## OpenLDAP
 
@@ -174,3 +164,30 @@ para execução remota da aplicação via SSH.
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own commit badge on microbadger.com")
 [![](https://images.microbadger.com/badges/license/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own license badge on microbadger.com")
+
+## Nyqlab
+
+Utilizada a imagem
+[images/nyqlab](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/nyqlab)
+para execução remota da aplicação via SSH. 
+ 
+[![](https://images.microbadger.com/badges/image/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/license/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own license badge on microbadger.com")
+
+
+# Outros Serviços
+
+## Mosquitto
+
+Utilizada a implementação [Mosquitto](https://mosquitto.org/) para MQTT _Broker_.
+
+Para o serviço, que por enquanto opera apenas com protocolos MQTT v3.1 e v3.1.1,
+foi criada uma imagem
+[images/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/mosquitto).
+
+[![](https://images.microbadger.com/badges/image/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/commit/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own commit badge on microbadger.com")
+[![](https://images.microbadger.com/badges/license/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own license badge on microbadger.com")

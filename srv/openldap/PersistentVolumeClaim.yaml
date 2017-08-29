@@ -1,6 +1,21 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: openldap-openldap-etc
+  labels:
+    app: openldap-openldap
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: openldap-openldap-data
   labels:
     app: openldap-openldap
@@ -10,4 +25,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
-
