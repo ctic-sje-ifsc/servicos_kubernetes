@@ -34,6 +34,18 @@ spec:
         - name: nyqlab-users
           mountPath: /etc/group
           subPath: group
+        - name: nsswitch-ldap-conf
+          mountPath: /etc/nsswitch.conf
+          subPath: nsswitch.conf
+        - name: libnss-ldap-conf
+          mountPath: /etc/libnss-ldap.conf
+          subPath: libnss-ldap.conf
+        - name: pam-ldap-conf
+          mountPath: /etc/pam_ldap.conf
+          subPath: pam_ldap.conf
+        - name: pam-common-session
+          mountPath: /etc/pam.d/common-session
+          subPath: common-session
       volumes:
       - name: nyqlab-home
         persistentVolumeClaim:
@@ -41,3 +53,15 @@ spec:
       - name: nyqlab-users
         persistentVolumeClaim:
           claimName: nyqlab-users
+      - name: nsswitch-ldap-conf
+        configMap:
+          name: nsswitch-ldap-conf
+      - name: pam-ldap-conf
+        configMap:
+          name: pam-ldap-conf
+      - name: libnss-ldap-conf
+        configMap:
+          name: libnss-ldap-conf
+      - name: pam-common-session
+        configMap:
+          name: pam-common-session
