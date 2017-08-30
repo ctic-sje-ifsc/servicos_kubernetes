@@ -36,6 +36,24 @@ spec:
         - name: matlab-users
           mountPath: /etc/group
           subPath: group
+          
+        - name: nsswitch-ldap-conf
+          mountPath: /etc/nsswitch.conf
+          subPath: nsswitch.conf
+          
+        - name: libnss-ldap
+          mountPath: /etc/libnss-ldap.conf
+          subPath: libnss-ldap.conf
+        - name: pam-ldap
+          mountPath: /etc/pam_ldap.conf
+          subPath: pam_ldap.conf
+        - name: ldap-conf
+          mountPath: /etc/ldap.conf
+          subPath: ldap.conf
+          
+        - name: pam-ldap-conf
+          mountPath: /etc/pam.d/
+
       volumes:
       - name: matlab-root
         persistentVolumeClaim:
@@ -46,3 +64,33 @@ spec:
       - name: matlab-users
         persistentVolumeClaim:
           claimName: matlab-users
+          
+      - name: nsswitch-ldap-conf
+        configMap:
+          name: nsswitch-ldap-conf
+          
+      - name: libnss-ldap
+        configMap:
+          name: ldap-conf
+      - name: pam-ldap
+        configMap:
+          name: ldap-conf
+      - name: ldap-conf
+        configMap:
+          name: ldap-conf
+          
+          
+      - name: pam-ldap-conf
+        configMap:
+          name: pam-ldap-conf
+          items:
+            - key: common-session
+              path: "common-session"
+            - key: common-account
+              path: "common-account"
+            - key: common-auth
+              path: "common-auth"
+            - key: common-password
+              path: "common-password"
+            - key: common-session-noninteractive
+              path: "common-session-noninteractive"

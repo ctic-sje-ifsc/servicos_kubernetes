@@ -29,6 +29,7 @@ RUN chmod 0755 /docker-entrypoint.sh && \
     curl 'https://pgp.mit.edu/pks/lookup?op=get&search=0xE1F958385BFE2B6E' | apt-key add - && \
     apt-get update && \
     apt-get -y -q install openssh-server x2go-keyring x2goserver x2goserver-xsession libglu1-mesa && \
+    apt-get -y -q install --no-install-recommends libnss-ldap libpam-ldap libpam-mount && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     mkdir /var/run/sshd
