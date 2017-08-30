@@ -1,0 +1,27 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nyqlab-home
+  labels:
+    app: nyqlab-home
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10011Mi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nyqlab-users
+  labels:
+    app: nyqlab-users
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 94Mi

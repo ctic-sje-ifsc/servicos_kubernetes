@@ -1,0 +1,43 @@
+# subpath https://kubernetes.io/docs/concepts/storage/volumes/#using-subpath
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nyqlab
+  labels:
+    app: nyqlab
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nyqlab
+    spec:
+      containers:
+      - name: nyqlab
+        image: cticsjeifsc/nyqlab
+        ports:
+        - name: ssh
+          containerPort: 22
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: nyqlab-home
+          mountPath: /home
+        - name: nyqlab-users
+          mountPath: /etc/shadow
+          subPath: shadow
+        - name: nyqlab-users
+          mountPath: /etc/passwd
+          subPath: passwd
+        - name: nyqlab-users
+          mountPath: /etc/group
+          subPath: group
+      volumes:
+      - name: nyqlab-home
+        persistentVolumeClaim:
+          claimName: nyqlab-home
+      - name: nyqlab-users
+        persistentVolumeClaim:
+          claimName: nyqlab-users
