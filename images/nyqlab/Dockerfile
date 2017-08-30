@@ -22,10 +22,16 @@ COPY ./docker-entrypoint.sh /
 RUN chmod 0755 /docker-entrypoint.sh && \
     apt update && \
     apt -y upgrade && \
+    echo 'deb http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
+    echo 'deb-src http://packages.x2go.org/debian stretch main' >> /etc/apt/sources.list.d/x2go.list && \
+    apt-get -y -q install curl gnupg apt-utils && \
+    curl 'https://pgp.mit.edu/pks/lookup?op=get&search=0xE1F958385BFE2B6E' | apt-key add - && \
+    apt-get update && \
+    apt-get -y -q install openssh-server x2go-keyring x2goserver x2goserver-xsession libglu1-mesa && \
     apt -y install git && \
     git clone --depth 1 https://github.com/rwnobrega/nyqlab && \
     apt -y install python3 python3-numpy python3-matplotlib python3-pyqt5 python3-scipy && \
-    apt-get -y -q install ssh libnss-ldap libpam-ldap ldap-utils nscd && \
+    apt-get -y -q install libnss-ldap libpam-ldap ldap-utils nscd && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     mkdir /var/run/sshd
