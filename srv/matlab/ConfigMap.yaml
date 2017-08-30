@@ -1,27 +1,35 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ldap-conf
+  name: pam-ldap-conf
 data:
-  ldap.conf: |-
+  pam_ldap.conf: |-
     base dc=cefetsc,dc=edu,dc=br
     uri ldap://191.36.8.12
     ldap_version 3
-    bind_policy soft
-    nss_initgroups_ignoreusers avahi,avahi-autoipd,backup,bin,colord,daemon,dnsmasq,games,gnats,hplip,irc,kernoops,libuuid,libvirt-dnsmasq,libvirt-qemu,lightdm,list,lp,mail,man,messagebus,news,ntp,proxy,pulse,puppet,quagga,rabbitmq,root,rtkit,saned,speech-dispatcher,sshd,statd,sync,sys,syslog,uml-net,usbmux,uucp,whoopsie,www-data,zabbix
-
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: libnss-ldap-conf
+data:
+  libnss-ldap.conf: |-
+    base dc=cefetsc,dc=edu,dc=br
+    uri ldap://191.36.8.12
+    ldap_version 3
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nsswitch-ldap-conf
 data:
-  nsswitch.conf: |-
+  nsswitch.conf: |
     passwd:         compat ldap
     group:          compat ldap
     shadow:         compat ldap
+    gshadow:        files
 
-    hosts:          files mdns4_minimal [NOTFOUND=return] dns mdns4
+    hosts:          files myhostname mdns4_minimal [NOTFOUND=return] dns
     networks:       files
 
     protocols:      db files
@@ -36,164 +44,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pam-ldap-conf
+  name: pam-common-session
 data:
   common-session: |-
-    #
-    # /etc/pam.d/common-session - session-related modules common to all services
-    #
-    # This file is included from other service-specific PAM config files,
-    # and should contain a list of modules that define tasks to be performed
-    # at the start and end of sessions of *any* kind (both interactive and
-    # non-interactive).
-    #
-    # As of pam 1.0.1-6, this file is managed by pam-auth-update by default.
-    # To take advantage of this, it is recommended that you configure any
-    # local modules either before or after the default block, and use
-    # pam-auth-update to manage selection of other modules.  See
-    # pam-auth-update(8) for details.
-
-    # here are the per-package modules (the "Primary" block)
-    session	[default=1]			pam_permit.so
-    # here's the fallback if no module succeeds
-    session	requisite			pam_deny.so
-    # prime the stack with a positive return value if there isn't one already;
-    # this avoids us returning an error just because nothing sets a success code
-    # since the modules above will each just jump around
-    session	required			pam_permit.so
-    # The pam_umask module will set the umask according to the system default in
-    # /etc/login.defs and user settings, solving the problem of different
-    # umask settings with different shells, display managers, remote sessions etc.
-    # See "man pam_umask".
-    session optional			pam_umask.so
-    # and here are more per-package modules (the "Additional" block)
-    session	required	pam_unix.so
-    #20140613 Integração com LDAP
-    session        required        pam_mkhomedir.so skel=/etc/skel/ umask=0077
-    session	optional	pam_mount.so
-    session	optional			pam_ldap.so
-    session	optional	pam_systemd.so
-    # end of pam-auth-update config
-  commom-acount: |-
-    #
-    # /etc/pam.d/common-account - authorization settings common to all services
-    #
-    # This file is included from other service-specific PAM config files,
-    # and should contain a list of the authorization modules that define
-    # the central access policy for use on the system.  The default is to
-    # only deny service to users whose accounts are expired in /etc/shadow.
-    #
-    # As of pam 1.0.1-6, this file is managed by pam-auth-update by default.
-    # To take advantage of this, it is recommended that you configure any
-    # local modules either before or after the default block, and use
-    # pam-auth-update to manage selection of other modules.  See
-    # pam-auth-update(8) for details.
-    #
-
-    # here are the per-package modules (the "Primary" block)
-    account [success=2 new_authtok_reqd=done default=ignore]        pam_unix.so
-    account [success=1 default=ignore]      pam_ldap.so
-    # here's the fallback if no module succeeds
-    account requisite                       pam_deny.so
-    # prime the stack with a positive return value if there isn't one already;
-    # this avoids us returning an error just because nothing sets a success code
-    # since the modules above will each just jump around
-    account required                        pam_permit.so
-    # and here are more per-package modules (the "Additional" block)
-    # end of pam-auth-update config
-  common-auth: |-
-    #
-    # /etc/pam.d/common-account - authorization settings common to all services
-    #
-    # This file is included from other service-specific PAM config files,
-    # and should contain a list of the authorization modules that define
-    # the central access policy for use on the system.  The default is to
-    # only deny service to users whose accounts are expired in /etc/shadow.
-    #
-    # As of pam 1.0.1-6, this file is managed by pam-auth-update by default.
-    # To take advantage of this, it is recommended that you configure any
-    # local modules either before or after the default block, and use
-    # pam-auth-update to manage selection of other modules.  See
-    # pam-auth-update(8) for details.
-    #
-
-    # here are the per-package modules (the "Primary" block)
-    account [success=2 new_authtok_reqd=done default=ignore]        pam_unix.so
-    account [success=1 default=ignore]      pam_ldap.so
-    # here's the fallback if no module succeeds
-    account requisite                       pam_deny.so
-    # prime the stack with a positive return value if there isn't one already;
-    # this avoids us returning an error just because nothing sets a success code
-    # since the modules above will each just jump around
-    account required                        pam_permit.so
-    # and here are more per-package modules (the "Additional" block)
-    # end of pam-auth-update config
-  common-password: |-
-    # /etc/pam.d/common-password - password-related modules common to all services
-    #
-    # This file is included from other service-specific PAM config files,
-    # and should contain a list of modules that define the services to be
-    # used to change user passwords.  The default is pam_unix.
-
-    # Explanation of pam_unix options:
-    #
-    # The "sha512" option enables salted SHA512 passwords.  Without this option,
-    # the default is Unix crypt.  Prior releases used the option "md5".
-    #
-    # The "obscure" option replaces the old `OBSCURE_CHECKS_ENAB' option in
-    # login.defs.
-    #
-    # See the pam_unix manpage for other options.
-
-    # As of pam 1.0.1-6, this file is managed by pam-auth-update by default.
-    # To take advantage of this, it is recommended that you configure any
-    # local modules either before or after the default block, and use
-    # pam-auth-update to manage selection of other modules.  See
-    # pam-auth-update(8) for details.
-
-    # here are the per-package modules (the "Primary" block)
-    password        [success=2 default=ignore]      pam_unix.so obscure sha512
-    password        [success=1 user_unknown=ignore default=die]     pam_ldap.so use_authtok try_first_pass
-    # here's the fallback if no module succeeds
-    password        requisite                       pam_deny.so
-    # prime the stack with a positive return value if there isn't one already;
-    # this avoids us returning an error just because nothing sets a success code
-    # since the modules above will each just jump around
-    password        required                        pam_permit.so
-    # and here are more per-package modules (the "Additional" block)
-    password        optional        pam_gnome_keyring.so
-    # end of pam-auth-update config
-  common-session-noninteractive: |-
-    # /etc/pam.d/common-session-noninteractive - session-related modules
-    # common to all non-interactive services
-    #
-    # This file is included from other service-specific PAM config files,
-    # and should contain a list of modules that define tasks to be performed
-    # at the start and end of all non-interactive sessions.
-    #
-    # As of pam 1.0.1-6, this file is managed by pam-auth-update by default.
-    # To take advantage of this, it is recommended that you configure any
-    # local modules either before or after the default block, and use
-    # pam-auth-update to manage selection of other modules.  See
-    # pam-auth-update(8) for details.
-
-    # here are the per-package modules (the "Primary" block)
     session [default=1]                     pam_permit.so
-    # here's the fallback if no module succeeds
     session requisite                       pam_deny.so
-    # prime the stack with a positive return value if there isn't one already;
-    # this avoids us returning an error just because nothing sets a success code
-    # since the modules above will each just jump around
     session required                        pam_permit.so
-    # The pam_umask module will set the umask according to the system default in
-    # /etc/login.defs and user settings, solving the problem of different
-    # umask settings with different shells, display managers, remote sessions etc.
-    # See "man pam_umask".
-    session optional                        pam_umask.so
-    # and here are more per-package modules (the "Additional" block)
     session required        pam_unix.so
     session optional                        pam_ldap.so
-    # end of pam-auth-update config
-
-        
-    
+    session optional        pam_systemd.so
+    session required        pam_mkhomedir.so skel=/etc/skel umask=077
