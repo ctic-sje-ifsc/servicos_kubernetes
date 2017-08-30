@@ -25,7 +25,7 @@ RUN chmod 0755 /docker-entrypoint.sh && \
     apt -y install git && \
     git clone --depth 1 https://github.com/rwnobrega/nyqlab && \
     apt -y install python3 python3-numpy python3-matplotlib python3-pyqt5 python3-scipy && \
-    apt -y install ssh && \
+    apt-get -y -q install ssh libnss-ldap libpam-ldap ldap-utils nscd && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     mkdir /var/run/sshd

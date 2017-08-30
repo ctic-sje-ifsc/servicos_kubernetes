@@ -28,6 +28,7 @@ RUN chmod 0755 /docker-entrypoint.sh && \
     apt-get -y -q install xterm curl gnupg apt-utils && \
     curl 'https://pgp.mit.edu/pks/lookup?op=get&search=0xE1F958385BFE2B6E' | apt-key add - && \
     apt-get update && \
+    apt-get -y -q install libnss-ldap libpam-ldap ldap-utils nscd && \
     apt-get -y -q install --no-install-recommends \
     octave-communications \
     octave-control \
