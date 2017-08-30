@@ -6,10 +6,8 @@ delete:
 	kubectl delete -f PersistentVolumeClaim.yaml
 	kubectl delete -f PersistentVolume.yaml
 	kubectl delete -f ConfigMap.yaml
-	kubectl delete -f Secret.yaml
 
 create:
-	kubectl create -f Secret.yaml
 	kubectl create -f ConfigMap.yaml
 	kubectl create -f PersistentVolume.yaml
 	kubectl create -f PersistentVolumeClaim.yaml
