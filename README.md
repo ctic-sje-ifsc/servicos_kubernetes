@@ -79,7 +79,7 @@ spec:
 
 A proposta básica é oferecer os serviços preferencialmente na modalidade
 [SaaS](https://pt.wikipedia.org/wiki/Software_como_servi%C3%A7o) com:
-1. Disponibilidade: uso de vários servidores físicos e/ou virtuais para manter 
+1. Disponibilidade: uso de vários servidores físicos e/ou virtuais para manter
 os serviços operando sem sobressaltos.
 1. Segurança: uso exclusivo de transmissão criptografada, como
 [HTTPS](https://www.ssllabs.com/ssltest/analyze.html?d=projetos.sj.ifsc.edu.br&latest),
@@ -90,7 +90,7 @@ HTTP etc.
 A grande maioria dos serviços aqui listados são baseados em HTTP.
 Para garantir que todos esses atenderão aos requisitos anteriores
 (independente de serem projetados para tal), existe um _front-end_ distribuído
-(e escalável), o 
+(e escalável), o
 [srv/nginx](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/nginx),
 de forma a padronizar o acesso.
 
@@ -120,6 +120,10 @@ sincronização de arquivos privados, similar ao Dropbox (proprietário).
 O acesso é feito com o usuário do LDAP, tanto para alunos quando para Servidores.
 Implementação do Nextcloud [srv/nextcloud](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/nextcloud).
 
+## [Onlyoffice](https://nextcloud.sj.ifsc.edu.br)
+
+O [Onlyoffice Document Server](http://onlyoffice.org/) é uma suíte de escritório on-line composta de visualizadores e editores de textos, planilhas e apresentações, totalmente compatível com os formatos Office Open XML: .docx, .xlsx, .pptx e habilitando a edição colaborativa em tempo real. O acesso ao Onlyoffice Document Server é feito pelo [Nextcloud](https://nextcloud.sj.ifsc.edu.br). Implementação do OnlyofficeDocumentServer [srv/onlyoffice](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/srv/onlyoffice).
+
 
 ## [Wordpress](https://wordpress.sj.ifsc.edu.br)
 
@@ -145,9 +149,14 @@ para base de usuários.
 
 ## Matlab
 
+[MATLAB](https://www.mathworks.com/products/matlab.html) trata-se de um software interativo de alta performance voltado para o cálculo numérico.
 Utilizada a imagem
 [images/matlab](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/matlab)
-para execução remota da aplicação via SSH. 
+para execução remota da aplicação via SSH.
+
+```sh
+ssh -XC seulogin@matlab.sj.ifsc.edu.br -p 2222
+```
  
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own version badge on microbadger.com")
@@ -156,9 +165,14 @@ para execução remota da aplicação via SSH.
 
 ## Octave
 
+[GNU Octave](https://www.gnu.org) é uma linguagem de alto nível, principalmente destinada a computação numérica. Ele fornece uma conveniente interface de linha de comando para resolver problemas numericamente lineares e não-lineares.
 Utilizada a imagem
 [images/octave](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/octave)
-para execução remota da aplicação via SSH. 
+para execução remota da aplicação via SSH.
+
+```sh
+ssh -XC seulogin@octave.sj.ifsc.edu.br -p 2223
+```
  
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own version badge on microbadger.com")
@@ -167,9 +181,14 @@ para execução remota da aplicação via SSH.
 
 ## Nyqlab
 
+[NyqLab](https://github.com/rwnobrega/nyqlab) é um software educacional que visa ajudar os alunos a aprender e praticar conceitos básicos em sistemas de comunicação analógicos e digitais.
 Utilizada a imagem
 [images/nyqlab](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/nyqlab)
-para execução remota da aplicação via SSH. 
+para execução remota da aplicação via SSH.
+
+```sh
+ssh -XC seulogin@nyqlab.sj.ifsc.edu.br -p 2225
+```
  
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own version badge on microbadger.com")
