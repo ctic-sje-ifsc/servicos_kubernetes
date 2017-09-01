@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: bcd29008
+  namespace: ensino
+  labels:
+    namespace: ensino
+  labels:
+    app: bcd29008
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 150Mi

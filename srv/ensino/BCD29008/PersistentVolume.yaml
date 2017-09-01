@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bcd29008
+  labels:
+    namespace: ensino
+spec:
+  capacity:
+    storage: 150Mi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/bcd29008
