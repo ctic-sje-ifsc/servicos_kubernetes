@@ -168,6 +168,7 @@ spec:
       containers:
       - image: nextcloud
         name: nextcloud-nextcloud
+#        command: ["/bin/sh","-c", "apt-get update && apt-get -y -q install smbclient"]
         ports:
         - containerPort: 80
         resources:
