@@ -4,7 +4,6 @@
 *.pem
 *.tgz
 values*.yaml
-Secret.yaml
-Secrets.yaml
-secret.yaml
-secrets.yaml
+Values*.yaml
+secret*.*
+Secret*.*

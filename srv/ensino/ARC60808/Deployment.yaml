@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: arc60808
+  namespace: ensino
+  labels:
+    namespace: ensino
+    app: arc60808
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: arc60808
+        namespace: ensino
+    spec:
+      containers:
+        - image: cticsjeifsc/errbot
+          name: arc60808
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 2
+              memory: 512Mi
+          volumeMounts:
+            - name: arc60808-secret
+              mountPath: /errbot/config.py
+              subPath: config.py
+              readOnly: true
+            - name: arc60808-data
+              mountPath: /errbot/data/
+      restartPolicy: Always
+      volumes:
+      - name: arc60808-secret
+        secret:
+          secretName: arc60808
+      - name: arc60808-data
+        persistentVolumeClaim:
+          claimName: arc60808
