@@ -139,9 +139,9 @@ do Wordpress
 ## OpenLDAP
 
 Utilizada a imagem
-[images/openldap](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/openldap)
+[openldap](https://github.com/ctic-sje-ifsc/imagens/tree/master/openldap)
 para base de usuários.
- 
+
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/cticsjeifsc/openldap.svg)](https://microbadger.com/images/cticsjeifsc/openldap "Get your own commit badge on microbadger.com")
@@ -151,13 +151,13 @@ para base de usuários.
 
 [MATLAB](https://www.mathworks.com/products/matlab.html) trata-se de um software interativo de alta performance voltado para o cálculo numérico.
 Utilizada a imagem
-[images/matlab](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/matlab)
+[matlab](https://github.com/ctic-sje-ifsc/imagens/tree/master/matlab)
 para execução remota da aplicação via SSH.
 
 ```sh
 ssh -XC seulogin@matlab.sj.ifsc.edu.br -p 2222
 ```
- 
+
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/cticsjeifsc/matlab.svg)](https://microbadger.com/images/cticsjeifsc/matlab "Get your own commit badge on microbadger.com")
@@ -167,13 +167,13 @@ ssh -XC seulogin@matlab.sj.ifsc.edu.br -p 2222
 
 [GNU Octave](https://www.gnu.org) é uma linguagem de alto nível, principalmente destinada a computação numérica. Ele fornece uma conveniente interface de linha de comando para resolver problemas numericamente lineares e não-lineares.
 Utilizada a imagem
-[images/octave](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/octave)
+[octave](https://github.com/ctic-sje-ifsc/imagens/tree/master/octave)
 para execução remota da aplicação via SSH.
 
 ```sh
 ssh -XC seulogin@octave.sj.ifsc.edu.br -p 2223
 ```
- 
+
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/cticsjeifsc/octave.svg)](https://microbadger.com/images/cticsjeifsc/octave "Get your own commit badge on microbadger.com")
@@ -183,13 +183,13 @@ ssh -XC seulogin@octave.sj.ifsc.edu.br -p 2223
 
 [NyqLab](https://github.com/rwnobrega/nyqlab) é um software educacional que visa ajudar os alunos a aprender e praticar conceitos básicos em sistemas de comunicação analógicos e digitais.
 Utilizada a imagem
-[images/nyqlab](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/nyqlab)
+[nyqlab](https://github.com/ctic-sje-ifsc/imagens/tree/master/nyqlab)
 para execução remota da aplicação via SSH.
 
 ```sh
 ssh -XC seulogin@nyqlab.sj.ifsc.edu.br -p 2225
 ```
- 
+
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/commit/cticsjeifsc/nyqlab.svg)](https://microbadger.com/images/cticsjeifsc/nyqlab "Get your own commit badge on microbadger.com")
@@ -204,7 +204,7 @@ Utilizada a implementação [Mosquitto](https://mosquitto.org/) para MQTT _Broke
 
 Para o serviço, que por enquanto opera apenas com protocolos MQTT v3.1 e v3.1.1,
 foi criada uma imagem
-[images/mosquitto](https://github.com/ctic-sje-ifsc/kubernetes/tree/master/images/mosquitto).
+[mosquitto](https://github.com/ctic-sje-ifsc/imagens/tree/master/mosquitto).
 
 [![](https://images.microbadger.com/badges/image/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/cticsjeifsc/mosquitto.svg)](https://microbadger.com/images/cticsjeifsc/mosquitto "Get your own version badge on microbadger.com")
