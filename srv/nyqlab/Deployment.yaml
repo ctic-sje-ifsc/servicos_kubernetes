@@ -15,6 +15,8 @@ spec:
       containers:
       - name: nyqlab
         image: cticsjeifsc/nyqlab
+        securityContext:
+          privileged: true
         ports:
         - name: ssh
           containerPort: 22
@@ -37,6 +39,12 @@ spec:
         - name: nyqlab-users
           mountPath: /etc/group
           subPath: group
+        - name: nyqlab-users
+          mountPath: /etc/skel/montar_nextcloud
+          subPath: montar_nextcloud
+        - name: nyqlab-users
+          mountPath: /etc/sudoers
+          subPath: sudoers
         - name: nsswitch-ldap-conf
           mountPath: /etc/nsswitch.conf
           subPath: nsswitch.conf
