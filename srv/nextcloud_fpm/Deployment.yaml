@@ -1,0 +1,110 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-db
+  name: nextcloud-fpm-db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-db
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: nextcloud
+        - name: MYSQL_PASSWORD
+          value: teste123
+        - name: MYSQL_ROOT_PASSWORD
+          value: teste123
+        - name: MYSQL_USER
+          value: nextcloud
+        image: mariadb
+        name: nextcloud-fpm-db
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: nextcloud-fpm-db
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-db
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-db
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-app
+  name: nextcloud-fpm-app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-app
+    spec:
+      containers:
+      - image: nextcloud:fpm
+        name: nextcloud-fpm-app
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: nextcloud-fpm-data
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-data
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-data
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-web
+  name: nextcloud-fpm-web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-web
+    spec:
+      containers:
+      - image: nginx
+        name: nextcloud-fpm-web
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+          name: nextcloud-fpm-web
+          readOnly: true
+        - mountPath: /var/www/html
+          name: nextcloud-fpm-data
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-web
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-web
+          readOnly: true
+      - name: nextcloud-fpm-data
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-data

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-db
+  name: nextcloud-fpm-db
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: mysql
+  selector:
+    app: nextcloud-fpm-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-app
+  name: nextcloud-fpm-app
+spec:
+  ports:
+  - name: nextcloud
+    port: 9000
+    targetPort: nextcloud
+  selector:
+    app: nextcloud-fpm-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm
+  name: nextcloud-fpm
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 80
+  selector:
+    app: nextcloud-fpm-web

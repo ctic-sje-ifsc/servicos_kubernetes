@@ -1,0 +1,144 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-redis
+  name: nextcloud-fpm-redis
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-redis
+    spec:
+      containers:
+      - image: redis:alpine
+        name: nextcloud-fpm-redis
+        volumeMounts:
+        - mountPath: /data
+          name: nextcloud-fpm-redis
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-redis
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-redis
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-db
+  name: nextcloud-fpm-db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-db
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: nextcloud
+        - name: MYSQL_PASSWORD
+          value: supersecretpassword
+        - name: MYSQL_ROOT_PASSWORD
+          value: supersecretpassword
+        - name: MYSQL_USER
+          value: nextcloud
+        image: mariadb:10
+        name: nextcloud-fpm-db
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: nextcloud-fpm-db
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-db
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-db
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm
+  name: nextcloud-fpm
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm
+    spec:
+      containers:
+      - env:
+        - name: ADMIN_PASSWORD
+          value: admin
+        - name: ADMIN_USER
+          value: admin
+        - name: APC_SHM_SIZE
+          value: 128M
+        - name: CRON_PERIOD
+          value: 15m
+        - name: DB_HOST
+          value: nextcloud-fpm-db:3306
+        - name: DB_NAME
+          value: nextcloud
+        - name: DB_PASSWORD
+          value: supersecretpassword
+        - name: DB_TYPE
+          value: mysql
+        - name: DB_USER
+          value: nextcloud
+        - name: DOMAIN
+          value: owncloud.sj.ifsc.edu.br
+        - name: GID
+          value: "1000"
+        - name: OPCACHE_MEM_SIZE
+          value: "128"
+        - name: TZ
+          value: America/Sao_Paulo
+        - name: UID
+          value: "1000"
+        - name: UPLOAD_MAX_SIZE
+          value: 10G
+        image: wonderfall/nextcloud
+        name: nextcloud-fpm
+        volumeMounts:
+        - mountPath: /data
+          name: nextcloud-fpm-nextcloud-data
+        - mountPath: /config
+          name: nextcloud-fpm-nextcloud-config
+        - mountPath: /apps2
+          name: nextcloud-fpm-nextcloud-apps
+        - mountPath: /nextcloud/themes
+          name: nextcloud-fpm-nextcloud-themes
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-nextcloud-data
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-nextcloud-data
+      - name: nextcloud-fpm-nextcloud-config
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-nextcloud-config
+      - name: nextcloud-fpm-nextcloud-apps
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-nextcloud-apps
+      - name: nextcloud-fpm-nextcloud-themes
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-nextcloud-themes
