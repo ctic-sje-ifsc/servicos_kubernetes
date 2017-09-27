@@ -132,6 +132,7 @@ data:
                 proxy_http_version 1.1;
                 proxy_pass https://wordpress/;
                 proxy_set_header Host $http_host;
+                client_max_body_size 100M;
             }
         }
         upstream rocketchat {
