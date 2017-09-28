@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: arduino-iot-mongo
+  namespace: pesquisa
+  labels:
+    namespace: pesquisa
+    projeto: arduino-iot
+    app: mongo
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
