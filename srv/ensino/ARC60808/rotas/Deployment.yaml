@@ -1,0 +1,92 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: arc60808-rotas
+  namespace: ensino
+  labels:
+    namespace: ensino
+    course: arc60808
+    app: rotas
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        namespace: ensino
+        course: arc60808
+        app: rotas
+    spec:
+      containers:
+        - name: arc60808-rotas-mysql
+          image: mysql:5.7
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: arc60808-rotas
+                key: senha
+          - name: MYSQL_DATABASE
+            value: "project"
+          - name: MYSQL_USER
+            value: "julinho"
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: arc60808-rotas
+                key: senha
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 2048Mi
+          volumeMounts:
+            - name: arc60808-data
+              mountPath: /var/lib/mysql
+        - name: arc60808-rotas
+          image: julinho/rotas
+          env:
+          - name: NODE_ENV
+            value: "development"
+          - name: DB_CLIENT
+            value: "mysql"
+          - name: DB_HOST
+            value: "localhost"
+          - name: DB_NAME
+            value: "project"
+          - name: DB_USER
+            value: "julinho"
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: arc60808-rotas
+                key: senha
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 2
+              memory: 512Mi
+          volumeMounts:
+            - name: arc60808-secret
+              mountPath: /home/app/rotas/private.key
+              subPath: private.key
+              readOnly: true
+            - name: arc60808-secret
+              mountPath: /home/app/rotas/public.pem
+              subPath: public.pem
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+      - name: arc60808-secret
+        secret:
+          secretName: arc60808-rotas
+      - name: arc60808-data
+        persistentVolumeClaim:
+          claimName: arc60808-rotas

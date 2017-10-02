@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arc60808-rotas
+  namespace: ensino
+  labels:
+    namespace: ensino
+    course: arc60808
+    app: rotas
+spec:
+  externalIPs:
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.8"
+  ports:
+    - name: http
+      port: 18080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    namespace: ensino
+    course: arc60808
+    app: rotas
+  type: LoadBalancer
