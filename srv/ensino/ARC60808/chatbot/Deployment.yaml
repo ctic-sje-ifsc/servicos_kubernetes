@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: arc60808
+  name: arc60808-chatbot
   namespace: ensino
   labels:
     namespace: ensino
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - image: cticsjeifsc/errbot
-          name: arc60808
+          name: arc60808-chatbot
           resources:
             requests:
               cpu: 100m
@@ -37,7 +37,7 @@ spec:
       volumes:
       - name: arc60808-secret
         secret:
-          secretName: arc60808
+          secretName: arc60808-chatbot
       - name: arc60808-data
         persistentVolumeClaim:
           claimName: arc60808-chatbot

@@ -1,11 +1,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: arc60808
+  name: arc60808-chatbot
   namespace: ensino
   labels:
     namespace: ensino
-    app: arc60808
+    course: arc60808
+    app: chatbot
 spec:
   accessModes:
   - ReadWriteMany
