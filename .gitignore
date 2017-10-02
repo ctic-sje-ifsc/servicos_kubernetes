@@ -7,3 +7,5 @@ values*.yaml
 Values*.yaml
 secret*.*
 Secret*.*
+*.pem
+*.key
