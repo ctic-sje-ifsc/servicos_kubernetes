@@ -5,14 +5,16 @@ metadata:
   namespace: ensino
   labels:
     namespace: ensino
-    app: arc60808
+    course: arc60808
+    app: chatbot
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: arc60808
         namespace: ensino
+        course: arc60808
+        app: chatbot
     spec:
       containers:
         - image: cticsjeifsc/errbot
@@ -38,4 +40,4 @@ spec:
           secretName: arc60808
       - name: arc60808-data
         persistentVolumeClaim:
-          claimName: arc60808
+          claimName: arc60808-chatbot
