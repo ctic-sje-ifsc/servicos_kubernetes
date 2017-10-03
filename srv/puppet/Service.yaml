@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: puppet-postgres
-  name: puppet-postgres
+    app: postgres
+  name: postgres
 spec:
   ports:
   - name: postgres
@@ -19,8 +19,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: puppet-puppetdb
-  name: puppet-puppetdb
+    app: puppetdb
+  name: puppetdb
 spec:
   ports:
   - name: http

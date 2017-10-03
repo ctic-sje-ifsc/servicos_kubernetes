@@ -24,7 +24,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/puppet/ssl
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/puppet/puppetdb/ssl
 
 ---
 

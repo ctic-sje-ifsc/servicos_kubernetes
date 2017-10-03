@@ -50,6 +50,11 @@ spec:
       containers:
       - image: puppet/puppetdb
         name: puppet-puppetdb
+        env:
+          - name: PUPPETDB_PASSWORD
+            value: puppetdb
+          - name: PUPPETDB_USER
+            value: puppetdb
         ports:
         - containerPort: 8080
         - containerPort: 8081
@@ -104,9 +109,9 @@ spec:
         name: puppet-puppetboard
         env:
           - name: PUPPETDB_HOST
-            value: "puppet-puppetdb"
+            value: "puppetdb"
           - name: PUPPETDB_PORT
-            value: "8081"
+            value: "8080"
         ports:
         - containerPort: 8000
       restartPolicy: Always
@@ -133,7 +138,7 @@ spec:
         name: puppet-puppetserver
         env:
           - name: PUPPETDB_SERVER_URLS
-            value: https://puppet-puppetdb:8081
+            value: https://puppetdb:8081
         ports:
         - containerPort: 8140
         volumeMounts:
