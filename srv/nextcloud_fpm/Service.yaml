@@ -43,8 +43,9 @@ metadata:
   name: nextcloud-fpm
 spec:
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 80
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
   selector:
     app: nextcloud-fpm-web

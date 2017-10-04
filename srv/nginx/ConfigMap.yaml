@@ -274,7 +274,7 @@ data:
             }
         }
         upstream nextcloud-fpm {
-            server nextcloud-fpm:8080;
+            server nextcloud-fpm;
         }
         server {
             listen 443 ssl http2;
