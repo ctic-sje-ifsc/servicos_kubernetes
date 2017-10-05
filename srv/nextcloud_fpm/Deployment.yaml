@@ -21,9 +21,15 @@ spec:
         - name: MYSQL_DATABASE
           value: nextcloud
         - name: MYSQL_PASSWORD
-          value: teste123
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-fpm-db
+              key: db-password
         - name: MYSQL_ROOT_PASSWORD
-          value: teste123
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud-fpm-db
+              key: db-root-password
         - name: MYSQL_USER
           value: nextcloud
         image: mariadb

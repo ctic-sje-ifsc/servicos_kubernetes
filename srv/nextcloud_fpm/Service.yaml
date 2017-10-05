@@ -11,7 +11,7 @@ spec:
   ports:
   - name: mysql
     port: 3306
-    targetPort: mysql
+    targetPort: 3306
   selector:
     app: nextcloud-fpm-db
 ---
@@ -28,7 +28,7 @@ spec:
   ports:
   - name: nextcloud
     port: 9000
-    targetPort: nextcloud
+    targetPort: 9000
   selector:
     app: nextcloud-fpm-app
 ---
