@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: chatbot
+  namespace: ctic
+  labels:
+    namespace: ctic
+    app: chatbot
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        namespace: ctic
+        app: chatbot
+    spec:
+      containers:
+        - image: cticsjeifsc/aoikrocketchaterrbot:latest
+          name: chatbot
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 2
+              memory: 512Mi
+          volumeMounts:
+            - name: secret
+              mountPath: /AoikRocketChatErrbot/src/aoikrocketchaterrbot/config.py
+              subPath: config.py
+              readOnly: true
+            - name: data
+              mountPath: /AoikRocketChatErrbot/src/aoikrocketchaterrbot/bot_data/
+      restartPolicy: Always
+      volumes:
+      - name: secret
+        secret:
+          secretName: chatbot
+      - name: data
+        persistentVolumeClaim:
+          claimName: chatbot
