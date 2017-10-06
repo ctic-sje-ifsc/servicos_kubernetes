@@ -19,8 +19,12 @@ delete:
 	make -C openproject delete
 	make -C zabbix delete
 	make -C openldap delete
+	make -C matchbox delete
+	make -C nextcloud_fpm delete
 
 create:
+	make -C nextcloud_fpm create
+	make -C matchbox create
 	make -C openldap create
 	make -C zabbix create
 	make -C openproject create
