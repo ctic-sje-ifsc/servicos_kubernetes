@@ -2,14 +2,30 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: nextcloud-fpm-db
-  name: nextcloud-fpm-db
+    app: nextcloud-fpm-mariadb
+  name: nextcloud-fpm-mariadb
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 635Mi
+      storage: 8890Mi
+      
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: nextcloud-fpm-redis
+  name: nextcloud-fpm-redis
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 311Mi
+     
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -22,7 +38,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 636Mi
+      storage: 50Mi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -35,4 +51,4 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 637Mi
+      storage: 10Gi
