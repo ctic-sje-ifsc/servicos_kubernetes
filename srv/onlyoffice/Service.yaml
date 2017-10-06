@@ -13,7 +13,7 @@ spec:
     - "191.36.8.8"
   ports:
     - name: onlyoffice
-      port: 8080
+      port: 8090
       protocol: TCP
       targetPort: 443
   selector:
