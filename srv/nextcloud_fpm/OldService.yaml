@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-mariadb
+  name: nextcloud-fpm-mariadb
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+    targetPort: 3306
+  selector:
+    app: nextcloud-fpm-mariadb
+
+---
+    
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-fpm-redis
+spec:
+  ports:
+  - name: nextcloud-fpm-redis
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: nextcloud-fpm-redis
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-app
+  name: nextcloud-fpm-app
+spec:
+  ports:
+  - name: nextcloud
+    port: 9000
+    targetPort: 9000
+  selector:
+    app: nextcloud-fpm-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm
+  name: nextcloud-fpm
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: nextcloud-fpm-web

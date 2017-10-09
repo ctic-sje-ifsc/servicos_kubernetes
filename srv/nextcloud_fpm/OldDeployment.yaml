@@ -1,14 +1,14 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nextcloud-fpm
+  name: nextcloud-fpm-mariadb
   labels:
-    app: nextcloud-fpm
+    app: nextcloud-fpm-mariadb
 spec:
   template:
     metadata:
       labels:
-        app: nextcloud-fpm
+        app: nextcloud-fpm-mariadb
       annotations:
         pod.alpha.kubernetes.io/init-containers: '
           [
@@ -71,17 +71,66 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /bitnami/mariadb
+      volumes:
+      - name: config
+        configMap:
+          name: nextcloud-fpm-cfg
+      - name: data
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-mariadb
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: nextcloud-fpm-redis
+  name: nextcloud-fpm-redis
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-redis
+    spec:
+      containers:
       - image: redis:alpine
         name: nextcloud-fpm-redis
         resources:
           requests:
             cpu: 100m
             memory: 256Mi
-        ports:
-        - containerPort: 6379
         volumeMounts:
         - mountPath: /data
           name: nextcloud-fpm-redis
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-redis
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-redis
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-app
+  name: nextcloud-fpm-app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-app
+    spec:
+      containers:
       - image: nextcloud:fpm
         name: nextcloud-fpm-app
         command: ["/bin/sh","-c", "apt-get update && apt-get -y -q install smbclient && php-fpm"]
@@ -90,10 +139,35 @@ spec:
         volumeMounts:
         - mountPath: /var/www/html
           name: nextcloud-fpm-data
+      restartPolicy: Always
+      volumes:
+      - name: nextcloud-fpm-data
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-data
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.2.0 (99f88ef)
+  labels:
+    app: nextcloud-fpm-web
+  name: nextcloud-fpm-web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nextcloud-fpm-web
+    spec:
+      containers:
       - image: nginx
         name: nextcloud-fpm-web
         ports:
-          - containerPort: 80
+        - containerPort: 80
         volumeMounts:
         - mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
@@ -103,19 +177,10 @@ spec:
           name: nextcloud-fpm-data
       restartPolicy: Always
       volumes:
-      - name: config
-        configMap:
-          name: nextcloud-fpm-cfg
-      - name: data
-        persistentVolumeClaim:
-          claimName: nextcloud-fpm-mariadb
-      - name: nextcloud-fpm-redis
-        persistentVolumeClaim:
-          claimName: nextcloud-fpm-redis
-      - name: nextcloud-fpm-data
-        persistentVolumeClaim:
-          claimName: nextcloud-fpm-data
       - name: nextcloud-fpm-web
         persistentVolumeClaim:
           claimName: nextcloud-fpm-web
           readOnly: true
+      - name: nextcloud-fpm-data
+        persistentVolumeClaim:
+          claimName: nextcloud-fpm-data
