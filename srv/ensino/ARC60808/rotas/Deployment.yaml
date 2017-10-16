@@ -50,7 +50,7 @@ spec:
           image: julinho/rotas
           env:
           - name: NODE_ENV
-            value: "development"
+            value: "production"
           - name: DB_CLIENT
             value: "mysql"
           - name: DB_HOST
