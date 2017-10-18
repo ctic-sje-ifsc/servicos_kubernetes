@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arc60808-tradutor
+  namespace: ensino
+  labels:
+    namespace: ensino
+    course: arc60808
+    app: tradutor
+spec:
+  ports:
+    - name: http
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    namespace: ensino
+    course: arc60808
+    app: tradutor
