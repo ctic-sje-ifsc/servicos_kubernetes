@@ -84,7 +84,6 @@ spec:
               mountPath: /home/app/rotas/public.pem
               subPath: public.pem
               readOnly: true
-      restartPolicy: Always
       volumes:
       - name: arc60808-secret
         secret:
