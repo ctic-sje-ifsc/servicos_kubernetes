@@ -47,7 +47,7 @@ spec:
           - name: ROUTES_PORT
             value: "80"
           - name: CLIENT_ID
-            value: "socorrista"
+            value: "1"
           resources:
             requests:
               cpu: 100m
