@@ -2,7 +2,6 @@ kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
   name: zabbix
-  namespace: default
   annotations:
     kubernetes.io/ingress.class: tectonic
 spec:
