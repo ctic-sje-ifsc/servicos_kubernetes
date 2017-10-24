@@ -1,0 +1,24 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: openproject
+  annotations:
+    kubernetes.io/ingress.class: tectonic
+spec:
+  tls:
+    - hosts:
+        - openproject.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje
+  rules:
+    - host: openproject.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: openproject
+              servicePort: 80
+status:
+  loadBalancer:
+    ingress:
+      - ip: 191.36.8.24
+      - ip: 191.36.8.25
