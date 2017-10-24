@@ -24,6 +24,8 @@ spec:
             value: "mqtt.sj.ifsc.edu.br"
           - name: ROBOT
             value: "julinho"
+          - name: PYTHON_ENV
+            value: "development"
           ports:
             - containerPort: 3000
           resources:
@@ -33,3 +35,36 @@ spec:
             limits:
               cpu: 1
               memory: 256Mi
+        - name: arc60808-socorrista
+          image: julinho/socorrista
+          env:
+          - name: MQTT_BROKER
+            value: "mqtt.sj.ifsc.edu.br"
+          - name: ROBOT
+            value: "julinho"
+          - name: ROUTES_HOST
+            value: "localhost"
+          - name: ROUTES_PORT
+            value: "80"
+          - name: CLIENT_ID
+            value: "1"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 256Mi
+          volumeMounts:
+            - name: arc60808-secret
+              mountPath: /private.key
+              subPath: private.key
+              readOnly: true
+            - name: arc60808-secret
+              mountPath: /public.pem
+              subPath: public.pem
+              readOnly: true
+      volumes:
+      - name: arc60808-secret
+        secret:
+          secretName: arc60808-tradutor

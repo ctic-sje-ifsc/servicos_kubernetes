@@ -50,7 +50,7 @@ spec:
           image: julinho/rotas
           env:
           - name: NODE_ENV
-            value: "production"
+            value: "development"
           - name: DB_CLIENT
             value: "mysql"
           - name: DB_HOST
@@ -64,6 +64,8 @@ spec:
               secretKeyRef:
                 name: arc60808-rotas
                 key: senha
+          - name: TRANSLATOR_HOST
+            value: "tradutor"
           ports:
             - containerPort: 8080
           resources:
@@ -82,7 +84,6 @@ spec:
               mountPath: /home/app/rotas/public.pem
               subPath: public.pem
               readOnly: true
-      restartPolicy: Always
       volumes:
       - name: arc60808-secret
         secret:
