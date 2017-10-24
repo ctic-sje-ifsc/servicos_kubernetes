@@ -41,10 +41,10 @@ spec:
         - name: matlab-users
           mountPath: /etc/group
           subPath: group
-        - name: nyqlab-users
+        - name: matlab-users
           mountPath: /etc/skel/montar_nextcloud
           subPath: montar_nextcloud
-        - name: nyqlab-users
+        - name: matlab-users
           mountPath: /etc/sudoers
           subPath: sudoers
         - name: nsswitch-ldap-conf
