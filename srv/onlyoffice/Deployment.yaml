@@ -126,7 +126,7 @@ spec:
         - mountPath: /var/lib/onlyoffice/documentserver/App_Data/cache/files
           name: onlyoffice-onlyoffice-cache
         - mountPath: /mnt/
-          name: nginx-nginx-ssl
+          name: ctic-pem-ssl
           readOnly: true
       restartPolicy: Always
       volumes:
@@ -136,9 +136,9 @@ spec:
       - name: onlyoffice-onlyoffice-cache
         persistentVolumeClaim:
           claimName: onlyoffice-onlyoffice-cache
-      - name: nginx-nginx-ssl
+      - name: ctic-pem-ssl
         secret:
-          secretName: nginx-nginx-ssl
+          secretName: ctic-pem-ssl
           items:
             - key: ca.pem
               path: "ca.pem"
