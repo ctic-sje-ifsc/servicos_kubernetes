@@ -1,0 +1,25 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: hugo
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: tectonic
+spec:
+  tls:
+    - hosts:
+        - projetos.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje
+  rules:
+    - host: projetos.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: hugo
+              servicePort: 80
+status:
+  loadBalancer:
+    ingress:
+      - ip: 191.36.8.24
+      - ip: 191.36.8.25
