@@ -1,11 +1,13 @@
 all: delete create
 
+namespace = "ensino"
+
 delete:
-	kubectl delete -f Service.yaml
-	kubectl delete -f Deployment.yaml
-	kubectl delete -f Secret.yaml
+	kubectl --namespace=$(namespace) delete -f Service.yaml
+	kubectl --namespace=$(namespace) delete -f Deployment.yaml
+	kubectl --namespace=$(namespace) delete -f Secret.yaml
 
 create:
-	kubectl create -f Secret.yaml
-	kubectl create -f Deployment.yaml
-	kubectl create -f Service.yaml
+	kubectl --namespace=$(namespace) create -f Secret.yaml
+	kubectl --namespace=$(namespace) create -f Deployment.yaml
+	kubectl --namespace=$(namespace) create -f Service.yaml

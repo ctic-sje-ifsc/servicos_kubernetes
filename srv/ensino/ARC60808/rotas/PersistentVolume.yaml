@@ -1,12 +1,10 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: arc60808-rotas
-  namespace: ensino
+  name: arc60808-rotas-mysql
   labels:
-    namespace: ensino
     course: arc60808
-    app: rotas
+    app: rotas-mysql
 spec:
   capacity:
     storage: 100Mi
@@ -14,4 +12,22 @@ spec:
     - ReadWriteMany
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/arc60808/rotas
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/arc60808/rotas/mysql
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: arc60808-rotas-mongo
+  labels:
+    course: arc60808
+    app: rotas-mongo
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/arc60808/rotas/mongo

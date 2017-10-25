@@ -19,6 +19,9 @@ spec:
       containers:
         - image: cticsjeifsc/errbot
           name: arc60808-chatbot
+          env:
+          - name: KEY_PATH
+            value: "/errbot/private.key"
           resources:
             requests:
               cpu: 100m
@@ -30,6 +33,10 @@ spec:
             - name: arc60808-secret
               mountPath: /errbot/config.py
               subPath: config.py
+              readOnly: true
+            - name: arc60808-secret
+              mountPath: /errbot/private.key
+              subPath: private.key
               readOnly: true
             - name: arc60808-data
               mountPath: /errbot/data/

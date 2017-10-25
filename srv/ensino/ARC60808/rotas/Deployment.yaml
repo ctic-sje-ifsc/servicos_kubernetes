@@ -44,8 +44,20 @@ spec:
               cpu: 1
               memory: 2048Mi
           volumeMounts:
-            - name: arc60808-data
+            - name: arc60808-data-mysql
               mountPath: /var/lib/mysql
+        - image: mongo:3.4
+          name: arc60808-rotas-mongo
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 2
+              memory: 1024Mi
+          volumeMounts:
+            - name: arc60808-data-mongo
+              mountPath: /data/db/
         - name: arc60808-rotas
           image: julinho/rotas
           env:
@@ -65,7 +77,7 @@ spec:
                 name: arc60808-rotas
                 key: senha
           - name: TRANSLATOR_HOST
-            value: "tradutor"
+            value: "arc60808-tradutor"
           ports:
             - containerPort: 8080
           resources:
@@ -88,6 +100,9 @@ spec:
       - name: arc60808-secret
         secret:
           secretName: arc60808-rotas
-      - name: arc60808-data
+      - name: arc60808-data-mysql
         persistentVolumeClaim:
-          claimName: arc60808-rotas
+          claimName: arc60808-rotas-mysql
+      - name: arc60808-data-mongo
+        persistentVolumeClaim:
+          claimName: arc60808-rotas-mongo

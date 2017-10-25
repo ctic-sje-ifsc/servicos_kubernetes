@@ -1,12 +1,26 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: arc60808-rotas
-  namespace: ensino
+  name: arc60808-rotas-mysql
   labels:
-    namespace: ensino
     course: arc60808
-    app: rotas
+    app: rotas-mysql
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: arc60808-rotas-mongo
+  labels:
+    course: arc60808
+    app: rotas-mongo
 spec:
   accessModes:
   - ReadWriteMany

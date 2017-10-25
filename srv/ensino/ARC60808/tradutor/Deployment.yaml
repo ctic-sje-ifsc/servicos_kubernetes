@@ -43,7 +43,7 @@ spec:
           - name: ROBOT
             value: "julinho"
           - name: ROUTES_HOST
-            value: "localhost"
+            value: "arc60808-rotas"
           - name: ROUTES_PORT
             value: "80"
           - name: CLIENT_ID
