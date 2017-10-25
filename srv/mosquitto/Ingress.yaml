@@ -1,22 +1,22 @@
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: zabbix
+  name: mosquitto
   annotations:
     kubernetes.io/ingress.class: tectonic
 spec:
   tls:
     - hosts:
-        - zabbix.sj.ifsc.edu.br
+        - mqtt.sj.ifsc.edu.br
       secretName: tls-ifsc-sje
   rules:
-    - host: zabbix.sj.ifsc.edu.br
+    - host: mqtt.sj.ifsc.edu.br
       http:
         paths:
           - path: /
             backend:
-              serviceName: zabbix
-              servicePort: 80
+              serviceName: mosquitto-ws
+              servicePort: 8083
 status:
   loadBalancer:
     ingress:

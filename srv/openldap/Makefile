@@ -1,17 +1,17 @@
 all: delete create
 
 delete:
-	kubectl delete -f Service.yaml
-	kubectl delete -f Deployment.yaml
-	kubectl delete -f PersistentVolumeClaim.yaml
-	kubectl delete -f PersistentVolume.yaml
-	kubectl delete -f ConfigMap.yaml
-	kubectl delete -f Secret.yaml
+	kubectl delete -f Service.yaml --namespace=desenvolvimento
+	kubectl delete -f Deployment.yaml --namespace=desenvolvimento
+	kubectl delete -f PersistentVolumeClaim.yaml --namespace=desenvolvimento
+	kubectl delete -f PersistentVolume.yaml --namespace=desenvolvimento
+	kubectl delete -f ConfigMap.yaml --namespace=desenvolvimento
+	kubectl delete -f Secret.yaml --namespace=desenvolvimento
 
 create:
-	kubectl create -f Secret.yaml
-	kubectl create -f ConfigMap.yaml
-	kubectl create -f PersistentVolume.yaml
-	kubectl create -f PersistentVolumeClaim.yaml
-	kubectl create -f Deployment.yaml
-	kubectl create -f Service.yaml
+	kubectl create -f Secret.yaml --namespace=desenvolvimento
+	kubectl create -f ConfigMap.yaml --namespace=desenvolvimento
+	kubectl create -f PersistentVolume.yaml --namespace=desenvolvimento
+	kubectl create -f PersistentVolumeClaim.yaml --namespace=desenvolvimento
+	kubectl create -f Deployment.yaml --namespace=desenvolvimento
+	kubectl create -f Service.yaml --namespace=desenvolvimento

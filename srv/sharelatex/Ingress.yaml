@@ -1,21 +1,21 @@
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: zabbix
+  name: sharelatex
   annotations:
     kubernetes.io/ingress.class: tectonic
 spec:
   tls:
     - hosts:
-        - zabbix.sj.ifsc.edu.br
+        - sharelatex.sj.ifsc.edu.br
       secretName: tls-ifsc-sje
   rules:
-    - host: zabbix.sj.ifsc.edu.br
+    - host: sharelatex.sj.ifsc.edu.br
       http:
         paths:
           - path: /
             backend:
-              serviceName: zabbix
+              serviceName: sharelatex
               servicePort: 80
 status:
   loadBalancer:
