@@ -1,0 +1,29 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: kididcca-mongo
+  labels:
+    projeto: kididcca
+    app: mongo
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: kididcca-html
+  labels:
+    projeto: kididcca
+    app: html
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
