@@ -1,13 +1,15 @@
 all: delete create
 
+namespace = ensino
+
 delete:
-	kubectl delete -f Deployment.yaml
-	kubectl delete -f PersistentVolumeClaim.yaml
-	kubectl delete -f PersistentVolume.yaml
-	kubectl delete -f Secret.yaml
+	kubectl --namespace=$(namespace) delete -f Deployment.yaml
+	kubectl --namespace=$(namespace) delete -f PersistentVolumeClaim.yaml
+	kubectl --namespace=$(namespace) delete -f PersistentVolume.yaml
+	kubectl --namespace=$(namespace) delete -f Secret.yaml
 
 create:
-	kubectl create -f Secret.yaml
-	kubectl create -f PersistentVolume.yaml
-	kubectl create -f PersistentVolumeClaim.yaml
-	kubectl create -f Deployment.yaml
+	kubectl --namespace=$(namespace) create -f Secret.yaml
+	kubectl --namespace=$(namespace) create -f PersistentVolume.yaml
+	kubectl --namespace=$(namespace) create -f PersistentVolumeClaim.yaml
+	kubectl --namespace=$(namespace) create -f Deployment.yaml

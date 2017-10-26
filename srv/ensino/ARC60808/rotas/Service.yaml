@@ -7,15 +7,17 @@ metadata:
     app: rotas
 spec:
   externalIPs:
-    - "191.36.8.4"
-    - "191.36.8.5"
+    - "191.36.8.21"
+    - "191.36.8.22"
+    - "191.36.8.23"
+    - "191.36.8.24"
+    - "191.36.8.25"
   ports:
     - name: http
       port: 18080
       protocol: TCP
       targetPort: 8080
   selector:
-    namespace: ensino
     course: arc60808
     app: rotas
   type: LoadBalancer

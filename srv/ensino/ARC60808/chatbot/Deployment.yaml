@@ -2,9 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: arc60808-chatbot
-  namespace: ensino
   labels:
-    namespace: ensino
     course: arc60808
     app: chatbot
 spec:
@@ -12,7 +10,6 @@ spec:
   template:
     metadata:
       labels:
-        namespace: ensino
         course: arc60808
         app: chatbot
     spec:
