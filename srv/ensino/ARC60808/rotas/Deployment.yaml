@@ -2,9 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: arc60808-rotas
-  namespace: ensino
   labels:
-    namespace: ensino
     course: arc60808
     app: rotas
 spec:
@@ -12,7 +10,6 @@ spec:
   template:
     metadata:
       labels:
-        namespace: ensino
         course: arc60808
         app: rotas
     spec:
@@ -34,8 +31,6 @@ spec:
               secretKeyRef:
                 name: arc60808-rotas
                 key: senha
-          ports:
-            - containerPort: 3306
           resources:
             requests:
               cpu: 100m
@@ -62,7 +57,7 @@ spec:
           image: julinho/rotas
           env:
           - name: NODE_ENV
-            value: "development"
+            value: "production"
           - name: DB_CLIENT
             value: "mysql"
           - name: DB_HOST
