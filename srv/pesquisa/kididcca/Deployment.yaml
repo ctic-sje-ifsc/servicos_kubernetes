@@ -58,7 +58,7 @@ spec:
           - name: DATABASE
             value: "estacao0"
           - name: MQTT_BROKER
-            value: "projetos.sj.ifsc.edu.br"
+            value: "mqtt.sj.ifsc.edu.br"
           - name: TOPIC
             value: "estacao0/#"
           resources:
