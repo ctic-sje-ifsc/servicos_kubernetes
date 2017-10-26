@@ -27,9 +27,5 @@ spec:
       port: 443
       protocol: TCP
       targetPort: 443
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 80
   selector:
     app: wordpress-wordpress
