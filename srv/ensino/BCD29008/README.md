@@ -9,7 +9,7 @@ kind: PersistentVolume
 metadata:
   name: bcd29008
   labels:
-    namespace: ensino
+    
 spec:
   capacity:
     storage: 150Mi
@@ -26,9 +26,9 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: bcd29008
-  namespace: ensino
+  
   labels:
-    namespace: ensino
+    
   labels:
     app: bcd29008
 spec:
@@ -53,7 +53,7 @@ metadata:
   labels:
     app: bcd29008
   name: bcd29008
-  namespace: ensino
+  
 spec:
   externalIPs:
     - "191.36.8.4"

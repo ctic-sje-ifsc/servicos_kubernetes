@@ -2,7 +2,7 @@ all: delete create
 
 delete:
 	kubectl delete -f Ingress.yaml --namespace=desenvolvimento
-	helm delete --purge grafana --namespace=desenvolvimento
+	helm delete --purge grafana
 	kubectl delete -f PersistentVolumeClaim.yaml --namespace=desenvolvimento
 	kubectl delete -f PersistentVolume.yaml --namespace=desenvolvimento
 
