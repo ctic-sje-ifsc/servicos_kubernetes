@@ -42,7 +42,7 @@ spec:
           - name: ROUTES_HOST
             value: "arc60808-rotas"
           - name: ROUTES_PORT
-            value: "80"
+            value: "18080"
           - name: CLIENT_ID
             value: "1"
           resources:
