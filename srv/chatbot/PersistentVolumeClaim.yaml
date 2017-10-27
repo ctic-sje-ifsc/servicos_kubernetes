@@ -4,7 +4,6 @@ metadata:
   name: chatbot
   namespace: ctic
   labels:
-    namespace: ctic
     app: chatbot
 spec:
   accessModes:

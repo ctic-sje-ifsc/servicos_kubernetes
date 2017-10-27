@@ -3,7 +3,6 @@ kind: PersistentVolume
 metadata:
   name: chatbot
   labels:
-    namespace: ctic
     app: chatbot
 spec:
   capacity:
