@@ -25,10 +25,8 @@ delete:
 	make -C openldap delete
 	make -C matchbox delete
 	make -C nextcloud_fpm delete
-	make -C matchbox delete
 
 create:
-	make -C matchbox create
 	make -C nextcloud_fpm create
 	make -C matchbox create
 	make -C openldap create
