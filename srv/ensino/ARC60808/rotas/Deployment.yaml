@@ -71,6 +71,8 @@ spec:
               secretKeyRef:
                 name: arc60808-rotas
                 key: senha
+          - name: MONGO_HOST
+            value: "localhost"
           - name: TRANSLATOR_HOST
             value: "arc60808-tradutor"
           ports:
