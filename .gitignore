@@ -9,3 +9,4 @@ secret*.*
 Secret*.*
 *.pem
 *.key
+.vscode
