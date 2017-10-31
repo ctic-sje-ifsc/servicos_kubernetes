@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: belmiroj-mysql
+  labels:
+    aluno: belmiroj
+    curso: "207"
+    app: mysql
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    aluno: belmiroj
+    curso: "207"
+    app: mysql
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: belmiroj-sip-udp
+  labels:
+    aluno: belmiroj
+    curso: "207"
+    app: opensips
+spec:
+  externalIPs:
+    - "191.36.8.24"
+    - "191.36.8.25"
+  ports:
+    - name: sip
+      port: 5060
+      protocol: UDP
+      targetPort: 5060
+  selector:
+    aluno: belmiroj
+    curso: "207"
+    app: opensips
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: belmiroj-sip-tcp
+  labels:
+    aluno: belmiroj
+    curso: "207"
+    app: opensips
+spec:
+  externalIPs:
+    - "191.36.8.24"
+    - "191.36.8.25"
+  ports:
+    - name: sip
+      port: 5060
+      protocol: TCP
+      targetPort: 5060
+  selector:
+    aluno: belmiroj
+    curso: "207"
+    app: opensips
+  type: LoadBalancer

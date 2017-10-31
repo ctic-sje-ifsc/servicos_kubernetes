@@ -1,0 +1,92 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: belmiroj-mysql
+  labels:
+    aluno: belmiroj
+    curso: "207"
+    app: mysql
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        aluno: belmiroj
+        curso: "207"
+        app: mysql
+    spec:
+      containers:
+        - name: belmiroj-mysql
+          image: mysql:5.7
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: belmiroj
+                key: senha
+          - name: MYSQL_DATABASE
+            value: "opensips"
+          - name: MYSQL_USER
+            value: "opensips"
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: belmiroj
+                key: senha
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 2048Mi
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: belmiroj-mysql
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: belmiroj-opensips
+  labels:
+    aluno: belmiroj
+    curso: "207"
+    app: opensips
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        aluno: belmiroj
+        curso: "207"
+        app: opensips
+    spec:
+      containers:
+        - name: belmiroj-opensips
+          image: belmiroj/opensips:v0.3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 2
+              memory: 256Mi
+          volumeMounts:
+            - name: config
+              mountPath: /usr/local/etc/opensips/ldap.cfg
+              subPath: ldap.cfg
+              readOnly: true
+            - name: config
+              mountPath: /usr/local/etc/opensips/opensips.cfg
+              subPath: opensips.cfg
+              readOnly: true
+      volumes:
+      - name: config
+        secret:
+          secretName: belmiroj
