@@ -130,6 +130,8 @@ spec:
       containers:
         - image: nginx:1.13
           name: kididcca-nginx
+          ports:
+            - containerPort: 80
           resources:
             requests:
               cpu: 100m
