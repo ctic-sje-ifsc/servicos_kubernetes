@@ -33,10 +33,6 @@ metadata:
     ingress.kubernetes.io/secure-backends: "true"
     kubernetes.io/ingress.class: tectonic
 spec:
-  tls:
-    - hosts:
-        - wordpress.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje
   rules:
     - host: gtampto.sj.ifsc.edu.br
       http:
@@ -60,10 +56,6 @@ metadata:
     ingress.kubernetes.io/secure-backends: "true"
     kubernetes.io/ingress.class: tectonic
 spec:
-  tls:
-    - hosts:
-        - wordpress.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje
   rules:
     - host: mcc2016.sj.ifsc.edu.br
       http:
@@ -87,10 +79,6 @@ metadata:
     ingress.kubernetes.io/secure-backends: "true"
     kubernetes.io/ingress.class: tectonic
 spec:
-  tls:
-    - hosts:
-        - wordpress.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje
   rules:
     - host: mcc2014.sj.ifsc.edu.br
       http:
@@ -114,10 +102,6 @@ metadata:
     ingress.kubernetes.io/secure-backends: "true"
     kubernetes.io/ingress.class: tectonic
 spec:
-  tls:
-    - hosts:
-        - wordpress.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje
   rules:
     - host: sel.sj.ifsc.edu.br
       http:

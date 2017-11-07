@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: chatbot
-  namespace: ctic
   labels:
     app: chatbot
 spec:

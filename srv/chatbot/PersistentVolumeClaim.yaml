@@ -2,7 +2,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: chatbot
-  namespace: ctic
   labels:
     app: chatbot
 spec:
