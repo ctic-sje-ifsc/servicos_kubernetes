@@ -1,19 +1,21 @@
 all: delete create
 
+namespace = default
+
 delete:
-	kubectl delete -f Ingress.yaml --namespace=producao
-	kubectl delete -f HorizontalPodAutoscaler.yaml --namespace=producao
-	kubectl delete -f Service.yaml  --namespace=producao
-	kubectl delete -f Deployment.yaml  --namespace=producao
-	kubectl delete -f PersistentVolumeClaim.yaml  --namespace=producao
-	kubectl delete -f PersistentVolume.yaml  --namespace=producao
-	kubectl delete -f Secret.yaml  --namespace=producao
+	kubectl delete --namespace=$(namespace) Ingress.yaml
+	kubectl delete --namespace=$(namespace) HorizontalPodAutoscaler.yaml
+	kubectl delete --namespace=$(namespace) Service.yaml
+	kubectl delete --namespace=$(namespace) Deployment.yaml
+	kubectl delete --namespace=$(namespace) PersistentVolumeClaim.yaml
+	kubectl delete --namespace=$(namespace) PersistentVolume.yaml
+	kubectl delete --namespace=$(namespace) Secret.yaml
 
 create:
-	kubectl create -f Secret.yaml  --namespace=producao
-	kubectl create -f PersistentVolume.yaml  --namespace=producao
-	kubectl create -f PersistentVolumeClaim.yaml  --namespace=producao
-	kubectl create -f Deployment.yaml  --namespace=producao
-	kubectl create -f Service.yaml  --namespace=producao
-	kubectl create -f HorizontalPodAutoscaler.yaml  --namespace=producao
-	kubectl create -f Ingress.yaml --namespace=producao
+	kubectl create --namespace=$(namespace) Secret.yaml
+	kubectl create --namespace=$(namespace) PersistentVolume.yaml
+	kubectl create --namespace=$(namespace) PersistentVolumeClaim.yaml
+	kubectl create --namespace=$(namespace) Deployment.yaml
+	kubectl create --namespace=$(namespace) Service.yaml
+	kubectl create --namespace=$(namespace) HorizontalPodAutoscaler.yaml
+	kubectl create --namespace=$(namespace) Ingress.yaml

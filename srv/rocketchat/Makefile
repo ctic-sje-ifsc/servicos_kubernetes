@@ -1,19 +1,21 @@
 all: delete create
 
+namespace = default
+
 delete:
-	kubectl delete -f Ingress.yaml --namespace=producao
-	kubectl delete -f app-service.yaml --namespace=producao
-	kubectl delete -f app-deployment.yaml --namespace=producao
-	kubectl delete -f database-service.yaml --namespace=producao
-	kubectl delete -f database-deployment.yaml --namespace=producao
-	kubectl delete -f rocketchat-storage-pvc.yaml --namespace=producao
-	kubectl delete -f rocketchat-storage-pv.yaml --namespace=producao
+	#kubectl delete --namespace=$(namespace) -f Ingress.yaml
+	kubectl delete --namespace=$(namespace) -f app-service.yaml
+	kubectl delete --namespace=$(namespace) -f app-deployment.yaml
+	kubectl delete --namespace=$(namespace) -f database-service.yaml
+	kubectl delete --namespace=$(namespace) -f database-deployment.yaml
+	kubectl delete --namespace=$(namespace) -f rocketchat-storage-pvc.yaml
+	kubectl delete --namespace=$(namespace) -f rocketchat-storage-pv.yaml
 
 create:
-	kubectl create -f rocketchat-storage-pv.yaml --namespace=producao
-	kubectl create -f rocketchat-storage-pvc.yaml --namespace=producao
-	kubectl create -f database-deployment.yaml --namespace=producao
-	kubectl create -f database-service.yaml --namespace=producao
-	kubectl create -f app-deployment.yaml --namespace=producao
-	kubectl create -f app-service.yaml --namespace=producao
-	kubectl create -f Ingress.yaml --namespace=producao
+	kubectl create --namespace=$(namespace) -f rocketchat-storage-pv.yaml
+	kubectl create --namespace=$(namespace) -f rocketchat-storage-pvc.yaml
+	kubectl create --namespace=$(namespace) -f database-deployment.yaml
+	kubectl create --namespace=$(namespace) -f database-service.yaml
+	kubectl create --namespace=$(namespace) -f app-deployment.yaml
+	kubectl create --namespace=$(namespace) -f app-service.yaml
+	#kubectl create --namespace=$(namespace) -f Ingress.yaml

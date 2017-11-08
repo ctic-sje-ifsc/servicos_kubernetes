@@ -1,19 +1,21 @@
 all: delete create
+	
+namespace = default
 
 delete:
-	kubectl delete -f Ingress.yaml --namespace=desenvolvimento
-	kubectl delete -f Service.yaml --namespace=desenvolvimento
-	kubectl delete -f Deployment.yaml --namespace=desenvolvimento
-	kubectl delete -f PersistentVolumeClaim.yaml --namespace=desenvolvimento
-	kubectl delete -f PersistentVolume.yaml --namespace=desenvolvimento
-	kubectl delete -f ConfigMap.yaml --namespace=desenvolvimento
-	kubectl delete -f Secrets.yaml --namespace=desenvolvimento
+	#kubectl delete --namespace=$(namespace) -f Ingress.yaml
+	kubectl delete --namespace=$(namespace) -f Service.yaml
+	kubectl delete --namespace=$(namespace) -f Deployment.yaml
+	kubectl delete --namespace=$(namespace) -f PersistentVolumeClaim.yaml
+	kubectl delete --namespace=$(namespace) -f PersistentVolume.yaml
+	kubectl delete --namespace=$(namespace) -f ConfigMap.yaml
+	kubectl delete --namespace=$(namespace) -f Secrets.yaml
 
 create:
-	kubectl create -f Secrets.yaml --namespace=desenvolvimento
-	kubectl create -f ConfigMap.yaml --namespace=desenvolvimento
-	kubectl create -f PersistentVolume.yaml --namespace=desenvolvimento
-	kubectl create -f PersistentVolumeClaim.yaml --namespace=desenvolvimento
-	kubectl create -f Deployment.yaml --namespace=desenvolvimento
-	kubectl create -f Service.yaml --namespace=desenvolvimento
-	kubectl create -f Ingress.yaml --namespace=desenvolvimento
+	kubectl create --namespace=$(namespace) -f Secrets.yaml
+	kubectl create --namespace=$(namespace) -f ConfigMap.yaml
+	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml
+	kubectl create --namespace=$(namespace) -f PersistentVolumeClaim.yaml
+	kubectl create --namespace=$(namespace) -f Deployment.yaml
+	kubectl create --namespace=$(namespace) -f Service.yaml
+	#kubectl create --namespace=$(namespace) -f Ingress.yaml
