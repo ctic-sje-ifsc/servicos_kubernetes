@@ -58,7 +58,7 @@ spec:
           - name: DATABASE
             value: "estacao0"
           - name: MQTT_BROKER
-            value: "191.36.8.8"
+            value: "nuvem2.sj.ifsc.edu.br"
           - name: TOPIC
             value: "estacao0/#"
           resources:

@@ -1,6 +1,6 @@
 all: delete create
 
-namespace = "ensino"
+namespace = ensino
 
 delete:
 	kubectl --namespace=$(namespace) delete -f Service.yaml

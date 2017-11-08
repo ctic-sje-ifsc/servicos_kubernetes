@@ -18,7 +18,7 @@ spec:
           image: julinho/tradutor
           env:
           - name: MQTT_BROKER
-            value: "mqtt.sj.ifsc.edu.br"
+            value: "nuvem2.sj.ifsc.edu.br"
           - name: ROBOT
             value: "julinho"
           - name: PYTHON_ENV
@@ -36,7 +36,7 @@ spec:
           image: julinho/socorrista
           env:
           - name: MQTT_BROKER
-            value: "mqtt.sj.ifsc.edu.br"
+            value: "nuvem2.sj.ifsc.edu.br"
           - name: ROBOT
             value: "julinho"
           - name: ROUTES_HOST
