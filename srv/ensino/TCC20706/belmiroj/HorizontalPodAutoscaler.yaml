@@ -1,0 +1,12 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: belmiroj-opensips
+spec:
+  minReplicas: 3
+  maxReplicas: 10
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: belmiroj-opensips
+  targetCPUUtilizationPercentage: 50

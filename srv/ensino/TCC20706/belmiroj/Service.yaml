@@ -29,8 +29,9 @@ metadata:
     app: opensips
 spec:
   externalIPs:
-    - "191.36.8.24"
-    - "191.36.8.25"
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.8"
   ports:
     - name: sip
       port: 5060
@@ -54,8 +55,9 @@ metadata:
     app: opensips
 spec:
   externalIPs:
-    - "191.36.8.24"
-    - "191.36.8.25"
+    - "191.36.8.4"
+    - "191.36.8.5"
+    - "191.36.8.8"
   ports:
     - name: sip
       port: 5060

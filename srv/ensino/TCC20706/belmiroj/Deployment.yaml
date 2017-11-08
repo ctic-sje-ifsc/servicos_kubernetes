@@ -59,7 +59,7 @@ metadata:
     curso: "207"
     app: opensips
 spec:
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
