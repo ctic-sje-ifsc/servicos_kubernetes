@@ -113,19 +113,20 @@ spec:
           value: "pt"
         image: sharelatex/sharelatex
         name: sharelatex
+        command: ["/bin/sh"]
+        args: ["-c", "apt update && apt -y install texlive-full && /sbin/my_init"]
         ports:
         - containerPort: 80
         resources:
           requests:
-            cpu: "1"
+            cpu: 1
             memory: 3Gi
           limits:
-            cpu: "6"
+            cpu: 6
             memory: 6Gi
         volumeMounts:
         - mountPath: /var/lib/sharelatex
           name: sharelatex-sharelatex-arquivos
-      restartPolicy: Always
       volumes:
       - name: sharelatex-sharelatex-arquivos
         persistentVolumeClaim:
