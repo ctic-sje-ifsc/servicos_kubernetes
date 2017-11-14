@@ -9,4 +9,4 @@ spec:
     apiVersion: apps/v1beta1
     kind: Deployment
     name: sharelatex-sharelatex
-  targetCPUUtilizationPercentage: 70
+  targetCPUUtilizationPercentage: 75
