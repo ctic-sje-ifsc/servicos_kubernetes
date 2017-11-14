@@ -1,3 +1,4 @@
 #fogproject no Kubernetes
 ======
-Serviço necessário para implantação do [Tectonic](https://coreos.com/tectonic). Baseado na documentação oficial do [fogproject](https://coreos.com/fogproject/docs/latest/deployment.html#kubernetes).
+Se necessário pode escrever alguma coisa aqui. Por enquanto
+está funcionando no kubernetes, mas tem que testar várias coisas.
