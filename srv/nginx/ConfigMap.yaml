@@ -33,6 +33,13 @@ data:
         }
         server {
             listen 80;
+            server_name fogproject.sj.ifsc.edu.br;
+            location / {
+                proxy_pass http://fogproject/fog/;
+            }
+        }
+        server {
+            listen 80;
             server_name mcc2016.sj.ifsc.edu.br;
             location / {
                 return 301 https://wordpress.sj.ifsc.edu.br/mcc2016$request_uri;
