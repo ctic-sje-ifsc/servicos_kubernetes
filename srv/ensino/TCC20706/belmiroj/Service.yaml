@@ -42,29 +42,3 @@ spec:
     curso: "207"
     app: opensips
   type: LoadBalancer
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: belmiroj-sip-tcp
-  labels:
-    aluno: belmiroj
-    curso: "207"
-    app: opensips
-spec:
-  externalIPs:
-    - "191.36.8.4"
-    - "191.36.8.5"
-    - "191.36.8.8"
-  ports:
-    - name: sip
-      port: 5060
-      protocol: TCP
-      targetPort: 5060
-  selector:
-    aluno: belmiroj
-    curso: "207"
-    app: opensips
-  type: LoadBalancer
