@@ -3,8 +3,8 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: belmiroj-opensips
 spec:
-  minReplicas: 3
-  maxReplicas: 10
+  minReplicas: 1
+  maxReplicas: 3
   scaleTargetRef:
     apiVersion: apps/v1beta1
     kind: Deployment

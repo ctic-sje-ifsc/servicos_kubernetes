@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fogproject
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: fogproject
+      labels:
+        app: fogproject
+    spec:
+      containers:
+        - name: fogproject
+          image: deschamps001/fogproject
+          ports:
+            - name: http
+              containerPort: 80
+            - name: nfs
+              containerPort: 2049
+            - name: ftp
+              containerPort: 21
+            - name: rpcbind
+              containerPort: 111
+            - name: tftp
+              containerPort: 69
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+          volumeMounts:
+            - name: mysql
+              mountPath: /var/lib/mysql
+      restartPolicy: Always
+      volumes:
+        - name: mysql
+          persistentVolumeClaim:
+            claimName: fogproject-mysql
