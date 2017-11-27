@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pji11103b-mongo
+  labels:
+    projeto: pji11103b
+    app: mongo
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/pji11103/b/mongo
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pji11103b-html
+  labels:
+    projeto: pji11103b
+    app: html
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/pji11103/b/html

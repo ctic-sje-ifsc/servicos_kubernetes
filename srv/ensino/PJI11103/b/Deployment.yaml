@@ -1,0 +1,150 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pji11103b-mongo
+  labels:
+    projeto: pji11103b
+    app: mongo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        projeto: pji11103b
+        app: mongo
+    spec:
+      containers:
+        - image: mongo:3.4
+          name: pji11103b-mongo
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 2
+              memory: 1024Mi
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db/
+      restartPolicy: Always
+      volumes:
+      - name: mongo-data
+        persistentVolumeClaim:
+          claimName: pji11103b-mongo
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pji11103b-mqtt-mongo
+  labels:
+    projeto: pji11103b
+    app: mqtt-mongo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        projeto: pji11103b
+        app: mqtt-mongo
+    spec:
+      containers:
+        - image: kididcca/mqtt-mongo:latest
+          name: pji11103b-mqtt-mongo
+          env:
+          - name: MONGO_SERVER
+            value: "pji11103b-mongo"
+          - name: DATABASE
+            value: "arduino_cpd"
+          - name: MQTT_BROKER
+            value: "nuvem2.sj.ifsc.edu.br"
+          - name: TOPIC
+            value: "arduino_cpd/#"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 512Mi
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pji11103b-mongo-html
+  labels:
+    projeto: pji11103b
+    app: mongo-html
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        projeto: pji11103b
+        app: mongo-html
+    spec:
+      containers:
+        - image: kididcca/mongo-html:latest
+          name: pji11103b-mongo-html
+          env:
+          - name: MONGO_SERVER
+            value: "pji11103b-mongo"
+          - name: DATABASE
+            value: "arduino_cpd"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 512Mi
+          volumeMounts:
+            - name: html
+              mountPath: /cron/html
+      restartPolicy: Always
+      volumes:
+      - name: html
+        persistentVolumeClaim:
+          claimName: pji11103b-html
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pji11103b-nginx
+  labels:
+    projeto: pji11103b
+    app: nginx
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        projeto: pji11103b
+        app: nginx
+    spec:
+      containers:
+        - image: nginx:1.13
+          name: pji11103b-nginx
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 512Mi
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+              readOnly: True
+      restartPolicy: Always
+      volumes:
+      - name: html
+        persistentVolumeClaim:
+          claimName: pji11103b-html
