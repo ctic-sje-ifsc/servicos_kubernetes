@@ -135,20 +135,20 @@ spec:
           containerPort: 443
         livenessProbe:
           httpGet:
-            path: /
+            path: /images/Logoifsc.png
             port: http
           initialDelaySeconds: 120
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
-            path: /
+            path: /images/Logoifsc.png
             port: http
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
         resources:
           requests:
             memory: 512Mi
-            cpu: 300m
+            cpu: 1
         volumeMounts:
         - name: mediawiki-data
           mountPath: /bitnami/mediawiki
