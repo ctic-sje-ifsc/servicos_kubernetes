@@ -25,7 +25,7 @@ metadata:
     app: rotas-mongo
 spec:
   capacity:
-    storage: 100Mi
+    storage: 1Gi
   accessModes:
     - ReadWriteMany
   nfs:

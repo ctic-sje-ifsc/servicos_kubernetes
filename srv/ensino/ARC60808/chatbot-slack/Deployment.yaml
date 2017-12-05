@@ -35,6 +35,10 @@ spec:
               mountPath: /errbot/private.key
               subPath: private.key
               readOnly: true
+            - name: secret
+              mountPath: /errbot/public.pem
+              subPath: public.pem
+              readOnly: true
             - name: data
               mountPath: /errbot/data/
       restartPolicy: Always
