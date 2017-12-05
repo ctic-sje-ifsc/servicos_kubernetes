@@ -1,21 +1,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: arc60808-chatbot
+  name: arc60808-chatbot-slack
   labels:
     course: arc60808
-    app: chatbot
+    app: chatbot-slack
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         course: arc60808
-        app: chatbot
+        app: chatbot-slack
     spec:
       containers:
         - image: cticsjeifsc/errbot
-          name: arc60808-chatbot
+          name: arc60808-chatbot-slack
           env:
           - name: KEY_PATH
             value: "/errbot/private.key"
@@ -27,21 +27,21 @@ spec:
               cpu: 2
               memory: 512Mi
           volumeMounts:
-            - name: arc60808-secret
+            - name: secret
               mountPath: /errbot/config.py
               subPath: config.py
               readOnly: true
-            - name: arc60808-secret
+            - name: secret
               mountPath: /errbot/private.key
               subPath: private.key
               readOnly: true
-            - name: arc60808-data
+            - name: data
               mountPath: /errbot/data/
       restartPolicy: Always
       volumes:
-      - name: arc60808-secret
+      - name: secret
         secret:
-          secretName: arc60808-chatbot
-      - name: arc60808-data
+          secretName: arc60808-chatbot-slack
+      - name: data
         persistentVolumeClaim:
-          claimName: arc60808-chatbot
+          claimName: arc60808-chatbot-slack

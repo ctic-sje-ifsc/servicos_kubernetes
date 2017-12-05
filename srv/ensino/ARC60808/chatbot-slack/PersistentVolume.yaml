@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: arc60808-chatbot
+  name: arc60808-chatbot-slack
   labels:
     course: arc60808
-    app: chatbot
+    app: chatbot-slack
 spec:
   capacity:
     storage: 100Mi
@@ -12,4 +12,4 @@ spec:
     - ReadWriteMany
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/arc60808/chatbot
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/arc60808/chatbot-slack

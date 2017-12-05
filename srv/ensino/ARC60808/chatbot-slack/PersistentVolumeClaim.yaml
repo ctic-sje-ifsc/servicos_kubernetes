@@ -1,10 +1,10 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: arc60808-chatbot
+  name: arc60808-chatbot-slack
   labels:
     course: arc60808
-    app: chatbot
+    app: chatbot-slack
 spec:
   accessModes:
   - ReadWriteMany
