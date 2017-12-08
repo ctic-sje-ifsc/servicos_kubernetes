@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: arc60808-chatbot-slack-julinha
+  labels:
+    course: arc60808
+    app: chatbot-slack
+    bot: julinha
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/ensino/arc60808/chatbot-slack/julinha

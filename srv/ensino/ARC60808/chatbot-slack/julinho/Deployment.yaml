@@ -1,10 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: arc60808-chatbot-slack
+  name: arc60808-chatbot-slack-julinho
   labels:
     course: arc60808
     app: chatbot-slack
+    bot: julinho
 spec:
   replicas: 1
   template:
@@ -12,10 +13,11 @@ spec:
       labels:
         course: arc60808
         app: chatbot-slack
+        bot: julinho
     spec:
       containers:
         - image: cticsjeifsc/errbot
-          name: arc60808-chatbot-slack
+          name: arc60808-chatbot-slack-julinho
           env:
           - name: KEY_PATH
             value: "/errbot/private.key"
