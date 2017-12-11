@@ -47,7 +47,7 @@ spec:
       volumes:
       - name: secret
         secret:
-          secretName: arc60808-chatbot-slack
+          secretName: arc60808-chatbot-slack-julinho
       - name: data
         persistentVolumeClaim:
-          claimName: arc60808-chatbot-slack
+          claimName: arc60808-chatbot-slack-julinho
