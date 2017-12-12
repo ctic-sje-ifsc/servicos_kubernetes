@@ -21,6 +21,8 @@ spec:
           env:
           - name: KEY_PATH
             value: "/errbot/private.key"
+          - name: ROBOT
+            value: "julinho"
           resources:
             requests:
               cpu: 100m
