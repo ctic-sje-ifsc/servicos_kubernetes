@@ -14,7 +14,7 @@ spec:
         app: tradutor
     spec:
       containers:
-        - name: arc60808-tradutor
+        - name: arc60808-tradutor-julinho
           image: julinho/tradutor
           env:
           - name: MQTT_BROKER
@@ -32,13 +32,44 @@ spec:
             limits:
               cpu: 1
               memory: 256Mi
-        - name: arc60808-socorrista
+        - name: arc60808-socorrista-julinho
           image: julinho/socorrista
           env:
           - name: MQTT_BROKER
             value: "nuvem2.sj.ifsc.edu.br"
           - name: ROBOT
             value: "julinho"
+          - name: ROUTES_HOST
+            value: "arc60808-rotas"
+          - name: ROUTES_PORT
+            value: "18080"
+          - name: CLIENT_ID
+            value: "1"
+        - name: arc60808-tradutor-julinha
+          image: julinho/tradutor
+          env:
+          - name: MQTT_BROKER
+            value: "nuvem2.sj.ifsc.edu.br"
+          - name: ROBOT
+            value: "julinha"
+          - name: PYTHON_ENV
+            value: "development"
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 256Mi
+        - name: arc60808-socorrista-julinha
+          image: julinho/socorrista
+          env:
+          - name: MQTT_BROKER
+            value: "nuvem2.sj.ifsc.edu.br"
+          - name: ROBOT
+            value: "julinha"
           - name: ROUTES_HOST
             value: "arc60808-rotas"
           - name: ROUTES_PORT
