@@ -1,10 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: arc60808-tradutor
+  name: arc60808-tradutor-julinho
   labels:
     course: arc60808
     app: tradutor
+    bot: julinho
 spec:
   replicas: 1
   template:
@@ -12,6 +13,7 @@ spec:
       labels:
         course: arc60808
         app: tradutor
+        bot: julinho
     spec:
       containers:
         - name: arc60808-tradutor-julinho
@@ -45,6 +47,47 @@ spec:
             value: "18080"
           - name: CLIENT_ID
             value: "1"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 1
+              memory: 256Mi
+          volumeMounts:
+            - name: arc60808-secret
+              mountPath: /private.key
+              subPath: private.key
+              readOnly: true
+            - name: arc60808-secret
+              mountPath: /public.pem
+              subPath: public.pem
+              readOnly: true
+      volumes:
+      - name: arc60808-secret
+        secret:
+          secretName: arc60808-tradutor
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: arc60808-tradutor-julinha
+  labels:
+    course: arc60808
+    app: tradutor
+    bot: julinha
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        course: arc60808
+        app: tradutor
+        bot: julinha
+    spec:
+      containers:
         - name: arc60808-tradutor-julinha
           image: julinho/tradutor
           env:
