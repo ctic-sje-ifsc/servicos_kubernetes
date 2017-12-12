@@ -70,8 +70,10 @@ spec:
                 key: senha
           - name: MONGO_HOST
             value: "localhost"
-          - name: TRANSLATOR_HOST
-            value: "arc60808-tradutor"
+          - name: JULINHO_TRANSLATOR_HOST
+            value: "arc60808-tradutor-julinho"
+          - name: JULINHA_TRANSLATOR_HOST
+            value: "arc60808-tradutor-julinha"
           ports:
             - containerPort: 8080
           resources:
