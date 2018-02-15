@@ -1,12 +1,3 @@
-apiVersion: rook.io/v1alpha1
-kind: Pool
-metadata:
-  name: srv
-  namespace: rook
-spec:
-  replicated:
-    size: 2
----
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
