@@ -1,9 +1,10 @@
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: netbox
   annotations:
     kubernetes.io/ingress.class: tectonic
+  name: netbox
+  namespace: default
 spec:
   tls:
     - hosts:
@@ -17,8 +18,3 @@ spec:
             backend:
               serviceName: netbox
               servicePort: 80
-status:
-  loadBalancer:
-    ingress:
-      - ip: 191.36.8.24
-      - ip: 191.36.8.25
