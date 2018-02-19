@@ -1,3 +1,3 @@
 #Rocket.chat on Kubernetes
 ======
-Baseado em https://github.com/BastienM/rocketchat-kubernetes
+Utilizada a versão estável do [Helm](https://github.com/kubernetes/charts/tree/master/stable/rocketchat).
