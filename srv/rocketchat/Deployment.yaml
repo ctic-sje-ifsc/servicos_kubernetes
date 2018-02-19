@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rocketchat-database
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: rocketchat
+        tier: backend
+    spec:
+      containers:
+        - name: rocketchat-database
+          image: mongo
+          ports:
+            - name: mongo
+              containerPort: 27017
+          volumeMounts:
+            - name: rocketchat-storage
+              mountPath: /data/db
+      volumes:
+        - name: rocketchat-storage
+          flexVolume:
+            driver: rook.io/rook
+            fsType: ceph
+            options:
+              fsName: rocketchat
+              clusterName: rook
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rocketchat-app
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: rocketchat
+        tier: frontend
+    spec:
+      containers:
+        - name: rocketchat-app
+          image: 'rocketchat/rocket.chat:latest'
+          env:
+            - name: ROOT_URL
+              value: 'https://chat.sj.ifsc.edu.br'
+            - name: MONGO_URL
+              value: 'mongodb://rocketchat-database:27017/rocketchat'
+          ports:
+            - name: http
+              containerPort: 3000

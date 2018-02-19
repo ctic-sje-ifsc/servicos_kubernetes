@@ -1,9 +1,10 @@
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: rocketchat
   annotations:
     kubernetes.io/ingress.class: tectonic
+  name: rocketchat
+  namespace: default
 spec:
   tls:
     - hosts:
@@ -16,9 +17,4 @@ spec:
           - path: /
             backend:
               serviceName: rocketchat
-              servicePort: 3000
-status:
-  loadBalancer:
-    ingress:
-      - ip: 191.36.8.24
-      - ip: 191.36.8.25
+              servicePort: 80
