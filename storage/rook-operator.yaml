@@ -1,5 +1,5 @@
 # Baseado em https://raw.githubusercontent.com/rook/rook/master/cluster/examples/kubernetes/rook-operator.yaml
-# Modificado segundo em https://rook.io/docs/rook/master/flexvolume.segundo
+# Modificado segundo em https://rook.io/docs/rook/master/flexvolume.html
 
 apiVersion: v1
 kind: Namespace
