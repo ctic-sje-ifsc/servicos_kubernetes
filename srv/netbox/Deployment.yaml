@@ -10,7 +10,7 @@ spec:
         app: netbox
     spec:
       containers:
-        - image: postgres:9.6.3
+        - image: postgres:9.6
           name: netbox-postgresql
           env:
             - name: PGDATA
