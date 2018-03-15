@@ -29,7 +29,7 @@ metadata:
   namespace: rook
 spec:
   replicated:
-    size: 2
+    size: 3
 
 ---
 
