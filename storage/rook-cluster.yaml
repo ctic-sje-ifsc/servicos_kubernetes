@@ -2,9 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: rook
-
 ---
-
 apiVersion: rook.io/v1alpha1
 kind: Cluster
 metadata:
@@ -13,9 +11,19 @@ metadata:
 spec:
   dataDirHostPath: /var/lib/rook
   storage:
-    useAllNodes: true
-    useAllDevices: true
+    useAllNodes: false
+    useAllDevices: false
     storeConfig:
       storeType: bluestore
-      databaseSizeMB: 1024
-      journalSizeMB: 1024
+      databaseSizeMB: 1024 
+      journalSizeMB: 1024  
+    directories:
+    - path: "/mnt/a"
+    - path: "/mnt/b"
+    - path: "/mnt/c"
+    nodes:
+    - name: "nodenuvem1"
+    - name: "nodenuvem2"
+    - name: "nodenuvem3"
+
+
