@@ -22,9 +22,12 @@ helm install --name awx --namespace awx --set postgresUser=awx,postgresPassword=
 Modificado as seguintes linhas do arquivo [inventory:](https://github.com/ansible/awx/blob/devel/installer/inventory)
 
 ```
-# Kubernetes Install
 kubernetes_context=kubernetes_rke
 awx_kubernetes_namespace=awx
 pg_hostname=awx-postgresql
 ```
 
+Depois executado o comando: 
+```bash
+$ ansible-playbook -i inventory install.yml
+```
