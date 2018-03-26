@@ -24,7 +24,7 @@ spec:
               value: "netbox"
           volumeMounts:
             - name: netbox-postgresql-base
-              mountPath: /var/lib/postgresql/data/pgdata
+              mountPath: /var/lib/postgresql/data
         - image: ninech/netbox
           name: netbox-netbox
           env:

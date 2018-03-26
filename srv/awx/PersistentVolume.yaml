@@ -1,0 +1,15 @@
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pv-awx-postgresql
+  spec:
+    capacity:
+      storage: 5Gi
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: awx-postgresql
+    mountOptions:
+      - nolock    
+    nfs:
+      path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/awx/postgresql
+      server: storage1
