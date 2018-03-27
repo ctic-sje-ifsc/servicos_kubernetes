@@ -7,4 +7,5 @@ spec:
   - ReadWriteMany
   resources:
     requests:
-      storage: 162Mi
+      storage: 1Gi
+  storageClassName: zabbix-db

@@ -1,13 +1,11 @@
-apiVersion: v1
 kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
   name: netbox-postgresql-base
-  labels:
-    app: netbox
 spec:
-  storageClassName: srv-pool
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 2Gi
+  storageClassName: netbox-postgresql

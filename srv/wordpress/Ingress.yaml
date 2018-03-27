@@ -1,0 +1,87 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: wordpress
+  annotations:
+    ingress.kubernetes.io/secure-backends: "true"
+spec:
+  tls:
+    - hosts:
+        - wordpress.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje
+  rules:
+    - host: wordpress.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: wordpress
+              servicePort: 443
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: gtampto
+  annotations:
+    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/gtampto'
+    ingress.kubernetes.io/secure-backends: "true"
+spec:
+  rules:
+    - host: gtampto.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: wordpress
+              servicePort: 443
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: mcc2016
+  annotations:
+    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2016'
+    ingress.kubernetes.io/secure-backends: "true"
+spec:
+  rules:
+    - host: mcc2016.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: wordpress
+              servicePort: 443
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: mcc2014
+  annotations:
+    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2014'
+    ingress.kubernetes.io/secure-backends: "true"
+spec:
+  rules:
+    - host: mcc2014.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: wordpress
+              servicePort: 443
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: sel
+  annotations:
+    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/sel'
+    ingress.kubernetes.io/secure-backends: "true"
+spec:
+  rules:
+    - host: sel.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: wordpress
+              servicePort: 443

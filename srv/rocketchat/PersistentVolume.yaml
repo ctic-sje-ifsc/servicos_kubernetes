@@ -10,6 +10,9 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteMany
+  storageClassName: rocketchat-storage
+  mountOptions:
+    - nolock  
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/rocket.chat

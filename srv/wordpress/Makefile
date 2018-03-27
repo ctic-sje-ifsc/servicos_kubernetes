@@ -1,6 +1,6 @@
 all: delete create
 
-namespace = default
+namespace = producao
 
 delete:
 	kubectl delete --namespace=$(namespace) -f Ingress.yaml

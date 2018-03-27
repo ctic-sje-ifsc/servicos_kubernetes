@@ -9,7 +9,9 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 8400Mi
+      storage: 8Gi
+  storageClassName: wordpress-mariadb
+
 
 ---
 
@@ -24,4 +26,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10100Mi
+      storage: 10Gi
+  storageClassName: wordpress-wordpress

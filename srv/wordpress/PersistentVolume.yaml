@@ -4,9 +4,12 @@ metadata:
   name: wordpress-mariadb
 spec:
   capacity:
-    storage: 8400Mi
+    storage: 8Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: wordpress-mariadb
+  mountOptions:
+    - nolock  
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/wordpress/mariadb
@@ -19,9 +22,12 @@ metadata:
   name: wordpress-wordpress
 spec:
   capacity:
-    storage: 10100Mi
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: wordpress-wordpress
+  mountOptions:
+    - nolock 
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/wordpress/wordpress

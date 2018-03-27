@@ -1,17 +1,17 @@
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: zabbix
+  name: rocketchat
 spec:
   tls:
     - hosts:
-        - zabbix.sj.ifsc.edu.br
+        - chat.sj.ifsc.edu.br
       secretName: tls-ifsc-sje
   rules:
-    - host: zabbix.sj.ifsc.edu.br
+    - host: chat.sj.ifsc.edu.br
       http:
         paths:
           - path: /
             backend:
-              serviceName: zabbix
-              servicePort: 80
+              serviceName: rocketchat
+              servicePort: 3000

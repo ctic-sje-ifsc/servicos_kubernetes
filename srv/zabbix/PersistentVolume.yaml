@@ -4,9 +4,12 @@ metadata:
   name: zabbix-db
 spec:
   capacity:
-    storage: 162Mi
+    storage: 1Gi
   accessModes:
     - ReadWriteMany
+  storageClassName: zabbix-db
+  mountOptions:
+    - nolock  
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/zabbix/db
