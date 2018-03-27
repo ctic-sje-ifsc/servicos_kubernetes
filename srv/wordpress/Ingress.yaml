@@ -3,7 +3,7 @@ apiVersion: extensions/v1beta1
 metadata:
   name: wordpress
   annotations:
-    ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
   tls:
     - hosts:
@@ -23,8 +23,8 @@ apiVersion: extensions/v1beta1
 metadata:
   name: gtampto
   annotations:
-    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/gtampto'
-    ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/gtampto'
+    nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
   rules:
     - host: gtampto.sj.ifsc.edu.br
@@ -40,8 +40,8 @@ apiVersion: extensions/v1beta1
 metadata:
   name: mcc2016
   annotations:
-    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2016'
-    ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2016'
+    nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
   rules:
     - host: mcc2016.sj.ifsc.edu.br
@@ -57,8 +57,8 @@ apiVersion: extensions/v1beta1
 metadata:
   name: mcc2014
   annotations:
-    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2014'
-    ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2014'
+    nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
   rules:
     - host: mcc2014.sj.ifsc.edu.br
@@ -74,8 +74,8 @@ apiVersion: extensions/v1beta1
 metadata:
   name: sel
   annotations:
-    ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/sel'
-    ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/sel'
+    nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
   rules:
     - host: sel.sj.ifsc.edu.br
