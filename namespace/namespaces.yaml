@@ -1,0 +1,48 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: alunos
+  labels:
+    namespace: alunos
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: desenvolvimento
+  labels:
+    namespace: desenvolvimento
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: ensino
+  labels:
+    namespace: ensino
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: pesquisa
+  labels:
+    namespace: pesquisa
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: producao
+  labels:
+    namespace: producao
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: projetos
+  labels:
+    namespace: projetos
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: testes
+  labels:
+    namespace: testes
