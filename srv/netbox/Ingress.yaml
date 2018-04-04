@@ -2,6 +2,8 @@ kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
   name: netbox
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "191.36.8.0/21"
 spec:
   tls:
     - hosts:
