@@ -46,3 +46,10 @@ metadata:
   name: testes
   labels:
     namespace: testes
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: storageos
+  labels:
+    namespace: storageos

@@ -1,0 +1,19 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: awx
+  namespace: awx
+spec:
+  rules:
+  tls:
+    - hosts:
+        - che.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje
+  rules:
+    - host: che.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: awx-web-svc
+              servicePort: 80

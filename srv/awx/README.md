@@ -31,3 +31,9 @@ Depois executado o comando:
 ```bash
 $ ansible-playbook -i inventory install.yml
 ```
+
+Criar o ingress:
+
+```bash
+$ kubectl create -f Ingress.yaml
+```
