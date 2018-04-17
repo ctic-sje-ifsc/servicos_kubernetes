@@ -1,12 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: heyceitas-bd
+  name: economizei-bd
   namespace: ensino
   labels:
     curso: integrado
     disciplina: arc60808
-    projeto: heyceitas
+    projeto: economizei
     app: mariadb
     tier: backend
 spec:
@@ -16,27 +16,27 @@ spec:
       labels:
         curso: integrado
         disciplina: arc60808
-        projeto: heyceitas
+        projeto: economizei
         app: mariadb
         tier: backend
     spec:
       containers:
-      - name: heyceitas-bd
+      - name: economizei-bd
         image: docker.io/mariadb:10.2
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: heyceitas-bd
+              name: economizei-bd
               key: senha
         - name: MYSQL_DATABASE
-          value: heyceitas
+          value: economizei
         - name: MYSQL_USER
-          value: heyceitas
+          value: economizei
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: heyceitas-bd
+              name: economizei-bd
               key: senha
         ports:
         - name: mysql
@@ -54,4 +54,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: heyceitas-bd
+          claimName: economizei-bd
