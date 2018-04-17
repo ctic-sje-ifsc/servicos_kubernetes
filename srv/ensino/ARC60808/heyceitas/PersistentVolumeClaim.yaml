@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: heyceitas-bd
+  namespace: ensino
+  labels:
+    curso: integrado
+    disciplina: arc60808
+    projeto: heyceitas
+    app: mariadb
+    tier: backend
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: heyceitas-bd
