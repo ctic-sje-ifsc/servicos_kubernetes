@@ -1,0 +1,17 @@
+# Ingress ainda sem suporte a proxy de TCP.
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  labels:
+#    app: mosquitto
+#    protocol: mqtt
+#  name: mosquitto
+#  namespace: producao
+#spec:
+#  rules:
+#    - host: mosquitto.sj.ifsc.edu.br
+#      tcp:
+#        port: 1883
+#        backend:
+#          serviceName: mosquitto
+#          servicePort: 1883

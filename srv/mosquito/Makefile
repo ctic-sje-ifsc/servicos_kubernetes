@@ -1,17 +1,17 @@
 all: delete create
 
-namespace = default
-
 delete:
-	kubectl delete --namespace=$(namespace) -f Service.yaml
-	kubectl delete --namespace=$(namespace) -f Deployment.yaml
-	kubectl delete --namespace=$(namespace) -f PersistentVolumeClaim.yaml
-	kubectl delete --namespace=$(namespace) -f PersistentVolume.yaml
-	kubectl delete --namespace=$(namespace) -f ConfigMap.yaml
+	kubectl delete -f Deployment.yaml
+	#kubectl delete -f Ingress.yaml
+	kubectl delete -f Service.yaml
+	kubectl delete -f PersistentVolumeClaim.yaml
+	kubectl delete -f PersistentVolume.yaml
+	kubectl delete -f ConfigMap.yaml
 
 create:
-	kubectl create --namespace=$(namespace) -f ConfigMap.yaml
-	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml
-	kubectl create --namespace=$(namespace) -f PersistentVolumeClaim.yaml
-	kubectl create --namespace=$(namespace) -f Deployment.yaml
-	kubectl create --namespace=$(namespace) -f Service.yaml
+	kubectl create -f ConfigMap.yaml
+	kubectl create -f PersistentVolume.yaml
+	kubectl create -f PersistentVolumeClaim.yaml
+	kubectl create -f Service.yaml
+	#kubectl create -f Ingress.yaml
+	kubectl create -f Deployment.yaml

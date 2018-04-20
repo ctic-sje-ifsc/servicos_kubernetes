@@ -1,7 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
+  labels:
+    app: mosquitto
+    protocol: mqtt
   name: mosquitto-mosquitto-data
+  namespace: producao
 spec:
   accessModes:
     - ReadWriteMany

@@ -3,12 +3,16 @@ kind: Service
 metadata:
   labels:
     app: mosquitto
+    protocol: mqtt
   name: mosquitto
+  namespace: producao
 spec:
   externalIPs:
-    - "191.36.8.4"
-    - "191.36.8.5"
-    - "191.36.8.8"
+    - "191.36.8.21"
+    - "191.36.8.22"
+    - "191.36.8.23"
+    - "191.36.8.24"
+    - "191.36.8.25"
   ports:
     - name: mqtt
       port: 1883

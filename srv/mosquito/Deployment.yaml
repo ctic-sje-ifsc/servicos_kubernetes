@@ -1,13 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  labels:
+    app: mosquitto
+    protocol: mqtt
   name: mosquitto
+  namespace: producao
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: mosquitto
+        protocol: mqtt
     spec:
       containers:
         - image: cticsjeifsc/mosquitto:latest

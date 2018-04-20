@@ -1,7 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  labels:
+    app: mosquitto
+    protocol: mqtt
   name: mosquitto-mosquitto-conf
+  namespace: producao
 data:
   mosquitto.conf: |-
     persistence true
