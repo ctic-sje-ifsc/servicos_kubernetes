@@ -6,28 +6,15 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
+  tls:
+    - hosts:
+        - projetos.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje
   rules:
-    - host: dashboard.sj.ifsc.edu.br
+    - host: projetos.sj.ifsc.edu.br
       http:
         paths:
           - path: /
             backend:
               serviceName: kubernetes-dashboard
-              servicePort: 8443
----
-kind: Ingress
-apiVersion: extensions/v1beta1
-metadata:
-  name: kubernetes-dashboard-2
-  namespace: kube-system
-  annotations:
-    nginx.ingress.kubernetes.io/secure-backends: "true"
-spec:
-  rules:
-    - host: kdash.sj.ifsc.edu.br
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: kubernetes-dashboard
-              servicePort: 8443
+              servicePort: 443

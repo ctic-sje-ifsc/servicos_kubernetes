@@ -4,9 +4,12 @@ metadata:
   name: openproject-log
 spec:
   capacity:
-    storage: 158Mi
+    storage: 300Mi
   accessModes:
     - ReadWriteMany
+  storageClassName: openproject-log
+  mountOptions:
+    - nolock 
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/openproject/log
@@ -19,9 +22,12 @@ metadata:
   name: openproject-openproject
 spec:
   capacity:
-    storage: 2667Mi
+    storage: 3Gi
   accessModes:
     - ReadWriteMany
+  storageClassName: openproject-openproject
+  mountOptions:
+    - nolock 
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/openproject/openproject
@@ -34,9 +40,12 @@ metadata:
   name: openproject-postgresql
 spec:
   capacity:
-    storage: 2666Mi
+    storage: 3Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
+  storageClassName: openproject-postgresql
+  mountOptions:
+    - nolock 
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/openproject/postgresql

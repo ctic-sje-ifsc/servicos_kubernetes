@@ -7,7 +7,8 @@ spec:
   - ReadWriteMany
   resources:
     requests:
-      storage: 158Mi
+      storage: 300Mi
+  storageClassName: openproject-log
 
 ---
 
@@ -20,7 +21,8 @@ spec:
   - ReadWriteMany
   resources:
     requests:
-      storage: 2666Mi
+      storage: 3Gi
+  storageClassName: openproject-openproject
 
 ---
 
@@ -30,7 +32,8 @@ metadata:
   name: openproject-postgresql
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 2667Mi
+      storage: 3Gi
+  storageClassName: openproject-postgresql
