@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: samba
+    dir: lib
+  name: samba-lib
+  namespace: testes
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nolock
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/lib
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: samba
+    dir: log
+  name: samba-log
+  namespace: testes
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nolock
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/log

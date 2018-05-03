@@ -11,3 +11,4 @@ Secret*.*
 *.key
 .vscode
 .DS_Store
+nogit-*

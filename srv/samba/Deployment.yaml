@@ -1,0 +1,72 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: samba
+  name: samba
+  namespace: testes
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: samba
+    spec:
+      containers:
+        - image: docker.io/cticsjeifsc/nmbd:latest
+          name: samba-nmbd
+          ports:
+            - containerPort: 137
+            - containerPort: 138
+          resources:
+            requests:
+              cpu: 512m
+              memory: 512
+            limits:
+              cpu: 2
+              memory: 1Gi
+          volumeMounts:
+            - name: conf
+              mountPath: /etc/samba
+              readOnly: true
+            - name: lib
+              mountPath: /var/lib/samba
+            - name: log
+              mountPath: /var/log/samba
+        - image: docker.io/cticsjeifsc/smbd:latest
+          name: samba-smbd
+          env:
+            - name: PASSWD_LDAP
+              valueFrom:
+                secretKeyRef:
+                  name: samba
+                  key: ldap
+          ports:
+            - containerPort: 139
+            - containerPort: 445
+          resources:
+            requests:
+              cpu: 1
+              memory: 512Mi
+            limits:
+              cpu: 2
+              memory: 1Gi
+          volumeMounts:
+            - name: conf
+              mountPath: /etc/samba/smb.conf
+              subPath: smb.conf
+              readOnly: true
+            - name: lib
+              mountPath: /var/lib/samba
+            - name: log
+              mountPath: /var/log/samba
+      volumes:
+      - name: conf
+        configMap:
+          name: samba
+      - name: lib
+        persistentVolumeClaim:
+          claimName: samba-lib
+      - name: log
+        persistentVolumeClaim:
+          claimName: samba-log
