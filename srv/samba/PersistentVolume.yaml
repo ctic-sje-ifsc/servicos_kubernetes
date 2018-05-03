@@ -11,6 +11,7 @@ spec:
     storage: 100Mi
   accessModes:
     - ReadWriteMany
+  storageClassName: samba-lib
   mountOptions:
     - nolock
   nfs:
@@ -32,8 +33,53 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteMany
+  storageClassName: samba-log
   mountOptions:
     - nolock
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/log
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: samba
+    dir: dados
+  name: samba-home
+  namespace: testes
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: samba-home
+  mountOptions:
+    - nolock
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/dados/home
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: samba
+    dir: dados
+  name: samba-grupos
+  namespace: testes
+spec:
+  capacity:
+    storage: 300Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: samba-grupos
+  mountOptions:
+    - nolock
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/dados/grupos

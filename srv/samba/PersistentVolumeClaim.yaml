@@ -12,6 +12,7 @@ spec:
   resources:
     requests:
       storage: 100Mi
+  storageClassName: samba-lib
 
 ---
 
@@ -29,3 +30,40 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  storageClassName: samba-log
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: samba
+    dir: dados
+  name: samba-home
+  namespace: testes
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi
+  storageClassName: samba-home
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: samba
+    dir: dados
+  name: samba-grupos
+  namespace: testes
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 300Gi
+  storageClassName: samba-grupos

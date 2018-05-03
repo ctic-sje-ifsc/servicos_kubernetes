@@ -60,6 +60,10 @@ spec:
               mountPath: /var/lib/samba
             - name: log
               mountPath: /var/log/samba
+            - name: home
+              mountPath: /home
+            - name: grupos
+              mountPath: /grupos
       volumes:
       - name: conf
         configMap:
@@ -70,3 +74,9 @@ spec:
       - name: log
         persistentVolumeClaim:
           claimName: samba-log
+      - name: home
+        persistentVolumeClaim:
+          claimName: samba-home
+      - name: grupos
+        persistentVolumeClaim:
+          claimName: samba-grupos
