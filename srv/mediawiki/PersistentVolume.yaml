@@ -7,6 +7,9 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: mediawiki-apache
+  mountOptions:
+    - nolock 
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/mediawiki/apache
@@ -22,6 +25,9 @@ spec:
     storage: 9Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: mediawiki-mariadb
+  mountOptions:
+    - nolock
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/mediawiki/mariadb
@@ -37,6 +43,9 @@ spec:
     storage: 8Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: mediawiki-mediawiki
+  mountOptions:
+    - nolock
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/mediawiki/mediawiki

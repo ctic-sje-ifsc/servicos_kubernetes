@@ -10,6 +10,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  storageClassName: mediawiki-apache
 
 ---
     
@@ -19,13 +20,13 @@ metadata:
   name: mediawiki-mariadb
   labels:
     app: mediawiki-mariadb
-
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
       storage: 9Gi
+  storageClassName: mediawiki-mariadb
       
 ---
 kind: PersistentVolumeClaim
@@ -40,3 +41,4 @@ spec:
   resources:
     requests:
       storage: 8Gi
+  storageClassName: mediawiki-mediawiki

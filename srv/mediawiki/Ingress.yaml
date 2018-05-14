@@ -1,0 +1,13 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: mediawiki
+spec:
+  rules:
+    - host: mediawiki.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: mediawiki
+              servicePort: 80
