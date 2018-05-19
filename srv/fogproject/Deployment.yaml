@@ -10,12 +10,13 @@ spec:
       labels:
         app: fogproject
     spec:
+      hostNetwork: true
       containers:
         - name: fogproject
-          image: deschamps001/fogproject
+          image: deschamps001/fogproject:1.5.2
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8083
             - name: nfs
               containerPort: 2049
             - name: ftp
