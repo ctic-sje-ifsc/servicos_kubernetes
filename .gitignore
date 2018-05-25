@@ -5,10 +5,10 @@
 *.tgz
 values*.yaml
 Values*.yaml
-secret*.*
 Secret*.*
 *.pem
 *.key
 .vscode
 .DS_Store
 nogit-*
+Gabriel teste
