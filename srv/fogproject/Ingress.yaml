@@ -2,6 +2,9 @@ kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
   name: fogproject
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: '/fog'
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
 spec:
   rules:
     - host: fogproject.sj.ifsc.edu.br
@@ -10,4 +13,4 @@ spec:
           - path: /
             backend:
               serviceName: fogproject
-              servicePort: 80
+              servicePort: 8083
