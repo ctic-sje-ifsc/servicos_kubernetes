@@ -4,7 +4,7 @@ metadata:
   labels:
     app: mosquitto
     protocol: mqtt
-  name: mosquitto
+  name: mosquitto-mqtt
   namespace: producao
 spec:
   externalIPs:
@@ -21,3 +21,22 @@ spec:
   selector:
     app: mosquitto
   type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mosquitto
+    protocol: mqtt
+  name: mosquitto-ws
+  namespace: producao
+spec:
+  ports:
+    - name: mqtt-ws
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+  selector:
+    app: mosquitto

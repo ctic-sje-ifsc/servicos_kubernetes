@@ -13,3 +13,5 @@ data:
     autosave_interval 60
     log_dest stdout
     listener 1883
+    listener 9001
+    protocol websockets

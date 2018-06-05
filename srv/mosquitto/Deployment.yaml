@@ -15,10 +15,11 @@ spec:
         protocol: mqtt
     spec:
       containers:
-        - image: cticsjeifsc/mosquitto:latest
-          name: mosquitto-mosquitto
+        - image: docker.io/cticsjeifsc/mosquitto:latest
+          name: mosquitto
           ports:
             - containerPort: 1883
+            - containerPort: 9001
           resources:
             requests:
               cpu: 100m
