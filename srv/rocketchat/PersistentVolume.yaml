@@ -1,18 +1,33 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: rocketchat-storage-pv
-  labels:
-    app: rocketchat
-    tier: backend
+  name: rocketchat-mongo-database
 spec:
   capacity:
-    storage: 1Gi
+    storage: 2Gi
   accessModes:
-    - ReadWriteMany
-  storageClassName: rocketchat-storage
+    - ReadWriteOnce
+  storageClassName: rocketchat-mongo-database
   mountOptions:
-    - nolock  
+    - nolock    
   nfs:
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/mongo
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/rocket.chat
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rocketchat-data
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rocketchat-data
+  mountOptions:
+    - nolock    
+  nfs:
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/data
+    server: storage1
