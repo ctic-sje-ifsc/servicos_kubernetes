@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: minecraft
+  name: minecraft
+  namespace: ensino
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minecraft
+      name: minecraft
+      namespace: ensino
+    spec:
+      containers:
+        - image: docker.io/boidacarapreta/minecraft:latest
+          name: minecraft
+          env:
+            - name: MC_DIR
+              value: "/minecraft"
+            - name: MC_VERSION
+              value: "1.12.2"
+          resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
+            limits:
+              cpu: 2
+              memory: 2Gi
+          volumeMounts:
+            - name: home
+              mountPath: /minecraft
+      volumes:
+      - name: home
+        persistentVolumeClaim:
+          claimName: minecraft

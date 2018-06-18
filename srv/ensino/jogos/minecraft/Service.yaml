@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: minecraft
+  name: minecraft
+  namespace: ensino
+spec:
+  externalIPs:
+    - "191.36.8.21"
+    - "191.36.8.22"
+    - "191.36.8.23"
+    - "191.36.8.24"
+    - "191.36.8.25"
+  ports:
+    - name: minecraft
+      port: 25565
+      protocol: TCP
+      targetPort: 25565
+  selector:
+    app: minecraft
+  type: LoadBalancer
