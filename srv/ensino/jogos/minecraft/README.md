@@ -1,5 +1,4 @@
 # Minecraft em Kubernetes
-======
 Utilizada a versão estável do [Helm](https://github.com/kubernetes/charts/tree/master/stable/minecraft).
 
 A configuração foi feita via arquivo `values.yaml`:
@@ -60,3 +59,5 @@ Por fim, foi iniciado o servidor Minecraft com `make`:
 ```sh
 make create
 ```
+## Rcon
+Há [alguns clientes rcon](http://wiki.vg/RCON#Example_implementations) para Minecraft. Uma boa sugestão é o [mrcon](https://github.com/Tiiffi/mcrcon/).
