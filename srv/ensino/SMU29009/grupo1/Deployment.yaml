@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: smu29009-g1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: smu29009-g1
+      labels:
+        app: smu29009-g1
+    spec:
+      hostNetwork: true
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - nodenuvem5
+      containers:
+        - name: smu29009-g1
+          image: cticsjeifsc/smu29009_g1
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+      restartPolicy: Always
