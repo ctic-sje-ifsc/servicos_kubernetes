@@ -14,3 +14,10 @@ spec:
             backend:
               serviceName: fogproject
               servicePort: 8083
+    - host: fog.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: fogproject
+              servicePort: 8083
