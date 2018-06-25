@@ -5,10 +5,13 @@ metadata:
     app: smu29009-g1
   name: smu29009-g1
 spec:
+  externalIPs:
+    - "191.36.8.25"
   ports:
     - name: http1
-      port: 1337
+      port: 1338
       protocol: TCP
       targetPort: 1337
   selector:
     app: smu29009-g1
+  type: LoadBalancer

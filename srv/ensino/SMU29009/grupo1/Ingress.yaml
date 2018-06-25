@@ -2,7 +2,13 @@ kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
   name: smu29009-g1
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: '/'
 spec:
+  tls:
+    - hosts:
+        - etherpad.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje
   rules:
     - host: etherpad.sj.ifsc.edu.br
       http:
@@ -10,4 +16,4 @@ spec:
           - path: /
             backend:
               serviceName: smu29009-g1
-              servicePort: 1337
+              servicePort: 1338
