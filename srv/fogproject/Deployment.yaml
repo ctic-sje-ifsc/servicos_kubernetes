@@ -22,7 +22,7 @@ spec:
                 - nodenuvem5
       containers:
         - name: fogproject
-          image: deschamps001/fogproject:kubernetes
+          image: cticsjeifsc/fog
           resources:
             requests:
               cpu: "500m"
