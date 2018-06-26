@@ -2,8 +2,6 @@ kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
   name: smu29009-g1
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: '/'
 spec:
   tls:
     - hosts:
