@@ -2,14 +2,16 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: matlab-root
+  namespace: testes
   labels:
     app: matlab-root
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadOnlyMany
   resources:
     requests:
-      storage: 8205Mi
+      storage: 10Gi
+  storageClassName: matlab-root
 
 ---
 
@@ -17,14 +19,16 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: matlab-home
+  namespace: testes
   labels:
     app: matlab-home
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 10011Mi
+      storage: 10Gi
+  storageClassName: matlab-home
 
 ---
 
@@ -32,11 +36,13 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: matlab-users
+  namespace: testes
   labels:
     app: matlab-users
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
-      storage: 94Mi
+      storage: 10Mi
+  storageClassName: matlab-users
