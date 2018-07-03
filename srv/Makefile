@@ -11,7 +11,7 @@ delete:
 	helm delete --purge weave-scope
 
 create:
-	helm init
+	helm init --service-account tiller
 	make -C zabbix create
 	make -C wordpress create
 	make -C netbox create
