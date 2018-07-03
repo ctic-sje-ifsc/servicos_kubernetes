@@ -1,12 +1,22 @@
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v1beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: matlab
+  namespace: testes
 spec:
   minReplicas: 2
   maxReplicas: 10
+  metrics:
   scaleTargetRef:
     apiVersion: apps/v1beta1
     kind: Deployment
     name: matlab
-  targetCPUUtilizationPercentage: 80
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 80
+  - type: Pods
+    pods:
+      metricName: current_connections
+      targetAverageValue: 1

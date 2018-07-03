@@ -4,9 +4,12 @@ metadata:
   name: matlab-root
 spec:
   capacity:
-    storage: 8205Mi
+    storage: 10Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadOnlyMany
+  storageClassName: matlab-root
+  mountOptions:
+    - nolock
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/matlab/root/
@@ -19,9 +22,12 @@ metadata:
   name: matlab-home
 spec:
   capacity:
-    storage: 10011Mi
+    storage: 10Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: matlab-home
+  mountOptions:
+    - nolock
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/home
@@ -34,9 +40,12 @@ metadata:
   name: matlab-users
 spec:
   capacity:
-    storage: 94Mi
+    storage: 100Mi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: matlab-users
+  mountOptions:
+    - nolock
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users

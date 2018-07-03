@@ -3,6 +3,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: matlab
+  namespace: testes
   labels:
     app: matlab
 spec:
@@ -22,10 +23,10 @@ spec:
           containerPort: 22
         resources:
             requests:
-              cpu: 300m
+              cpu: 2
               memory: 2Gi
             limits:
-              cpu: 2
+              cpu: 4
               memory: 4Gi
         volumeMounts:
         - name: matlab-root
