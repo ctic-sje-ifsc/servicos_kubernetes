@@ -13,8 +13,10 @@ delete:
 	make -C mediawiki delete
 	make -C mediawiki_att delete
 	kubectl delete ns awx
+	make -C ldap_config delete
 
 create:
+	make -C ldap_config create
 	helm init --service-account tiller
 	make -C zabbix create
 	make -C wordpress create

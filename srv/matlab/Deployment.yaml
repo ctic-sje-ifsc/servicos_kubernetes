@@ -60,6 +60,9 @@ spec:
         - name: pam-common-session
           mountPath: /etc/pam.d/common-session
           subPath: common-session
+        - name: ssh-keys
+          mountPath: /root/.ssh/
+          readOnly: true
       volumes:
       - name: matlab-root
         persistentVolumeClaim:
@@ -82,3 +85,9 @@ spec:
       - name: pam-common-session
         configMap:
           name: pam-common-session
+      - name: ssh-keys
+        secret:
+          secretName: matlab
+          items:
+          - key: authorized_keys
+            path: authorized_keys
