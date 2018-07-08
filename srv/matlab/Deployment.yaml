@@ -7,7 +7,7 @@ metadata:
   labels:
     app: matlab
 spec:
-  replicas: 5
+  replicas: 1
   template:
     metadata:
       labels:
