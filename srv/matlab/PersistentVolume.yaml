@@ -12,7 +12,7 @@ spec:
     - nolock
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/matlab/root/
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/matlab/matlab
 
 ---
 
@@ -37,15 +37,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: matlab-users
+  name: matlab-etc
 spec:
   capacity:
     storage: 100Mi
   accessModes:
     - ReadWriteMany
-  storageClassName: matlab-users
+  storageClassName: matlab-etc
   mountOptions:
     - nolock
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/matlab/etc

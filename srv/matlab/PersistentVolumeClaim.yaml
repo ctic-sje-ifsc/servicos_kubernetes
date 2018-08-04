@@ -35,14 +35,14 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: matlab-users
+  name: matlab-etc
   namespace: testes
   labels:
-    app: matlab-users
+    app: matlab-etc
 spec:
   accessModes:
   - ReadWriteMany
   resources:
     requests:
       storage: 10Mi
-  storageClassName: matlab-users
+  storageClassName: matlab-etc

@@ -16,8 +16,8 @@ spec:
       containers:
       - name: matlab
         image: cticsjeifsc/matlab
-        securityContext:
-          privileged: true
+        #securityContext:
+        #  privileged: true
         ports:
         - name: ssh
           containerPort: 22
@@ -29,25 +29,16 @@ spec:
               cpu: 4
               memory: 4Gi
         volumeMounts:
+        # Binarios do Matlab
         - name: matlab-root
           mountPath: /opt
+        # Home dos usuarios  
         - name: matlab-home
           mountPath: /home
-        - name: matlab-users
-          mountPath: /etc/shadow
-          subPath: shadow
-        - name: matlab-users
-          mountPath: /etc/passwd
-          subPath: passwd
-        - name: matlab-users
-          mountPath: /etc/group
-          subPath: group
-        - name: matlab-users
-          mountPath: /etc/skel/montar_nextcloud
-          subPath: montar_nextcloud
-        - name: matlab-users
-          mountPath: /etc/sudoers
-          subPath: sudoers
+        # etc
+        - name: matlab-etc
+          mountPath: /etc
+        # LDAP          
         - name: nsswitch-ldap-conf
           mountPath: /etc/nsswitch.conf
           subPath: nsswitch.conf
@@ -71,9 +62,9 @@ spec:
       - name: matlab-home
         persistentVolumeClaim:
           claimName: matlab-home
-      - name: matlab-users
+      - name: matlab-etc
         persistentVolumeClaim:
-          claimName: matlab-users
+          claimName: matlab-etc
       - name: nsswitch-ldap-conf
         configMap:
           name: nsswitch-ldap-conf
