@@ -5,7 +5,7 @@ metadata:
   namespace: testes
 spec:
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 2
   metrics:
   scaleTargetRef:
     apiVersion: extensions/v1beta1

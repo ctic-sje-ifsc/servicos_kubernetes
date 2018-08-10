@@ -23,11 +23,11 @@ spec:
           containerPort: 22
         resources:
             requests:
-              cpu: 2
-              memory: 2Gi
+              cpu: 10
+              memory: 25Gi
             limits:
-              cpu: 4
-              memory: 4Gi
+              cpu: 15
+              memory: 30Gi
         volumeMounts:
         # Binarios do Matlab
         - name: matlab-root
