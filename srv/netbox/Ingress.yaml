@@ -13,7 +13,7 @@ metadata:
     # nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - Netbox SJE"
     #
     # Solução para liberar somente à redes definidas
-    nginx.ingress.kubernetes.io/whitelist-source-range: "191.36.0.0/17,2804:1454::/32"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "191.36.0.0/17,2804:1454::/32,172.30.0.2"
 spec:
   tls:
     - hosts:
