@@ -2,6 +2,11 @@ kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
   name: kit-lanche
+  annotations:
+    # Aumentar o tempo de session
+    # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-timeouts
+    # https://github.com/nginxinc/kubernetes-ingress/tree/master/examples/customization
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600s"
 spec:
   tls:
     - hosts:
