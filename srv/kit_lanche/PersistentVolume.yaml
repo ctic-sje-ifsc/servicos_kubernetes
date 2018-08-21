@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kit-lanche-mariadb-dump
+spec:
+  capacity:
+    storage: 10Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: kit-lanche-mariadb-dump
+  mountOptions:
+    - nolock 
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/mariadb/dump
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kit-lanche-mariadb-base
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: kit-lanche-mariadb-base
+  mountOptions:
+    - nolock 
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/mariadb/base
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kit-lanche-code
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: kit-lanche-code
+  mountOptions:
+    - nolock 
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/code
