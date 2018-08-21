@@ -5,7 +5,6 @@ metadata:
     app: mosquitto
     protocol: mqtt
   name: mosquitto-mosquitto-data
-  namespace: producao
 spec:
   capacity:
     storage: 100Mi
