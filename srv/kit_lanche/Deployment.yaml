@@ -45,16 +45,13 @@ spec:
                 secretKeyRef:
                   name: kit-lanche-secret
                   key: kit-lanche-password
+                  
           volumeMounts:
             - name: kit-lanche-mariadb-dump
               mountPath: /docker-entrypoint-initdb.d/dump.sql
               subPath: dump.sql
-
-#            - name: kit-lanche-mariadb-base
-#              mountPath: /var/lib/mysql
-    
-    
-
+            - name: kit-lanche-mariadb-base
+              mountPath: /var/lib/mysql
       restartPolicy: Always
       volumes:
       - name: kit-lanche-secret
