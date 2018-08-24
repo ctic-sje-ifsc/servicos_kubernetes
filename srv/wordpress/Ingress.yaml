@@ -8,7 +8,7 @@ spec:
   tls:
     - hosts:
         - wordpress.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: wordpress.sj.ifsc.edu.br
       http:

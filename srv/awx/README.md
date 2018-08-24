@@ -23,7 +23,8 @@ Modificado as seguintes linhas do arquivo [inventory:](https://github.com/ansibl
 
 ```
 kubernetes_context=kubernetes_rke
-awx_kubernetes_namespace=awx
+kubernetes_namespace=awx
+tiller_namespace=kube-system
 pg_hostname=awx-postgresql
 pg_password=XXXXX
 ```

@@ -18,7 +18,7 @@ spec:
   tls:
     - hosts:
         - netbox.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: netbox.sj.ifsc.edu.br
       http:

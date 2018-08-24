@@ -6,6 +6,13 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: '/fog'
     nginx.ingress.kubernetes.io/proxy-body-size: 8m
 spec:
+  tls:
+    - hosts:
+        - fogproject.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+    - hosts:
+        - fog.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: fogproject.sj.ifsc.edu.br
       http:
