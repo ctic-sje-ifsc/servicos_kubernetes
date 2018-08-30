@@ -1,0 +1,45 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: quartus-root
+  labels:
+    app: quartus-root
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: quartus-root
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: quartus-usuarios-home
+  labels:
+    app: quartus-usuarios-home
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: quartus-usuarios-home
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: quartus-servicos-etc
+  labels:
+    app: quartus-servicos-etc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: quartus-servicos-etc

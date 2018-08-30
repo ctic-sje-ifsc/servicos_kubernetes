@@ -1,0 +1,101 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: quartus
+  labels:
+    app: quartus
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: quartus
+    spec:
+      containers:
+      - name: quartus
+        image: cticsjeifsc/quartus
+        #securityContext:
+        #  privileged: true
+        ports:
+        - name: ssh
+          containerPort: 22
+        resources:
+            requests:
+              cpu: 2
+              memory: 3Gi
+            limits:
+              cpu: 4
+              memory: 6Gi
+        volumeMounts:
+        # Binarios do Matlab
+        - name: quartus-root
+          mountPath: /opt
+        # Home dos usuarios  
+        - name: quartus-home
+          mountPath: /home
+        # etc
+        # - name: quartus-users
+        #   mountPath: /etc/shadow
+        #   subPath: shadow
+        # - name: quartus-users
+        #   mountPath: /etc/passwd
+        #   subPath: passwd
+        # - name: quartus-users
+        #   mountPath: /etc/group
+        #   subPath: group
+        # LDAP
+        - name: ldap-conf
+          mountPath: /etc/ldap.conf
+          subPath: ldap.conf
+        - name: ldap-ldap-conf
+          mountPath: /etc/ldap/ldap.conf
+          subPath: ldap.conf         
+        - name: nsswitch-ldap-conf
+          mountPath: /etc/nsswitch.conf
+          subPath: nsswitch.conf
+        - name: libnss-ldap-conf
+          mountPath: /etc/libnss-ldap.conf
+          subPath: libnss-ldap.conf
+        - name: pam-ldap-conf
+          mountPath: /etc/pam_ldap.conf
+          subPath: pam_ldap.conf
+        - name: pam-common-session
+          mountPath: /etc/pam.d/common-session
+          subPath: common-session
+        - name: ssh-keys
+          mountPath: /root/.ssh/authorized_keys
+          subPath: authorized_keys
+          readOnly: true
+      volumes:
+      - name: quartus-root
+        persistentVolumeClaim:
+          claimName: quartus-root
+      - name: quartus-home
+        persistentVolumeClaim:
+          claimName: quartus-usuarios-home
+      - name: quartus-users
+        persistentVolumeClaim:
+          claimName: quartus-servicos-etc
+      # LDAP
+      - name: ldap-conf
+        configMap:
+          name: ldap-conf
+      - name: ldap-ldap-conf
+        configMap:
+          name: ldap-ldap-conf
+      - name: nsswitch-ldap-conf
+        configMap:
+          name: nsswitch-ldap-conf
+      - name: pam-ldap-conf
+        configMap:
+          name: pam-ldap-conf
+      - name: libnss-ldap-conf
+        configMap:
+          name: libnss-ldap-conf
+      - name: pam-common-session
+        configMap:
+          name: pam-common-session
+      # Authorized keys ctic root
+      - name: ssh-keys
+        secret:
+          secretName: authorized-keys-ctic
