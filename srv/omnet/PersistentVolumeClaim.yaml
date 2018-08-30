@@ -1,0 +1,29 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: usuarios-home
+  labels:
+    app: usuarios-home
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: usuarios-home
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: servicos-etc
+  labels:
+    app: servicos-etc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: servicos-etc

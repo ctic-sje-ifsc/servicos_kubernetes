@@ -1,0 +1,95 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: omnet
+  labels:
+    app: omnet
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: omnet
+    spec:
+      containers:
+      - name: omnet
+        image: cticsjeifsc/omnet:5.4.1
+        #securityContext:
+        #  privileged: true
+        ports:
+        - name: ssh
+          containerPort: 22
+        resources:
+            requests:
+              cpu: 2
+              memory: 3Gi
+            limits:
+              cpu: 4
+              memory: 6Gi
+        volumeMounts:
+        # Home dos usuarios  
+        - name: omnet-home
+          mountPath: /home
+        # etc
+        # - name: omnet-users
+        #   mountPath: /etc/shadow
+        #   subPath: shadow
+        # - name: omnet-users
+        #   mountPath: /etc/passwd
+        #   subPath: passwd
+        # - name: omnet-users
+        #   mountPath: /etc/group
+        #   subPath: group
+        # LDAP
+        - name: ldap-conf
+          mountPath: /etc/ldap.conf
+          subPath: ldap.conf
+        - name: ldap-ldap-conf
+          mountPath: /etc/ldap/ldap.conf
+          subPath: ldap.conf         
+        - name: nsswitch-ldap-conf
+          mountPath: /etc/nsswitch.conf
+          subPath: nsswitch.conf
+        - name: libnss-ldap-conf
+          mountPath: /etc/libnss-ldap.conf
+          subPath: libnss-ldap.conf
+        - name: pam-ldap-conf
+          mountPath: /etc/pam_ldap.conf
+          subPath: pam_ldap.conf
+        - name: pam-common-session
+          mountPath: /etc/pam.d/common-session
+          subPath: common-session
+        - name: ssh-keys
+          mountPath: /root/.ssh/authorized_keys
+          subPath: authorized_keys
+          readOnly: true
+      volumes:
+      - name: omnet-home
+        persistentVolumeClaim:
+          claimName: usuarios-home
+      - name: omnet-users
+        persistentVolumeClaim:
+          claimName: servicos-etc
+      # LDAP
+      - name: ldap-conf
+        configMap:
+          name: ldap-conf
+      - name: ldap-ldap-conf
+        configMap:
+          name: ldap-ldap-conf
+      - name: nsswitch-ldap-conf
+        configMap:
+          name: nsswitch-ldap-conf
+      - name: pam-ldap-conf
+        configMap:
+          name: pam-ldap-conf
+      - name: libnss-ldap-conf
+        configMap:
+          name: libnss-ldap-conf
+      - name: pam-common-session
+        configMap:
+          name: pam-common-session
+      # Authorized keys ctic root
+      - name: ssh-keys
+        secret:
+          secretName: authorized-keys-ctic
