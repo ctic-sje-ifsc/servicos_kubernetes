@@ -1,6 +1,28 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: ldap-conf
+data:
+  ldap.conf: |-
+    base dc=cefetsc,dc=edu,dc=br
+    uri ldap://191.36.8.12
+    ldap_version 3
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ldap-ldap-conf
+data:
+  ldap.conf: |-
+    base dc=cefetsc,dc=edu,dc=br
+    uri ldap://191.36.8.12
+    ldap_version 3
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: pam-ldap-conf
 data:
   pam_ldap.conf: |-

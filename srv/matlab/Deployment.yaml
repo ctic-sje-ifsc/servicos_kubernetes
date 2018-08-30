@@ -65,6 +65,7 @@ spec:
       - name: matlab-etc
         persistentVolumeClaim:
           claimName: matlab-etc
+      # LDAP
       - name: nsswitch-ldap-conf
         configMap:
           name: nsswitch-ldap-conf
@@ -77,6 +78,7 @@ spec:
       - name: pam-common-session
         configMap:
           name: pam-common-session
+      # Authorized keys ctic root
       - name: ssh-keys
         secret:
-          secretName: matlab
+          secretName: authorized-keys-ctic
