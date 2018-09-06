@@ -1,7 +1,9 @@
 all: delete create
 
+namespace = producao
+
 delete:
-	kubectl delete -f ConfigMap.yaml
+	kubectl delete --namespace=$(namespace) -f ConfigMap.yaml
 
 create:
-	kubectl create -f ConfigMap.yaml
+	kubectl create --namespace=$(namespace) -f ConfigMap.yaml
