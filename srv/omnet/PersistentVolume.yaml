@@ -19,15 +19,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: servicos-etc
+  name: omnet-servicos-etc
 spec:
   capacity:
     storage: 100Mi
   accessModes:
     - ReadWriteMany
-  storageClassName: servicos-etc
+  storageClassName: omnet-servicos-etc
   mountOptions:
     - nolock
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users/etc
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users

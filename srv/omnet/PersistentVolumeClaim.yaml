@@ -17,13 +17,13 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: servicos-etc
+  name: omnet-servicos-etc
   labels:
-    app: servicos-etc
+    app: omnet-servicos-etc
 spec:
   accessModes:
   - ReadWriteMany
   resources:
     requests:
       storage: 10Mi
-  storageClassName: servicos-etc
+  storageClassName: omnet-servicos-etc

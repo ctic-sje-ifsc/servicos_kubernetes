@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: omnet
-        image: cticsjeifsc/omnet:5.4.1
+        image: cticsjeifsc/omnet
         #securityContext:
         #  privileged: true
         ports:
@@ -31,12 +31,12 @@ spec:
         - name: omnet-home
           mountPath: /home
         # etc
-        # - name: omnet-users
-        #   mountPath: /etc/shadow
-        #   subPath: shadow
-        # - name: omnet-users
-        #   mountPath: /etc/passwd
-        #   subPath: passwd
+        - name: omnet-users
+          mountPath: /mnt/shadow
+          subPath: shadow
+        - name: omnet-users
+          mountPath: /mnt/passwd
+          subPath: passwd
         # - name: omnet-users
         #   mountPath: /etc/group
         #   subPath: group
@@ -69,7 +69,7 @@ spec:
           claimName: usuarios-home
       - name: omnet-users
         persistentVolumeClaim:
-          claimName: servicos-etc
+          claimName: omnet-servicos-etc
       # LDAP
       - name: ldap-conf
         configMap:

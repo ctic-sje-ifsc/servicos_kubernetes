@@ -34,12 +34,12 @@ spec:
         - name: quartus-home
           mountPath: /home
         # etc
-        # - name: quartus-users
-        #   mountPath: /etc/shadow
-        #   subPath: shadow
-        # - name: quartus-users
-        #   mountPath: /etc/passwd
-        #   subPath: passwd
+        - name: quartus-users
+          mountPath: /mnt/shadow
+          subPath: shadow
+        - name: quartus-users
+          mountPath: /mnt/passwd
+          subPath: passwd
         # - name: quartus-users
         #   mountPath: /etc/group
         #   subPath: group

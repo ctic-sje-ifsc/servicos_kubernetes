@@ -48,4 +48,4 @@ spec:
     - nolock
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users/etc
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users
