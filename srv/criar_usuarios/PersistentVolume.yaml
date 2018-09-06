@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: criar-usuarios-home
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: criar-usuarios-home
+  mountOptions:
+    - nolock
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/home
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: criar-usuarios-etc
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: criar-usuarios-etc
+  mountOptions:
+    - nolock
+  nfs:
+    server: storage1
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users/etc

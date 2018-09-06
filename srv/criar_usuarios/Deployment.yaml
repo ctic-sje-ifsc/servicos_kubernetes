@@ -1,0 +1,45 @@
+# subpath https://kubernetes.io/docs/concepts/storage/volumes/#using-subpath
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: criar-usuarios
+  labels:
+    app: criar-usuarios
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: criar-usuarios
+    spec:
+      containers:
+      - name: criar-usuarios
+        image: cticsjeifsc/base_debian_servicos_ensino_ctic
+        ports:
+        - name: ssh
+          containerPort: 22
+        volumeMounts:
+        # Home dos usuarios  
+        - name: criar-usuarios-home
+          mountPath: /home
+        # etc
+        - name: criar-usuarios-etc
+          mountPath: /etc
+          # # Authorized keys ctic root
+        - name: ssh-keys
+          mountPath: /root/.ssh/authorized_keys
+          subPath: authorized_keys
+          readOnly: true
+      volumes:
+      # Home dos usuarios   
+      - name: criar-usuarios-home
+        persistentVolumeClaim:
+          claimName: criar-usuarios-home
+      # etc
+      - name: criar-usuarios-etc
+        persistentVolumeClaim:
+          claimName: criar-usuarios-etc
+      # Authorized keys ctic root
+      - name: ssh-keys
+        secret:
+          secretName: authorized-keys-ctic

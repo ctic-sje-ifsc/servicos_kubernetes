@@ -1,0 +1,29 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: criar-usuarios-home
+  labels:
+    app: criar-usuarios-home
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: criar-usuarios-home
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: criar-usuarios-etc
+  labels:
+    app: criar-usuarios-etc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: criar-usuarios-etc
