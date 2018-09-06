@@ -3,7 +3,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: matlab
-  namespace: testes
   labels:
     app: matlab
 spec:
@@ -36,8 +35,15 @@ spec:
         - name: matlab-home
           mountPath: /home
         # etc
-        - name: matlab-etc
-          mountPath: /etc
+        - name: matlab-users
+          mountPath: /mnt/shadow
+          subPath: shadow
+        - name: matlab-users
+          mountPath: /mnt/passwd
+          subPath: passwd
+        # - name: matlab-users
+        #   mountPath: /etc/group
+        #   subPath: group
         # LDAP          
         - name: nsswitch-ldap-conf
           mountPath: /etc/nsswitch.conf
@@ -62,9 +68,9 @@ spec:
       - name: matlab-home
         persistentVolumeClaim:
           claimName: matlab-home
-      - name: matlab-etc
+      - name: matlab-users
         persistentVolumeClaim:
-          claimName: matlab-etc
+          claimName: matlab-servicos-etc
       # LDAP
       - name: nsswitch-ldap-conf
         configMap:

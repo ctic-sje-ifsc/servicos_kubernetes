@@ -37,15 +37,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: matlab-etc
+  name: matlab-servicos-etc
 spec:
   capacity:
     storage: 100Mi
   accessModes:
     - ReadWriteMany
-  storageClassName: matlab-etc
+  storageClassName: matlab-servicos-etc
   mountOptions:
     - nolock
   nfs:
     server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/matlab/etc
+    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users
