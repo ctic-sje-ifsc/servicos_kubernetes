@@ -43,6 +43,11 @@ spec:
         # - name: quartus-users
         #   mountPath: /etc/group
         #   subPath: group
+        #
+        # Script atualiza usuarios
+        - name: quartus-users
+          mountPath: /mnt/cron_att_users.sh
+          subPath: cron_att_users.sh 
         # LDAP
         - name: ldap-conf
           mountPath: /etc/ldap.conf
