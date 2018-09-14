@@ -37,9 +37,13 @@ spec:
         - name: omnet-users
           mountPath: /mnt/passwd
           subPath: passwd
-        # - name: omnet-users
-        #   mountPath: /etc/group
-        #   subPath: group
+        - name: omnet-users
+          mountPath: /mnt/group
+          subPath: group
+        # Script atualiza usuarios
+        - name: omnet-users
+          mountPath: /mnt/cron_att_users.sh
+          subPath: cron_att_users.sh 
         # LDAP
         - name: ldap-conf
           mountPath: /etc/ldap.conf

@@ -40,10 +40,9 @@ spec:
         - name: quartus-users
           mountPath: /mnt/passwd
           subPath: passwd
-        # - name: quartus-users
-        #   mountPath: /etc/group
-        #   subPath: group
-        #
+        - name: quartus-users
+          mountPath: /mntgroup
+          subPath: group
         # Script atualiza usuarios
         - name: quartus-users
           mountPath: /mnt/cron_att_users.sh
