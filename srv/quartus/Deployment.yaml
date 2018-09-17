@@ -41,7 +41,7 @@ spec:
           mountPath: /mnt/passwd
           subPath: passwd
         - name: quartus-users
-          mountPath: /mntgroup
+          mountPath: /mnt/group
           subPath: group
         # Script atualiza usuarios
         - name: quartus-users
