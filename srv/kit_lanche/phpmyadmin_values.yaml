@@ -1,0 +1,28 @@
+image:
+  registry: docker.io
+  repository: bitnami/phpmyadmin
+  tag: 4.8.2-debian-9
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 443
+
+db:
+  port: 3306
+  host: kit-lanche
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/tls-acme: "true"
+  path: /
+  host: bancokitlanche.sj.ifsc.edu.br
+  tls:
+   - secretName: tls-ifsc-sje-wildcard
+     hosts:
+       - bancokitlanche.sj.ifsc.edu.br
+
+probesEnabled: true
+
