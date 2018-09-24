@@ -36,7 +36,7 @@ spec:
             - name: MYSQL_DATABASE
               value: "cantinaifsc"
             - name: MYSQL_USER
-              value: "teste"
+              value: "banco"
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:

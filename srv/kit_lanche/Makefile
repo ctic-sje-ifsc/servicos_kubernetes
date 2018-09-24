@@ -3,7 +3,7 @@ all: delete create
 namespace = producao
 
 delete:
-    helm delete --purge kit-lanche-phpmyadmin
+	helm delete --purge kit-lanche-phpmyadmin
 	kubectl delete --namespace=$(namespace) -f Ingress.yaml
 	kubectl delete --namespace=$(namespace) -f Deployment.yaml
 	kubectl delete --namespace=$(namespace) -f Service.yaml
