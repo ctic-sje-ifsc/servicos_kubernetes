@@ -7,6 +7,7 @@ spec:
     storage: 110Mi
   accessModes:
     - ReadWriteOnce
+  storageClassName: hugo-web
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/hugo/output
@@ -22,6 +23,7 @@ spec:
     storage: 111Mi
   accessModes:
     - ReadWriteOnce
+  storageClassName: hugo-hugo-output 
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/hugo/output
@@ -37,6 +39,7 @@ spec:
     storage: 112Mi
   accessModes:
     - ReadWriteOnce
+  storageClassName: hugo-hugo-src
   nfs:
     server: storage1
     path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/hugo/src

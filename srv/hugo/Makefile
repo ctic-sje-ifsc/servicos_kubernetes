@@ -1,15 +1,17 @@
 all: delete create
 
+namespace = producao
+
 delete:
-	kubectl delete -f Ingress.yaml --namespace=producao
-	kubectl delete -f Service.yaml --namespace=producao
-	kubectl delete -f Deployment.yaml --namespace=producao
-	kubectl delete -f PersistentVolumeClaim.yaml --namespace=producao
-	kubectl delete -f PersistentVolume.yaml --namespace=producao
+	kubectl delete --namespace=$(namespace) -f Ingress.yaml --namespace=producao
+	kubectl delete --namespace=$(namespace) -f Service.yaml --namespace=producao
+	kubectl delete --namespace=$(namespace) -f Deployment.yaml --namespace=producao
+	kubectl delete --namespace=$(namespace) -f PersistentVolumeClaim.yaml --namespace=producao
+	kubectl delete --namespace=$(namespace) -f PersistentVolume.yaml --namespace=producao
 
 create:
-	kubectl create -f PersistentVolume.yaml --namespace=producao
-	kubectl create -f PersistentVolumeClaim.yaml --namespace=producao
-	kubectl create -f Deployment.yaml --namespace=producao
-	kubectl create -f Service.yaml --namespace=producao
-	kubectl create -f Ingress.yaml --namespace=producao
+	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml --namespace=producao
+	kubectl create --namespace=$(namespace) -f PersistentVolumeClaim.yaml --namespace=producao
+	kubectl create --namespace=$(namespace) -f Deployment.yaml --namespace=producao
+	kubectl create --namespace=$(namespace) -f Service.yaml --namespace=producao
+	kubectl create --namespace=$(namespace) -f Ingress.yaml --namespace=producao

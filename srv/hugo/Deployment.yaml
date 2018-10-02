@@ -15,15 +15,15 @@ spec:
       name: hugo-hugo
     spec:
       containers:
-      - image: jojomi/hugo:0.25.1
+      - image: jojomi/hugo
         name: hugo-hugo
         env:
-        - name: HUGO_BASEURL
-          value: "https://projetos.sj.ifsc.edu.br/"
+        # - name: HUGO_BASEURL
+        #   value: "https://nuvem.sj.ifsc.edu.br/"
         - name: HUGO_REFRESH_TIME
           value: "20"
-        - name: HUGO_THEME
-          value: "hugrid"
+        # - name: HUGO_THEME
+        #   value: "hugrid"
         volumeMounts:
         - mountPath: /src
           name: hugo-hugo-src

@@ -10,6 +10,7 @@ spec:
   resources:
     requests:
       storage: 110Mi
+  storageClassName: hugo-web
 
 ---
 
@@ -25,6 +26,7 @@ spec:
   resources:
     requests:
       storage: 111Mi
+  storageClassName: hugo-hugo-output
 
 ---
 
@@ -40,3 +42,4 @@ spec:
   resources:
     requests:
       storage: 112Mi
+  storageClassName: hugo-hugo-src
