@@ -1,25 +1,12 @@
 # kubernetes nfs-client-provisioner
 
-[![Docker Repository on Quay](https://quay.io/repository/external_storage/nfs-client-provisioner/status "Docker Repository on Quay")](https://quay.io/repository/external_storage/nfs-client-provisioner)
+Baseado em https://github.com/helm/charts/tree/master/stable/nfs-client-provisioner
 
-- pv provisioned as ${namespace}-${pvcName}-${pvName}
-- pv recycled as archieved-${namespace}-${pvcName}-${pvName}
-
-# deploy
-
-```console
-$ kubectl create -f deploy/auth/serviceaccount.yaml
-$ kubectl create -f deploy/auth/clusterrole.yaml
-$ kubectl create -f deploy/auth/clusterrolebinding.yaml
-$ kubectl create -f deploy/deployment.yaml
-$ kubectl create -f deploy/class.yaml
+```
+$ helm install --name nfsclient --set nfs.server=191.36.8.69 --set nfs.path=/home/public/ stable/nfs-client-provisioner
 ```
 
-
-# test
-- `kubectl create -f deploy/test-claim.yaml`
-- `kubectl create -f deploy/test-pod.yaml`
-- check the folder and file "SUCCESS" created
-- `kubectl delete -f deploy/test-pod.yaml`
-- `kubectl delete -f deploy/test-claim.yaml`
-- check the folder renamed to `archived-???`
+Para definir como default:
+```
+$ kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+```
