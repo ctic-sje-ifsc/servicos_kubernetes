@@ -8,4 +8,4 @@ delete:
 
 create:
 	kubectl create -f PersistentVolume.yaml
-	helm upgrade --install eclipse-che --namespace $(namespace) -f values2.yaml che/deploy/kubernetes/helm/che/.
+	helm upgrade --install eclipse-che --namespace $(namespace) -f values2.yaml helm/.
