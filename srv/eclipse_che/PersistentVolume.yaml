@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-data
+  name: che-postgres
 spec:
   capacity:
     storage: 2Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: che-postgres
   mountOptions:
     - nolock    
   nfs:
@@ -16,12 +17,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: keycloak-log
+  name: che-keycloak-log
 spec:
   capacity:
     storage: 2Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: che-keycloak-log
   mountOptions:
     - nolock    
   nfs:
@@ -31,12 +33,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: keycloak-data
+  name: che-keycloak-data
 spec:
   capacity:
     storage: 2Gi
   accessModes:
     - ReadWriteOnce
+  storageClassName: che-keycloak-data
   mountOptions:
     - nolock    
   nfs:
