@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etorresini-sshd
+  namespace: tcc
+  labels:
+    app: etorresini-sshd
+data:
+  authorized_keys: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDm6baOg9AXEsNZCDwmIr32SEwfhoVvmT4WrsfMtJlPD5zfpGydC0oNbBtmB7DbwANSs79hCgsQw2SGgOumUQMPTCjdrK3DgpUuHZHnLbf/LdOvaM34HzVEwSJ8E24H3272ypdW9LxpNfDp3lwVv9UHQqc1pZ69nQkkEOq7OMozQD8inWDLhMfdXfkGtr8LwYV+Cq9H0jy+V5yAYkC5wMwf/uIVTwfocPZ4wn0iQTj6l/JVInb6A1RsxfhSbHtU+AXYxVa5zi/KJFSExkaIiuKYdTTN6/4jRJuwld7SdJ+f4c8Vh481WqisJCF339lGcVbfoTGdk7JwRNj/rWJrzBCZelVJxohB9eMC5yG6HFWQTb3CwboR6trQ0BK/pcwQMx90UlA8LEdNrGziO8djZIYvT4SWoZEwTe7Wq6s++YNkjs0Jjca+nK0xbci10zgApDUhWhArBdF0hIjVK22Q3g0HizpiwzTohcQfvMyIgrUmXXPAIbFF6Zit57PxzNQn9zHjz+eyznlIh119TnnbRnY7rYL9BT1sEqmb4lpl/H5H4iSfvVLsXrhWu3tXAkBFV1mUcSznfnjUJvLLPVY/p8dc5k4Ux57pOhuhwaGUC2UVjPGWRZw3hvcnqVESOPw8PduP/RWRz6xRH5BgO6YKRvvRhMtTp5+K7CSxgpBuCUcN3Q== boidacarapreta@gmail.com
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: etorresini-sshd
+  namespace: tcc
+  labels:
+    app: etorresini-sshd
+spec:
+  externalIPs:
+    - "191.36.8.21"
+    - "191.36.8.22"
+    - "191.36.8.23"
+    - "191.36.8.24"
+    - "191.36.8.25"
+  ports:
+    - name: ssh
+      port: 29010
+      protocol: TCP
+      targetPort: 22
+  selector:
+    app: etorresini-sshd
+  type: LoadBalancer
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: etorresini-sshd
+  namespace: tcc
+  labels:
+    app: etorresini-sshd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: etorresini-sshd
+    spec:
+      containers:
+      - name: etorresini-sshd
+        image: docker.io/webdevops/ssh:latest
+        ports:
+        - name: ssh
+          containerPort: 22
+        resources:
+          requests:
+            cpu: 1
+            memory: 256Mi
+          limits:
+            cpu: 4
+            memory: 16Gi
+        volumeMounts:
+        - name: ssh-keys
+          mountPath: /root/.ssh/authorized_keys
+          subPath: authorized_keys
+          readOnly: true
+      volumes:
+      - name: ssh-keys
+        configMap:
+          name: etorresini-sshd
