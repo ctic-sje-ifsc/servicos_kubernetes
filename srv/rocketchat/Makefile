@@ -8,4 +8,4 @@ delete:
 
 create:
 	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml
-	helm install --name rocketchat --namespace $(namespace) -f values.yaml stable/rocketchat
+	helm install --name rocketchat --namespace $(namespace) -f values.yaml stable/rocketchat --version=0.1.3
