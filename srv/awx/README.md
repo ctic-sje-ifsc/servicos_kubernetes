@@ -34,6 +34,16 @@ Depois executado o comando:
 $ ansible-playbook -i inventory install.yml
 ```
 
+Deletar o ingress padrão criado:
+```bash
+$ kubectl delete ingress awx-web-svc -n awx
+```	
+
+Criar a chave com os certificados do https no namespace awx:
+```bash
+$ kubectl create -f Secret.yaml -n awx
+```	
+
 Criar o ingress:
 
 ```bash
