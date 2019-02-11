@@ -3,11 +3,15 @@ apiVersion: extensions/v1beta1
 metadata:
   name: mediawiki
 spec:
+  tls:
+    - hosts:
+        - mediawiki.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: mediawiki.sj.ifsc.edu.br
       http:
         paths:
           - path: /
             backend:
-              serviceName: mediawiki
+              serviceName: mediawiki-mediawiki
               servicePort: 80

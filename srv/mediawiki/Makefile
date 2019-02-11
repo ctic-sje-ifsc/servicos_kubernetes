@@ -1,21 +1,11 @@
 all: delete create
 
-namespace = desenvolvimento
-
 delete:
-	kubectl delete --namespace=$(namespace) -f Ingress.yaml
-	kubectl delete --namespace=$(namespace) -f Service.yaml
-	kubectl delete --namespace=$(namespace) -f Deployment.yaml
-	kubectl delete --namespace=$(namespace) -f PersistentVolumeClaim.yaml
-	kubectl delete --namespace=$(namespace) -f PersistentVolume.yaml
-	kubectl delete --namespace=$(namespace) -f ConfigMap.yaml
-	kubectl delete --namespace=$(namespace) -f Secrets.yaml
+	helm delete --purge mediawiki
+	kubectl delete -f Ingress.yaml
+	kubectl delete -f PersistentVolume.yaml
 
 create:
-	kubectl create --namespace=$(namespace) -f Secrets.yaml
-	kubectl create --namespace=$(namespace) -f ConfigMap.yaml
-	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml
-	kubectl create --namespace=$(namespace) -f PersistentVolumeClaim.yaml
-	kubectl create --namespace=$(namespace) -f Deployment.yaml
-	kubectl create --namespace=$(namespace) -f Service.yaml
-	kubectl create --namespace=$(namespace) -f Ingress.yaml
+	kubectl create -f PersistentVolume.yaml
+	kubectl create -f Ingress.yaml
+	helm install --name mediawiki -f values.yaml stable/mediawiki
