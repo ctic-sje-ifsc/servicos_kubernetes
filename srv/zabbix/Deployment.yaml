@@ -38,6 +38,13 @@ spec:
             value: "true"
           - name: PHP_date_timezone
             value: "America/Sao_Paulo"
+          volumeMounts:
+          - name: zabbix-scripts
+            mountPath: /usr/local/share/zabbix/alertscripts/
+      volumes:
+      - name: zabbix-scripts
+        persistentVolumeClaim:
+          claimName: zabbix-scripts
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -121,3 +128,10 @@ spec:
             value: "true"
           - name: PHP_date_timezone
             value: "America/Sao_Paulo"
+          volumeMounts:
+          - name: zabbix-scripts
+            mountPath: /usr/local/share/zabbix/alertscripts/
+      volumes:
+      - name: zabbix-scripts
+        persistentVolumeClaim:
+          claimName: zabbix-scripts
