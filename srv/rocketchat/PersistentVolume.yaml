@@ -11,8 +11,8 @@ spec:
   mountOptions:
     - nolock    
   nfs:
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/mongo
-    server: storage1
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/mongo
+    server: 191.36.8.71
 
 ---
 
@@ -29,5 +29,5 @@ spec:
   mountOptions:
     - nolock    
   nfs:
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/data
-    server: storage1
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/data
+    server: 191.36.8.71

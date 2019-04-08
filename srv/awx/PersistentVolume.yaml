@@ -11,5 +11,5 @@
     mountOptions:
       - nolock    
     nfs:
-      path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/awx/postgresql
-      server: storage1
+      path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/awx/postgresql
+      server: 191.36.8.71

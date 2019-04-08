@@ -10,8 +10,9 @@ spec:
     storage: 100Mi
   accessModes:
     - ReadWriteMany
+  storageClassName: mosquitto-mosquitto-data
   mountOptions:
     - nolock
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/mosquitto/mosquitto/data
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mosquitto/mosquitto/data

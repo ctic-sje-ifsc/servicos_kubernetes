@@ -11,8 +11,8 @@ spec:
   mountOptions:
     - nolock    
   nfs:
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/postgres
-    server: storage1
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/postgres
+    server: 191.36.8.71
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -27,8 +27,8 @@ spec:
   mountOptions:
     - nolock    
   nfs:
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/keycloak/log
-    server: storage1
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/keycloak/log
+    server: 191.36.8.71
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -43,5 +43,5 @@ spec:
   mountOptions:
     - nolock    
   nfs:
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/keycloak/data
-    server: storage1
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/keycloak/data
+    server: 191.36.8.71

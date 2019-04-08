@@ -14,8 +14,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/grafana
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/grafana
 ```
 
 o PVC:

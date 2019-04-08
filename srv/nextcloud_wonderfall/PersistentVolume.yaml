@@ -8,8 +8,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/redis
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/redis
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -21,8 +21,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/db
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/db
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -34,8 +34,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/themes
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/themes
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -47,8 +47,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/apps
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/apps
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -60,8 +60,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/config
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/config
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -73,5 +73,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/data
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud_wonderfall/nextcloud/data

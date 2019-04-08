@@ -9,8 +9,8 @@ spec:
     - ReadWriteOnce
   storageClassName: hugo-web
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/hugo/output
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/hugo/output
 
 ---
 
@@ -25,8 +25,8 @@ spec:
     - ReadWriteOnce
   storageClassName: hugo-hugo-output 
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/hugo/output
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/hugo/output
 
 ---
 
@@ -41,5 +41,5 @@ spec:
     - ReadWriteOnce
   storageClassName: hugo-hugo-src
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/hugo/src
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/hugo/src

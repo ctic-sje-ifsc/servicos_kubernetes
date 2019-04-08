@@ -8,8 +8,8 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/sharelatex/mongo
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/sharelatex/mongo
 
 ---
 
@@ -23,8 +23,8 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/sharelatex/redis
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/sharelatex/redis
 
 ---
 
@@ -38,5 +38,5 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/sharelatex/sharelatex
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/sharelatex/sharelatex

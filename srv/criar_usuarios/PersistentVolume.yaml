@@ -11,8 +11,8 @@ spec:
   mountOptions:
     - nolock
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/home
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
 
 ---
 
@@ -29,5 +29,5 @@ spec:
   mountOptions:
     - nolock
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/users/etc
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/users/etc

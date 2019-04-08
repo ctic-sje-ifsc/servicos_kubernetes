@@ -11,8 +11,8 @@
     mountOptions:
       - nolock    
     nfs:
-      path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/mariadb
-      server: storage1
+      path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/mariadb
+      server: 191.36.8.71
 
 ---
 
@@ -29,8 +29,8 @@
     mountOptions:
       - nolock    
     nfs:
-      path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/mediawiki
-      server: storage1
+      path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/mediawiki
+      server: 191.36.8.71
 
 ---
 
@@ -47,5 +47,5 @@
     mountOptions:
       - nolock    
     nfs:
-      path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/apache
-      server: storage1
+      path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/apache
+      server: 191.36.8.71

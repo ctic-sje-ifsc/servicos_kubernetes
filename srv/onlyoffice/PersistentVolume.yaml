@@ -8,8 +8,8 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/cache
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/cache
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -21,8 +21,8 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/fonts
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/onlyoffice/fonts
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -34,5 +34,5 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/postgresql
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/onlyoffice/postgresql

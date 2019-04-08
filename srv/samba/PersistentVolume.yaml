@@ -15,8 +15,8 @@ spec:
   mountOptions:
     - nolock
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/lib
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/samba/lib
 
 ---
 
@@ -37,8 +37,8 @@ spec:
   mountOptions:
     - nolock
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/log
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/samba/log
 
 ---
 
@@ -59,8 +59,8 @@ spec:
   mountOptions:
     - nolock
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/dados/home
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/samba/dados/home
 
 ---
 
@@ -81,5 +81,5 @@ spec:
   mountOptions:
     - nolock
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/samba/dados/grupos
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/samba/dados/grupos

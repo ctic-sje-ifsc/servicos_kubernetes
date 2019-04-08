@@ -8,8 +8,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud/data
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud/data
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -21,8 +21,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud/redis
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud/redis
 ---
 
 apiVersion: v1
@@ -35,5 +35,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    server: storage1
-    path: /mnt/storage/storage/kubernetes/ifsc/sje/a/saas/srv/nextcloud/mariadb
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/nextcloud/mariadb
