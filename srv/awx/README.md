@@ -16,7 +16,7 @@ $ kubectl create -f PersistentVolumeClaim.yaml
 Instalado o [PostgreSQL](https://github.com/kubernetes/charts/tree/master/stable/postgresql) via [helm charts](https://github.com/kubernetes/charts) com o seguinte comando:
 
 ```bash
-helm install --name awx --namespace awx --set postgresUser=awx,postgresPassword=XXXX,postgresDatabase=awx,persistence.existingClaim=pvc-awx-postgresql stable/postgresql
+	helm install --name awx --namespace awx --set postgresqlUsername=awx,postgresPassword=XXXXX,postgresDatabase=awx,persistence.existingClaim=pvc-awx-postgresql stable/postgresql --version=1.0.0
 ```
 
 Modificado as seguintes linhas do arquivo [inventory:](https://github.com/ansible/awx/blob/devel/installer/inventory)
