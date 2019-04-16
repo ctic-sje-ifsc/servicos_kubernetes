@@ -1,0 +1,30 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: motioneye-config
+  labels:
+    app: motioneye-config
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: motioneye-config
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: motioneye-gravacoes
+  labels:
+    app: motioneye-gravacoes
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: motioneye-gravacoes
+

@@ -14,6 +14,7 @@ delete:
 	make -C mediawiki_att delete
 	make -C kit_lanche delete
 	make -C hugo delete
+	make -C motioneye delete
 	kubectl delete ns awx
 	make -C ldap_config delete
 
@@ -33,4 +34,5 @@ create:
 	make -C mediawiki_att create
 	make -C kit_lanche create
 	make -C hugo create
+	make -C motioneye create
 	echo "ATENÇÃO - O serviço AWX deve ser iniciado na mão, como descrito no readme."

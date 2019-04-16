@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: motioneye
+  labels:
+    app: motioneye
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: motioneye
+    spec:
+      containers:
+      - name: motioneye
+        image: ccrisan/motioneye:docker-amd64
+        ports:
+        - name: web
+          containerPort: 8765
+        resources:
+          requests:
+            cpu: 4
+            memory: 2Gi
+          limits:
+            cpu: 6
+            memory: 4Gi
+        volumeMounts:
+        - name: motioneye-config
+          mountPath: /etc/motioneye
+        - name: motioneye-gravacoes
+          mountPath: /var/lib/motioneye
+      volumes:
+      - name: motioneye-config
+        persistentVolumeClaim:
+          claimName: motioneye-config
+      - name: motioneye-gravacoes
+        persistentVolumeClaim:
+          claimName: motioneye-gravacoes
