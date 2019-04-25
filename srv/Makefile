@@ -10,8 +10,9 @@ delete:
 #	helm delete --purge weave-scope
 	make -C fogproject delete
 	make -C matlab delete
-	make -C mediawiki delete
-	make -C mediawiki_att delete
+	make -C quartus delete
+	make -C omnet delete
+	make -C mosquitto delete
 	make -C kit_lanche delete
 	make -C hugo delete
 	make -C motioneye delete
@@ -30,8 +31,9 @@ create:
 #	helm install stable/weave-scope --name weave-scope --namespace producao
 	make -C fogproject create
 	make -C matlab create
-	make -C mediawiki create
-	make -C mediawiki_att create
+	make -C quartus create
+	make -C omnet create
+	make -C mosquitto create
 	make -C kit_lanche create
 	make -C hugo create
 	make -C motioneye create
