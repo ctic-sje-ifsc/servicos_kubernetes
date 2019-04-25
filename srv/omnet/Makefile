@@ -1,6 +1,6 @@
 all: delete create
 
-namespace = testes
+namespace = producao
 
 delete:
 	kubectl delete --namespace=$(namespace) -f Deployment.yaml
