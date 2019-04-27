@@ -18,6 +18,8 @@ delete:
 	make -C motioneye delete
 	kubectl delete ns awx
 	make -C ldap_config delete
+	make -C criar_usuarios delete
+	make -C cronJob_att_usuarios delete
 
 create:
 	make -C ldap_config create
@@ -29,6 +31,8 @@ create:
 #	make -C openproject create
 #	make -C kubernetes-dashboard create
 #	helm install stable/weave-scope --name weave-scope --namespace producao
+	make -C criar_usuarios create
+	make -C cronJob_att_usuarios create
 	make -C fogproject create
 	make -C matlab create
 	make -C quartus create
