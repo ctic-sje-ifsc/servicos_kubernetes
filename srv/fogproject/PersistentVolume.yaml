@@ -13,3 +13,21 @@ spec:
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/fogproject/mysql
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fogproject-pmagic
+spec:
+  capacity:
+    storage: 1501Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fogproject-pmagic
+  mountOptions:
+    - nolock
+  nfs:
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/fogproject/pmagic

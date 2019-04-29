@@ -11,3 +11,19 @@ spec:
     requests:
       storage: 1501Gi
   storageClassName: fogproject-mysql
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: fogproject-pmagic
+  name: fogproject-pmagic
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1501Gi
+  storageClassName: fogproject-pmagic
