@@ -47,7 +47,7 @@ spec:
             command:
             - mysqladmin
             - ping
-          initialDelaySeconds: 30
+          initialDelaySeconds: 100
           timeoutSeconds: 5
         resources:
           requests:
@@ -133,7 +133,7 @@ spec:
             path: /wp-login.php
             port: 443
             scheme: HTTPS
-          initialDelaySeconds: 120
+          initialDelaySeconds: 500
           timeoutSeconds: 5
           failureThreshold: 6
         volumeMounts:
