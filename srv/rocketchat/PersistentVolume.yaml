@@ -4,12 +4,12 @@ metadata:
   name: rocketchat-mongo-database
 spec:
   capacity:
-    storage: 2Gi
+    storage: 10Gi
   accessModes:
     - ReadWriteOnce
   storageClassName: rocketchat-mongo-database
   mountOptions:
-    - nolock    
+    - nolock
   nfs:
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/mongo
     server: 191.36.8.71
@@ -27,7 +27,7 @@ spec:
     - ReadWriteOnce
   storageClassName: rocketchat-data
   mountOptions:
-    - nolock    
+    - nolock
   nfs:
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/rocket.chat/data
     server: 191.36.8.71
