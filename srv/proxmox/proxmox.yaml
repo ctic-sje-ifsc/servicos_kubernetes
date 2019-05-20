@@ -48,3 +48,27 @@ spec:
             backend:
               serviceName: external-proxmox
               servicePort: 8006
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: external-virtualizador
+  namespace: producao
+  annotations:
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  tls:
+    - hosts:
+        - virtualizador.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: virtualizador.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: external-proxmox
+              servicePort: 8006
