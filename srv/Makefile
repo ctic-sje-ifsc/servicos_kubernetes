@@ -1,13 +1,10 @@
 all: delete create
 
 delete:
-#	make -C kubernetes-dashboard delete
 	make -C zabbix delete
 	make -C wordpress delete
 	make -C netbox delete
 	make -C rocketchat delete
-#	make -C openproject delete
-#	helm delete --purge weave-scope
 	make -C fogproject delete
 	make -C matlab delete
 	make -C quartus delete
@@ -20,17 +17,16 @@ delete:
 	make -C ldap_config delete
 	make -C criar_usuarios delete
 	make -C cronJob_att_usuarios delete
+	make -C proxmox delete
 
 create:
+	make -C proxmox create
 	make -C ldap_config create
 	helm init --service-account tiller
 	make -C zabbix create
 	make -C wordpress create
 	make -C netbox create
 	make -C rocketchat create
-#	make -C openproject create
-#	make -C kubernetes-dashboard create
-#	helm install stable/weave-scope --name weave-scope --namespace producao
 	make -C criar_usuarios create
 	make -C cronJob_att_usuarios create
 	make -C fogproject create
@@ -41,4 +37,4 @@ create:
 	make -C kit_lanche create
 	make -C hugo create
 	make -C motioneye create
-	echo "ATENÇÃO - O serviço AWX deve ser iniciado na mão, como descrito no readme."
+	echo "ATENÇÃO: o serviço AWX deve ser iniciado na mão, como descrito no README.md."

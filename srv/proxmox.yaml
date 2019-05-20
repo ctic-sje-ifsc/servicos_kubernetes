@@ -1,0 +1,50 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: external-proxmox
+  namespace: producao
+spec:
+  ports:
+  - protocol: TCP
+    port: 8006
+
+---
+
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: external-proxmox
+  namespace: producao
+subsets:
+- addresses:
+  - ip: 191.36.8.9
+  - ip: 191.36.8.11
+  - ip: 191.36.8.25
+  - ip: 191.36.8.26
+  - ip: 191.36.8.27
+  ports:
+  - port: 8006
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: external-proxmox
+  namespace: producao
+  annotations:
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  tls:
+    - hosts:
+        - proxmox.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: proxmox.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: external-proxmox
+              servicePort: 8006
