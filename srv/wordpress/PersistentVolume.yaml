@@ -9,7 +9,8 @@ spec:
     - ReadWriteOnce
   storageClassName: wordpress-mariadb
   mountOptions:
-    - nolock  
+    - nolock
+    - nfsvers=3  
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/wordpress/mariadb
@@ -27,7 +28,8 @@ spec:
     - ReadWriteOnce
   storageClassName: wordpress-wordpress
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/wordpress/wordpress

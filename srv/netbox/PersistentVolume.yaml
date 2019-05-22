@@ -9,7 +9,8 @@ spec:
     - ReadWriteOnce
   storageClassName: netbox-postgresql
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/netbox/postgresql/base

@@ -10,6 +10,7 @@ spec:
   storageClassName: quartus-root
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/quartus
@@ -28,6 +29,7 @@ spec:
   storageClassName: quartus-usuarios-home
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
@@ -46,6 +48,7 @@ spec:
   storageClassName: quartus-servicos-etc
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/users

@@ -9,7 +9,8 @@
       - ReadWriteOnce
     storageClassName: awx-postgresql
     mountOptions:
-      - nolock    
+      - nolock
+      - nfsvers=3    
     nfs:
       path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/awx/postgresql
       server: 191.36.8.71

@@ -9,7 +9,8 @@ spec:
     - ReadWriteOnce
   storageClassName: kit-lanche-mariadb-dump
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/mariadb/dump
@@ -27,7 +28,8 @@ spec:
     - ReadWriteOnce
   storageClassName: kit-lanche-mariadb-base
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/mariadb/base
@@ -45,7 +47,8 @@ spec:
     - ReadWriteOnce
   storageClassName: kit-lanche-code
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/code

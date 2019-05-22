@@ -10,6 +10,7 @@ spec:
   storageClassName: criar-usuarios-home
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
@@ -28,6 +29,7 @@ spec:
   storageClassName: criar-usuarios-etc
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/users/etc

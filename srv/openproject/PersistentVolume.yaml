@@ -9,7 +9,8 @@ spec:
     - ReadWriteMany
   storageClassName: openproject-log
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/openproject/log
@@ -27,7 +28,8 @@ spec:
     - ReadWriteMany
   storageClassName: openproject-openproject
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/openproject/openproject
@@ -45,7 +47,8 @@ spec:
     - ReadWriteOnce
   storageClassName: openproject-postgresql
   mountOptions:
-    - nolock 
+    - nolock
+    - nfsvers=3 
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/openproject/postgresql

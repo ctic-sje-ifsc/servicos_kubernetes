@@ -10,6 +10,7 @@ spec:
   storageClassName: fogproject-mysql
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/fogproject/mysql
@@ -28,6 +29,7 @@ spec:
   storageClassName: fogproject-pmagic
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/fogproject/pmagic

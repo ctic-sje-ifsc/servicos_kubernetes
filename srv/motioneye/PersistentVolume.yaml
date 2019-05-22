@@ -11,6 +11,9 @@ spec:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/motioneye/config
   storageClassName: motioneye-config
+  mountOptions:
+    - nolock
+    - nfsvers=3
 
 ---
 
@@ -27,3 +30,6 @@ spec:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/motioneye/gravacoes
   storageClassName: motioneye-gravacoes
+  mountOptions:
+    - nolock
+    - nfsvers=3

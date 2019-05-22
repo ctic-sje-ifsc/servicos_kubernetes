@@ -10,6 +10,7 @@ spec:
   storageClassName: cronjobattusuarios-path
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/users

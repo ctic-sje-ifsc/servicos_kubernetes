@@ -9,7 +9,8 @@
       - ReadWriteOnce
     storageClassName: mediawikiatt-mariadb
     mountOptions:
-      - nolock    
+      - nolock
+      - nfsvers=3    
     nfs:
       path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/mariadb
       server: 191.36.8.71
@@ -27,7 +28,8 @@
       - ReadWriteOnce
     storageClassName: mediawikiatt-mediawiki
     mountOptions:
-      - nolock    
+      - nolock
+      - nfsvers=3    
     nfs:
       path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/mediawiki
       server: 191.36.8.71
@@ -45,7 +47,8 @@
       - ReadWriteOnce
     storageClassName: mediawikiatt-apache
     mountOptions:
-      - nolock    
+      - nolock
+      - nfsvers=3    
     nfs:
       path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki_att/apache
       server: 191.36.8.71

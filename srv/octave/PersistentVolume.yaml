@@ -10,6 +10,9 @@ spec:
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
+  mountOptions:
+    - nolock
+    - nfsvers=3
 
 ---
 
@@ -25,3 +28,6 @@ spec:
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/users
+  mountOptions:
+    - nolock
+    - nfsvers=3

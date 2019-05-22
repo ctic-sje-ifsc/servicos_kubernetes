@@ -10,6 +10,7 @@ spec:
   storageClassName: mediawiki-mariadb
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki/mariadb
     server: 191.36.8.71
@@ -28,6 +29,7 @@ spec:
   storageClassName: mediawiki-mediawiki
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki/mediawiki
     server: 191.36.8.71

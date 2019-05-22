@@ -13,6 +13,7 @@ spec:
   storageClassName: mosquitto-mosquitto-data
   mountOptions:
     - nolock
+    - nfsvers=3
   nfs:
     server: 191.36.8.71
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mosquitto/mosquitto/data

@@ -9,7 +9,8 @@ spec:
     - ReadWriteOnce
   storageClassName: che-postgres
   mountOptions:
-    - nolock    
+    - nolock
+    - nfsvers=3    
   nfs:
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/postgres
     server: 191.36.8.71
@@ -25,7 +26,8 @@ spec:
     - ReadWriteOnce
   storageClassName: che-keycloak-log
   mountOptions:
-    - nolock    
+    - nolock
+    - nfsvers=3    
   nfs:
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/keycloak/log
     server: 191.36.8.71
@@ -41,7 +43,8 @@ spec:
     - ReadWriteOnce
   storageClassName: che-keycloak-data
   mountOptions:
-    - nolock    
+    - nolock
+    - nfsvers=3    
   nfs:
     path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/eclipse_che/keycloak/data
     server: 191.36.8.71
