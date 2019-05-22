@@ -1,7 +1,7 @@
 all: delete create
 
 delete:
-	kubectl delete -f HorizontalPodAutoscaler.yaml --namespace=desenvolvimento
+	# kubectl delete -f HorizontalPodAutoscaler.yaml --namespace=desenvolvimento
 	kubectl delete -f Service.yaml --namespace=desenvolvimento
 	kubectl delete -f Deployment.yaml --namespace=desenvolvimento
 	kubectl delete -f PersistentVolumeClaim.yaml --namespace=desenvolvimento
@@ -12,5 +12,5 @@ create:
 	kubectl create -f PersistentVolumeClaim.yaml --namespace=desenvolvimento
 	kubectl create -f Deployment.yaml --namespace=desenvolvimento
 	kubectl create -f Service.yaml --namespace=desenvolvimento
-	kubectl create -f HorizontalPodAutoscaler.yaml --namespace=desenvolvimento
+	# kubectl create -f HorizontalPodAutoscaler.yaml --namespace=desenvolvimento
 	
