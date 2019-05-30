@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-bareos-sd-continente-conf
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/bareos-sd-continente/
+  storageClassName: pv-bareos-sd-continente-conf
+  mountOptions:
+    - nolock
+    - nfsvers=3
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-bareos-sd-continente-bkp
+spec:
+  capacity:
+    storage: 1000Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/bareos-sd-continente/backup
+  storageClassName: pv-bareos-sd-continente-bkp
+  mountOptions:
+    - nolock
+    - nfsvers=3

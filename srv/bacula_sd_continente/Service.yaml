@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: svc-bareos-sd-continente
+  name: svc-bareos-sd-continente
+spec:
+  ports:
+    - name: bareos
+      port: 9103
+      protocol: TCP
+      targetPort: 9103
+  selector:
+    app: bareos-sd-continente

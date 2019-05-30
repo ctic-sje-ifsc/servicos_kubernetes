@@ -1,0 +1,29 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv-bareos-sd-continente-conf
+  labels:
+    app: pv-bareos-sd-continente-conf
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: pv-bareos-sd-continente-conf
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv-bareos-sd-continente-bkp
+  labels:
+    app: pv-bareos-sd-continente-bkp
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+  storageClassName: pv-bareos-sd-continente-bkp
