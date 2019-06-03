@@ -5,6 +5,17 @@ metadata:
     app: svc-bareos-sd-continente
   name: svc-bareos-sd-continente
 spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.9"
+    - "191.36.8.11"
+    - "191.36.8.21"
+    - "191.36.8.22"
+    - "191.36.8.23"
+#    - "191.36.8.24"
+    - "191.36.8.25"
+    - "191.36.8.26"
+    - "191.36.8.27"
   ports:
     - name: bareos
       port: 9103
@@ -12,3 +23,4 @@ spec:
       targetPort: 9103
   selector:
     app: bareos-sd-continente
+  type: LoadBalancer
