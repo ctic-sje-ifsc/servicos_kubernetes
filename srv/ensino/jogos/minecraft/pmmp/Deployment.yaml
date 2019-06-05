@@ -17,12 +17,18 @@ spec:
           name: pocketmine-mp
           ports:
             - containerPort: 19132
-              name: minecraft
+              name: pmmp-tcp
+              protocol: TCP
+            - containerPort: 19132
+              name: pmmp-udp
               protocol: UDP
           resources:
             limits:
               cpu: 1
               memory: 1Gi
+            requests:
+              cpu: 250m
+              memory: 512Mi
           volumeMounts:
             - mountPath: /data
               name: data
