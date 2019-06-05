@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: pocketmine-mp
+  name: pocketmine-mp-data
+  namespace: ensino
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  mountOptions:
+    - nolock
+  nfs:
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/ensino/jogos/minecraft/pmmp
+    server: nfs
+  storageClassName: pocketmine-mp-data

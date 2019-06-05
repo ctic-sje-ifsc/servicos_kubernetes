@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: pocketmine-mp
+  name: pocketmine-mp
+  namespace: ensino
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pocketmine-mp
+    spec:
+      containers:
+        - image: docker.io/pmmp/pocketmine-mp
+          name: pocketmine-mp
+          ports:
+            - containerPort: 19132
+              name: minecraft
+              protocol: UDP
+          resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /data
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: pocketmine-mp-data

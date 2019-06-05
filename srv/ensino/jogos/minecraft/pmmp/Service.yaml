@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pocketmine-mp
+  name: pocketmine-mp
+  namespace: ensino
+spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.9"
+    - "191.36.8.11"
+    - "191.36.8.21"
+    - "191.36.8.22"
+    - "191.36.8.23"
+    - "191.36.8.25"
+    - "191.36.8.26"
+    - "191.36.8.27"
+  ports:
+    - name: pocketmine-mp
+      port: 19132
+      protocol: UDP
+      targetPort: 19132
+  selector:
+    app: pocketmine-mp
+  type: LoadBalancer
