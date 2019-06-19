@@ -1,0 +1,99 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: netbox
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: netbox
+    spec:
+      containers:
+        - image: postgres:9.6
+          name: netbox-postgresql
+          env:
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: netbox-secret
+                  key: postgresql_password
+            - name: POSTGRES_DB
+              value: "netbox"
+          volumeMounts:
+            - name: netbox-postgresql-base
+              mountPath: "/var/lib/postgresql/data/pgdata"
+        - image: netboxcommunity/netbox
+          name: netbox-netbox
+          env:
+            - name: SUPERUSER_NAME
+              value: "admin"
+            - name: SUPERUSER_EMAIL
+              value: "ti.gw@@.ifsc.edu.br"
+            - name: SUPERUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: netbox-secret
+                  key: netbox_superuser_password
+            - name: ALLOWED_HOSTS
+              value: "*"
+            - name: DB_NAME
+              value: "netbox"
+            - name: DB_USER
+              value: "postgres"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: netbox-secret
+                  key: netbox_db_password
+            - name: DB_HOST
+              value: "localhost"
+            - name: DB_PORT
+              value: "5432"
+            - name: NETBOX_USERNAME
+              value: "admin"
+            - name: NETBOX_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: netbox-secret
+                  key: netbox_password
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: netbox-secret
+                  key: netbox_secret_key
+          volumeMounts:
+            - name: netbox-netbox-static
+              mountPath: /opt/netbox/netbox/static
+        - image: nginx:1.13.1
+          name: netbox-nginx
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: netbox-nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+            - name: netbox-netbox-static
+              mountPath: /opt/netbox/netbox/static
+      restartPolicy: Always
+      volumes:
+      - name: netbox-secret
+        secret:
+          secretName: netbox-secret
+      - name: netbox-postgresql-base
+        persistentVolumeClaim:
+          claimName: netbox-postgresql-base
+      - name: netbox-nginx-conf
+        configMap:
+          name: netbox-nginx-conf
+      - name: netbox-netbox-static
+        emptyDir: {}
