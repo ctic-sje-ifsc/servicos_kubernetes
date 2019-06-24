@@ -64,6 +64,8 @@ spec:
                 secretKeyRef:
                   name: netbox-secret
                   key: netbox_secret_key
+            - name: EXEMPT_VIEW_PERMISSIONS
+              value: "*"
           volumeMounts:
             - name: netbox-netbox-static
               mountPath: /opt/netbox/netbox/static
