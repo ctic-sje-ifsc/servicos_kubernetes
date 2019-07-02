@@ -20,6 +20,8 @@ spec:
               secretKeyRef:
                 name: bareos-sd-password
                 key: bareos-sd-password
+          - name: TZ
+            value: "America/Sao_Paulo"
         ports:
         - name: bareos
           containerPort: 9103
