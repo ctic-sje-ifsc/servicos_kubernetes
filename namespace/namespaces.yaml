@@ -76,3 +76,21 @@ metadata:
   name: awx
   labels:
     namespace: awx
+
+---
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: jaragua-do-sul-rau
+  labels:
+    namespace: jaragua-do-sul-rau
+
+---
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: cattle-system
+  labels:
+    namespace: cattle-system
