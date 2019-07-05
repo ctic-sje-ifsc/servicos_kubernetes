@@ -20,9 +20,9 @@ delete:
 	make -C proxmox delete
 
 create:
+	helm install rancher-stable/rancher --name rancher --namespace cattle-system --set hostname=projetos.sj.ifsc.edu.br --set ingress.tls.source=tls-rancher-ingress
 	make -C proxmox create
 	make -C ldap_config create
-	helm init --service-account tiller
 	make -C zabbix create
 	make -C wordpress create
 	make -C netbox create
