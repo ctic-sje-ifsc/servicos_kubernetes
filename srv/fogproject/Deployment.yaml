@@ -32,6 +32,8 @@ spec:
               mountPath: /var/lib/mysql
             - name: pmagic
               mountPath: /var/www/pmagic
+            - name: images
+              mountPath: /images
       restartPolicy: Always
       volumes:
         - name: mysql
@@ -40,3 +42,6 @@ spec:
         - name: pmagic
           persistentVolumeClaim:
             claimName: fogproject-pmagic
+        - name: images
+          persistentVolumeClaim:
+            claimName: fogproject-images

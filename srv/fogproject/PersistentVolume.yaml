@@ -4,16 +4,19 @@ metadata:
   name: fogproject-mysql
 spec:
   capacity:
-    storage: 1501Gi
+    storage: 2Gi
   accessModes:
     - ReadWriteOnce
   storageClassName: fogproject-mysql
-  mountOptions:
-    - nolock
-    - nfsvers=3
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/fogproject/mysql
+  cephfs:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    path: /kubernetes/ifsc/sje/srv/fog/data/mysql
+    user: admin
+    secretRef:
+      name: ceph-secret
 
 ---
 
@@ -23,13 +26,38 @@ metadata:
   name: fogproject-pmagic
 spec:
   capacity:
-    storage: 1501Gi
+    storage: 2Gi
   accessModes:
     - ReadWriteOnce
   storageClassName: fogproject-pmagic
-  mountOptions:
-    - nolock
-    - nfsvers=3
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/fogproject/pmagic
+  cephfs:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    path: /kubernetes/ifsc/sje/srv/fog/data/pmagic
+    user: admin
+    secretRef:
+      name: ceph-secret
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fogproject-images
+spec:
+  capacity:
+    storage: 1501Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fogproject-images
+  cephfs:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    path: /kubernetes/ifsc/sje/srv/fog/images
+    user: admin
+    secretRef:
+      name: ceph-secret
