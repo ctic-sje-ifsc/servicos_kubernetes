@@ -1,6 +1,6 @@
 all: delete create
 
-namespace = producao
+namespace = continente
 
 delete:
 	kubectl delete --namespace=$(namespace) -f Service.yaml 

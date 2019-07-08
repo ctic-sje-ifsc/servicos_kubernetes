@@ -94,3 +94,12 @@ metadata:
   name: cattle-system
   labels:
     namespace: cattle-system
+
+---
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: continente
+  labels:
+    namespace: continente
