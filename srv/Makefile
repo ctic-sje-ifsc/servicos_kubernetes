@@ -1,40 +1,44 @@
 all: delete create
 
 delete:
-	make -C zabbix delete
-	make -C wordpress delete
-	make -C netbox delete
-	make -C rocketchat delete
-	make -C fogproject delete
-	make -C matlab delete
-	make -C quartus delete
-	make -C omnet delete
-	make -C mosquitto delete
-	make -C kit_lanche delete
-	make -C hugo delete
-	make -C motioneye delete
-	kubectl delete ns awx
-	make -C ldap_config delete
-	make -C criar_usuarios delete
-	make -C cronJob_att_usuarios delete
-	make -C proxmox delete
+	make -C externos/campus-continente/bareos_sd -i delete
+	make -C externos/campus-jaragua-gw/netbox -i delete
+	make -C zabbix -i delete
+	make -C wordpress -i delete
+	make -C netbox -i delete
+	make -C rocketchat -i delete
+	make -C fogproject -i delete
+	make -C matlab -i delete
+	make -C quartus -i delete
+	make -C omnet -i delete
+	make -C mosquitto -i delete
+	make -C kit_lanche -i delete
+	make -C hugo -i delete
+	make -C motioneye -i delete
+	kubectl -i delete ns awx
+	make -C ldap_config -i delete
+	make -C criar_usuarios -i delete
+	make -C cronJob_att_usuarios -i delete
+	make -C proxmox -i delete
 
 create:
 	helm install rancher-stable/rancher --name rancher --namespace cattle-system --set hostname=projetos.sj.ifsc.edu.br --set ingress.tls.source=tls-rancher-ingress
-	make -C proxmox create
-	make -C ldap_config create
-	make -C zabbix create
-	make -C wordpress create
-	make -C netbox create
-	make -C rocketchat create
-	make -C criar_usuarios create
-	make -C cronJob_att_usuarios create
-	make -C fogproject create
-	make -C matlab create
-	make -C quartus create
-	make -C omnet create
-	make -C mosquitto create
-	make -C kit_lanche create
-	make -C hugo create
-	make -C motioneye create
+	make -C proxmox -i create
+	make -C ldap_config -i create
+	make -C zabbix -i create
+	make -C wordpress -i create
+	make -C netbox -i create
+	make -C rocketchat -i create
+	make -C criar_usuarios -i create
+	make -C cronJob_att_usuarios -i create
+	make -C fogproject -i create
+	make -C matlab -i create
+	make -C quartus -i create
+	make -C omnet -i create
+	make -C mosquitto -i create
+	make -C kit_lanche -i create
+	make -C hugo -i create
+	make -C motioneye -i create
+	make -C externos/campus-continente/bareos_sd -i create
+	make -C externos/campus-jaragua-gw/netbox -i create
 	echo "ATENÇÃO: o serviço AWX deve ser iniciado na mão, como descrito no README.md."
