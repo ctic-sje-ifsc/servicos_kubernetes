@@ -8,14 +8,18 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: zabbix-db
-  mountOptions:
-    - nolock
-    - nfsvers=3  
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/zabbix/db
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/zabbix/db
+      user: admin
+      secretRef:
+        name: ceph-secret
 
 ---
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -26,9 +30,12 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: zabbix-scripts
-  mountOptions:
-    - nolock
-    - nfsvers=3
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/zabbix/scripts
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/zabbix/scripts
+      user: admin
+      secretRef:
+        name: ceph-secret

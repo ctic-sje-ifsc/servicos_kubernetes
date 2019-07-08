@@ -8,12 +8,15 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: kit-lanche-mariadb-dump
-  mountOptions:
-    - nolock
-    - nfsvers=3 
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/mariadb/dump
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/kit_lanche/mariadb/dump
+      user: admin
+      secretRef:
+        name: ceph-secret
 
 ---
 
@@ -27,12 +30,15 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: kit-lanche-mariadb-base
-  mountOptions:
-    - nolock
-    - nfsvers=3 
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/mariadb/base
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/kit_lanche/mariadb/base
+      user: admin
+      secretRef:
+        name: ceph-secret
 
 ---
 
@@ -46,9 +52,12 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: kit-lanche-code
-  mountOptions:
-    - nolock
-    - nfsvers=3 
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/kit_lanche/code
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/kit_lanche/code
+      user: admin
+      secretRef:
+        name: ceph-secret

@@ -64,15 +64,6 @@ metadata:
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: storageos
-  labels:
-    namespace: storageos
-
----
-
-kind: Namespace
-apiVersion: v1
-metadata:
   name: awx
   labels:
     namespace: awx

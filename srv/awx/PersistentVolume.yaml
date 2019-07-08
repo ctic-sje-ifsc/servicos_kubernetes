@@ -8,9 +8,12 @@
     accessModes:
       - ReadWriteOnce
     storageClassName: awx-postgresql
-    mountOptions:
-      - nolock
-      - nfsvers=3    
-    nfs:
-      path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/awx/postgresql
-      server: 191.36.8.71
+    cephfs:
+        monitors:
+        - 10.10.10.1:6789
+        - 10.10.10.5:6789
+        - 10.10.10.6:6789
+        path: /kubernetes/ifsc/sje/srv/awx/postgresql
+        user: admin
+        secretRef:
+          name: ceph-secret
