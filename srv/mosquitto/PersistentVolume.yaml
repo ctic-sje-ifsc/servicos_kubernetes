@@ -11,9 +11,12 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: mosquitto-mosquitto-data
-  mountOptions:
-    - nolock
-    - nfsvers=3
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mosquitto/mosquitto/data
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mosquitto/data
+      user: admin
+      secretRef:
+        name: ceph-secret

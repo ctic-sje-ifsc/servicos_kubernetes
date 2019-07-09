@@ -5,15 +5,18 @@ metadata:
 spec:
   capacity:
     storage: 1Gi
+  storageClassName: pv-bareos-sd-continente-conf
   accessModes:
     - ReadWriteOnce
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/bareos-sd-continente/
-  storageClassName: pv-bareos-sd-continente-conf
-  mountOptions:
-    - nolock
-    - nfsvers=3
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/externos/continente/bareos-sd-continente
+      user: admin
+      secretRef:
+        name: ceph-secret
  
 ---
 

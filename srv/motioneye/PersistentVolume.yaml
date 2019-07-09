@@ -7,13 +7,16 @@ spec:
     storage: 100Mi
   accessModes:
     - ReadWriteOnce
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/motioneye/config
   storageClassName: motioneye-config
-  mountOptions:
-    - nolock
-    - nfsvers=3
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/motioneye/config
+      user: admin
+      secretRef:
+        name: ceph-secret
 
 ---
 
@@ -26,10 +29,13 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/motioneye/gravacoes
   storageClassName: motioneye-gravacoes
-  mountOptions:
-    - nolock
-    - nfsvers=3
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/motioneye/gravacoes
+      user: admin
+      secretRef:
+        name: ceph-secret

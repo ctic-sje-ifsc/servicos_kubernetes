@@ -8,12 +8,15 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: usuarios-home
-  mountOptions:
-    - nolock
-    - nfsvers=3
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/home
+      user: admin
+      secretRef:
+        name: ceph-secret
 
 ---
 
@@ -27,9 +30,12 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: omnet-servicos-etc
-  mountOptions:
-    - nolock
-    - nfsvers=3
-  nfs:
-    server: 191.36.8.71
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/users
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/users
+      user: admin
+      secretRef:
+        name: ceph-secret
