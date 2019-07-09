@@ -14,8 +14,6 @@ spec:
       containers:
       - name: quartus
         image: cticsjeifsc/quartus
-        #securityContext:
-        #  privileged: true
         ports:
         - name: ssh
           containerPort: 22

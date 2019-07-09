@@ -15,18 +15,16 @@ spec:
       containers:
       - name: matlab
         image: cticsjeifsc/matlab
-        #securityContext:
-        #  privileged: true
         ports:
         - name: ssh
           containerPort: 22
         resources:
             requests:
-              cpu: 10
-              memory: 25Gi
+              cpu: 4
+              memory: 8Gi
             limits:
-              cpu: 15
-              memory: 30Gi
+              cpu: 8
+              memory: 12Gi
         volumeMounts:
         # Binarios do Matlab
         - name: matlab-root
