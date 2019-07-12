@@ -8,15 +8,27 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: quartus-root
-  cephfs:
-      monitors:
-      - 10.10.10.1:6789
-      - 10.10.10.5:6789
-      - 10.10.10.6:6789
-      path: /kubernetes/ifsc/sje/srv/quartus
-      user: admin
-      secretRef:
-        name: ceph-secret
+  # cephfs:
+  #     monitors:
+  #     - 10.10.10.1:6789
+  #     - 10.10.10.5:6789
+  #     - 10.10.10.6:6789
+  #     path: /kubernetes/ifsc/sje/srv/quartus
+  #     user: admin
+  #     secretRef:
+  #       name: ceph-secret
+  rbd:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    pool: kube
+    image: quartus
+    fsType: ext4
+    readOnly: false
+    user: admin
+    secretRef:
+      name: ceph-secret-rbd
 
 ---
 
