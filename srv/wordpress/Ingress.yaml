@@ -26,9 +26,15 @@ apiVersion: extensions/v1beta1
 metadata:
   name: gtampto
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/gtampto'
     nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
+  tls:
+    - hosts:
+        - gtampto.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: gtampto.sj.ifsc.edu.br
       http:
@@ -43,9 +49,15 @@ apiVersion: extensions/v1beta1
 metadata:
   name: mcc2016
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2016'
     nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
+  tls:
+    - hosts:
+        - mcc2016.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: mcc2016.sj.ifsc.edu.br
       http:
@@ -60,9 +72,15 @@ apiVersion: extensions/v1beta1
 metadata:
   name: mcc2014
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/mcc2014'
     nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
+  tls:
+    - hosts:
+        - mcc2014.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: mcc2014.sj.ifsc.edu.br
       http:
@@ -77,9 +95,15 @@ apiVersion: extensions/v1beta1
 metadata:
   name: sel
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/sel'
     nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
+  tls:
+    - hosts:
+        - sel.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: sel.sj.ifsc.edu.br
       http:
@@ -94,9 +118,15 @@ apiVersion: extensions/v1beta1
 metadata:
   name: ctic
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: 'https://wordpress.sj.ifsc.edu.br/ctic-sje'
     nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
+  tls:
+    - hosts:
+        - ctic.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
   rules:
     - host: ctic.sj.ifsc.edu.br
       http:
