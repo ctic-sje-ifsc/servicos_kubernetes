@@ -5,7 +5,7 @@ metadata:
 data:
   ldap.conf: |-
     base dc=cefetsc,dc=edu,dc=br
-    uri ldap://ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
+    uri ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
     ldap_version 3
 
 ---
@@ -16,7 +16,7 @@ metadata:
 data:
   ldap.conf: |-
     base dc=cefetsc,dc=edu,dc=br
-    uri ldap://ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
+    uri ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
     ldap_version 3
 
 ---
@@ -27,7 +27,7 @@ metadata:
 data:
   pam_ldap.conf: |-
     base dc=cefetsc,dc=edu,dc=br
-    uri ldap://ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
+    uri ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
     ldap_version 3
 
 ---
@@ -39,7 +39,7 @@ metadata:
 data:
   libnss-ldap.conf: |-
     base dc=cefetsc,dc=edu,dc=br
-    uri ldap://ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
+    uri ldap://ldap.sj.ifsc.edu.br ldap://ldap.ifsc.edu.br
     ldap_version 3
 
 ---
