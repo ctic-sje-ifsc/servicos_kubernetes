@@ -8,15 +8,12 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: usuarios-home
-  cephfs:
-      monitors:
-      - 10.10.10.1:6789
-      - 10.10.10.5:6789
-      - 10.10.10.6:6789
-      path: /kubernetes/ifsc/sje/home
-      user: admin
-      secretRef:
-        name: ceph-secret
+  mountOptions:
+    - nolock
+    - nfsvers=3
+  nfs:
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
 
 ---
 
