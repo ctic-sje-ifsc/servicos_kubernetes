@@ -6,7 +6,7 @@ metadata:
   name: svc-bareos-sd-continente
 spec:
   externalIPs:
-    - "191.36.8.1"
+#    - "191.36.8.1"
     - "191.36.8.5"
 #    - "191.36.8.9"
     - "191.36.8.11"

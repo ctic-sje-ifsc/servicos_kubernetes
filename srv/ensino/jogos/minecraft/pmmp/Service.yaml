@@ -7,7 +7,7 @@ metadata:
   namespace: ensino
 spec:
   externalIPs:
-    - "191.36.8.1"
+#    - "191.36.8.1"
     - "191.36.8.5"
 #    - "191.36.8.9"
     - "191.36.8.11"
@@ -38,7 +38,7 @@ metadata:
   namespace: ensino
 spec:
   externalIPs:
-    - "191.36.8.1"
+#    - "191.36.8.1"
     - "191.36.8.5"
 #    - "191.36.8.9"
     - "191.36.8.11"
