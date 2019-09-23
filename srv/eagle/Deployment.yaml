@@ -1,0 +1,100 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: eagle
+  labels:
+    app: eagle
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eagle
+    spec:
+      containers:
+      - name: eagle
+        image: cticsjeifsc/eagle
+        ports:
+        - name: ssh
+          containerPort: 22
+        resources:
+            requests:
+              cpu: 1
+              memory: 2Gi
+            limits:
+              cpu: 2
+              memory: 4Gi
+        volumeMounts:
+        # Home dos usuarios  
+        - name: eagle-home
+          mountPath: /home
+        # etc
+        - name: eagle-users
+          mountPath: /mnt/shadow
+          subPath: shadow
+        - name: eagle-users
+          mountPath: /mnt/passwd
+          subPath: passwd
+        - name: eagle-users
+          mountPath: /mnt/group
+          subPath: group
+        # Script atualiza usuarios
+        - name: eagle-users
+          mountPath: /mnt/cron_att_users.sh
+          subPath: cron_att_users.sh
+        - name: eagle-users
+          mountPath: /mnt/corrige_permissao.sh
+          subPath: corrige_permissao.sh  
+        # LDAP
+        - name: ldap-conf
+          mountPath: /etc/ldap.conf
+          subPath: ldap.conf
+        - name: ldap-ldap-conf
+          mountPath: /etc/ldap/ldap.conf
+          subPath: ldap.conf         
+        - name: nsswitch-ldap-conf
+          mountPath: /etc/nsswitch.conf
+          subPath: nsswitch.conf
+        - name: libnss-ldap-conf
+          mountPath: /etc/libnss-ldap.conf
+          subPath: libnss-ldap.conf
+        - name: pam-ldap-conf
+          mountPath: /etc/pam_ldap.conf
+          subPath: pam_ldap.conf
+        - name: pam-common-session
+          mountPath: /etc/pam.d/common-session
+          subPath: common-session
+        - name: ssh-keys
+          mountPath: /root/.ssh/authorized_keys
+          subPath: authorized_keys
+          readOnly: true
+      volumes:
+      - name: eagle-home
+        persistentVolumeClaim:
+          claimName: eagle-usuarios-home
+      - name: eagle-users
+        persistentVolumeClaim:
+          claimName: eagle-servicos-etc
+      # LDAP
+      - name: ldap-conf
+        configMap:
+          name: ldap-conf
+      - name: ldap-ldap-conf
+        configMap:
+          name: ldap-ldap-conf
+      - name: nsswitch-ldap-conf
+        configMap:
+          name: nsswitch-ldap-conf
+      - name: pam-ldap-conf
+        configMap:
+          name: pam-ldap-conf
+      - name: libnss-ldap-conf
+        configMap:
+          name: libnss-ldap-conf
+      - name: pam-common-session
+        configMap:
+          name: pam-common-session
+      # Authorized keys ctic root
+      - name: ssh-keys
+        secret:
+          secretName: authorized-keys-ctic

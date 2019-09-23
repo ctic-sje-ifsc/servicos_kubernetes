@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: eagle-usuarios-home
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: eagle-usuarios-home
+  mountOptions:
+    - nolock
+    - nfsvers=3
+  nfs:
+    server: 191.36.8.71
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: eagle-servicos-etc
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: eagle-servicos-etc
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/users
+      user: admin
+      secretRef:
+        name: ceph-secret
