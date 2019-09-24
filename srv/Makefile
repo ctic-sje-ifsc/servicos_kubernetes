@@ -3,6 +3,7 @@ all: delete create
 delete:
 	make -C externos/campus-continente/bareos_sd -i delete
 	make -C externos/campus-jaragua-gw/netbox -i delete
+	make -C eagle -i delete
 	make -C zabbix -i delete
 	make -C wordpress -i delete
 	make -C netbox -i delete
@@ -39,6 +40,7 @@ create:
 	make -C kit_lanche -i create
 	make -C hugo -i create
 	make -C motioneye -i create
+	make -C eagle -i create
 	make -C externos/campus-continente/bareos_sd -i create
 	make -C externos/campus-jaragua-gw/netbox -i create
 	echo "ATENÇÃO: o serviço AWX deve ser iniciado na mão, como descrito no README.md."
