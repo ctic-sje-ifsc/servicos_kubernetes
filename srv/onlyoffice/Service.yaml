@@ -6,7 +6,9 @@ metadata:
   name: onlyoffice-documentserver
 spec:
   externalIPs:
-    - "191.36.8.24"
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
     - "191.36.8.25"
   ports:
     - name: onlyoffice
