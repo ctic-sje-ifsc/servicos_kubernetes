@@ -19,7 +19,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - proxmoxdell1
+                - vmnuvem5
       containers:
         - name: fogproject
           image: cticsjeifsc/fog
