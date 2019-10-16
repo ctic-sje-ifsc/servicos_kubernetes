@@ -6,4 +6,4 @@ delete:
 
 create:
 	kubectl create -f PersistentVolume.yaml
-	helm install --name mediawiki -f values.yaml stable/mediawiki
+	helm install --name mediawiki --namespace testes -f values.yaml stable/mediawiki
