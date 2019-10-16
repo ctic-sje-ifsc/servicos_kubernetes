@@ -11,9 +11,15 @@ spec:
   mountOptions:
     - nolock
     - nfsvers=3
-  nfs:
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki/mariadb
-    server: 191.36.8.71
+  cephfs:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    path: /mnt/pve/cephfs/kubernetes/ifsc/sje/srv/mediawiki/mariadb
+    user: admin
+    secretRef:
+      name: ceph-secret
 
 ---
 
@@ -30,6 +36,12 @@ spec:
   mountOptions:
     - nolock
     - nfsvers=3
-  nfs:
-    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/saas/srv/mediawiki/mediawiki
-    server: 191.36.8.71
+  cephfs:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    path: /mnt/pve/cephfs/kubernetes/ifsc/sje/srv/mediawiki
+    user: admin
+    secretRef:
+      name: ceph-secret
