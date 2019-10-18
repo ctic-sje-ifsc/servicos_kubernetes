@@ -27,6 +27,13 @@ kubernetes_namespace=awx
 tiller_namespace=kube-system
 pg_hostname=awx-postgresql
 pg_password=XXXXX
+
+task_mem_request=4
+task_cpu_request=6000
+rabbitmq_mem_request=2
+rabbitmq_cpu_request=1000
+web_mem_request=3
+web_cpu_request=500
 ```
 
 Depois executado o comando: 
