@@ -28,7 +28,7 @@ spec:
   capacity:
     storage: 8Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: moodle-moodle
   cephfs:
     monitors:

@@ -1,9 +1,12 @@
 all: delete create
 
+namespace = testes
+
 delete:
 	helm delete --purge mediawiki
-	kubectl delete -f PersistentVolume.yaml
+	kubectl delete pvc --namespace=$(namespace) data-mediawiki-mariadb-0
+	kubectl delete --namespace=$(namespace) -f PersistentVolume.yaml
 
 create:
-	kubectl create -f PersistentVolume.yaml
-	helm install --name mediawiki --namespace testes -f values.yaml stable/mediawiki
+	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml
+	helm install --namespace=$(namespace) --name mediawiki -f values.yaml stable/mediawiki
