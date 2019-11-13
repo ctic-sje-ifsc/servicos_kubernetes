@@ -1,0 +1,289 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bareos-db-postgresql
+  labels:
+    app: bareos-db-postgresql
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-db-postgresql
+    spec:
+      containers:
+      - name: bareos-db-postgresql
+        image: postgres:9.3
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-db-password
+                key: bareos-db-password
+          - name: TZ
+            value: "America/Sao_Paulo"
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 2
+            memory: 2Gi
+        volumeMounts:
+        - name: pv-bareos-db-postgresql
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: bareos-db-password
+        secret:
+          secretName: bareos-db-password
+      - name: pv-bareos-db-postgresql
+        persistentVolumeClaim:
+          claimName: pv-bareos-db-postgresql
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bareos-dir
+  labels:
+    app: bareos-dir
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-dir
+    spec:
+      containers:
+      - name: bareos-dir
+        image: barcus/bareos-director:pgsql_latest
+        env:
+          - name: TZ
+            value: "America/Sao_Paulo"
+          - name: ADMIN_MAIL
+            value: ctic.sje@listas.ifsc.edu.br
+          - name: BAREOS_FD_HOST
+            value: bareos-fd
+          - name: BAREOS_FD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-fd-password
+                key: bareos-fd-password
+          - name: BAREOS_SD_HOST
+            value: bareos-sd
+          - name: BAREOS_SD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-sd-password
+                key: bareos-sd-password
+          - name: BAREOS_WEBUI_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-webui-password
+                key: bareos-webui-password
+          - name: DB_HOST
+            value: bareos-db-postgresql
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-db-password
+                key: bareos-db-password
+          - name: DB_PORT
+            value: "3306"
+          - name: SMTP_HOST
+            value: bareos-smtpd
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 2
+            memory: 2Gi
+        volumeMounts:
+        - name: pv-bareos-dir-data
+          mountPath: /var/lib/bareos
+        - name: pv-bareos-dir-etc
+          mountPath: /etc/bareos
+      volumes:
+      - name: bareos-sd-password
+        secret:
+          secretName: bareos-sd-password
+      - name: pv-bareos-dir-data
+        persistentVolumeClaim:
+          claimName: pv-bareos-dir-data
+      - name: pv-bareos-dir-etc
+        persistentVolumeClaim:
+          claimName: pv-bareos-dir-etc
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bareos-fd
+  labels:
+    app: bareos-fd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-fd
+    spec:
+      containers:
+      - name: bareos-fd
+        image: barcus/bareos-client
+        env:
+          - name: BAREOS_FD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-fd-password
+                key: bareos-fd-password
+          - name: TZ
+            value: "America/Sao_Paulo"
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 2
+            memory: 2Gi
+        volumeMounts:
+        - name: pv-bareos-fd-etc
+          mountPath: /etc/bareos
+        - name: pv-bareos-fd-dir-data
+          mountPath: /var/lib/bareos-director
+      volumes:
+      - name: bareos-fd-password
+        secret:
+          secretName: bareos-fd-password
+      - name: pv-bareos-fd-etc
+        persistentVolumeClaim:
+          claimName: pv-bareos-fd-etc
+      - name: pv-bareos-fd-dir-data
+        persistentVolumeClaim:
+          claimName: pv-bareos-fd-dir-data
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bareos-sd
+  labels:
+    app: bareos-sd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-sd
+    spec:
+      containers:
+      - name: bareos-sd
+        image: barcus/bareos-storage
+        env:
+          - name: BAREOS_SD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-sd-password
+                key: bareos-sd-password
+          - name: TZ
+            value: "America/Sao_Paulo"
+        ports:
+        - name: bareos
+          containerPort: 9103
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 2
+            memory: 2Gi
+        volumeMounts:
+        - name: pv-bareos-sd-data
+          mountPath: /var/lib/bareos/storage
+        - name: pv-bareos-sd-etc
+          mountPath: /etc/bareos
+      volumes:
+      - name: bareos-sd-password
+        secret:
+          secretName: bareos-sd-password
+      - name: pv-bareos-sd-data
+        persistentVolumeClaim:
+          claimName: pv-bareos-sd-data
+      - name: pv-bareos-sd-etc
+        persistentVolumeClaim:
+          claimName: pv-bareos-sd-etc
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bareos-webui
+  labels:
+    app: bareos-webui
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-webui
+    spec:
+      containers:
+      - name: bareos-webui
+        image: barcus/bareos-webui
+        env:
+          - name: BAREOS_DIR_HOST
+            value: bareos-dir
+          - name: TZ
+            value: "America/Sao_Paulo"
+        ports:
+        - name: bareos
+          containerPort: 80
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 2
+            memory: 2Gi
+        volumeMounts:
+        - name: pv-bareos-webui
+          mountPath: /etc/bareos-webui
+      volumes:
+      - name: pv-bareos-webui
+        persistentVolumeClaim:
+          claimName: pv-bareos-webui
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bareos-smtpd
+  labels:
+    app: bareos-smtpd
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-smtpd
+    spec:
+      containers:
+      - name: bareos-smtpd
+        image: namshi/smtp
+        env:
+          - name: TZ
+            value: "America/Sao_Paulo"
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 2
+            memory: 2Gi
+
