@@ -145,6 +145,10 @@ spec:
     initiatorName: iqn.2019-11.pv-bareos-sje:00:2955d7e72762
     fsType: ext4
     readOnly: false
+    chapAuthDiscovery: true
+    chapAuthSession: true
+    secretRef:
+      name: chap-secret-pv-bareos-sd-sje
   storageClassName: pv-bareos-sd-data
 
 ---
