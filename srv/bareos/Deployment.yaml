@@ -1,18 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: bareos-db-postgresql
+  name: bareos-db
   labels:
-    app: bareos-db-postgresql
+    app: bareos-db
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: bareos-db-postgresql
+        app: bareos-db
     spec:
       containers:
-      - name: bareos-db-postgresql
+      - name: bareos-db
         image: postgres:9.3
         env:
           - name: POSTGRES_PASSWORD
@@ -83,8 +83,17 @@ spec:
                 name: bareos-webui-password
                 key: bareos-webui-password
           - name: DB_HOST
-            value: bareos-db-postgresql
+            value: bareos-db
+          - name: PGHOST
+            value: bareos-db
+          - name: PGUSER
+            value: postgres
           - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-db-password
+                key: bareos-db-password
+          - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
                 name: bareos-db-password
