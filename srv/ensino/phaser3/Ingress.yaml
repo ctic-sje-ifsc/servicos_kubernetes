@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: phaser3
+  name: phaser3
+  namespace: ensino
+spec:
+  rules:
+    - host: che.sj.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: phaser3
+              servicePort: 80
+            path: /
+  tls:
+    - hosts:
+        - che.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
