@@ -288,6 +288,20 @@ spec:
         env:
           - name: TZ
             value: "America/Sao_Paulo"
+          - name: SMARTHOST_ADDRESS
+            value: "smtp.ifsc.edu.br"
+          - name: SMARTHOST_PORT
+            value: "587"
+          - name: SMARTHOST_USER
+            valueFrom:
+              secretKeyRef:
+                name: bareos-smtpd-user
+                key: bareos-smtpd-user  
+          - name: SMARTHOST_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: bareos-smtpd-password
+                key: bareos-smtpd-password                                 
         resources:
           requests:
             cpu: 1
@@ -295,4 +309,11 @@ spec:
           limits:
             cpu: 2
             memory: 2Gi
+      volumes:
+      - name: bareos-smtpd-password
+        secret:
+          secretName: bareos-smtpd-password
+      - name: bareos-smtpd-user
+        secret:
+          secretName: bareos-smtpd-user
 
