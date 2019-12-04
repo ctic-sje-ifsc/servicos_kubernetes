@@ -1,3 +1,11 @@
+##### É necessário criar os seguintes diretórios executando os comandos abaixo em algum servidor proxmox
+# cd /mnt/pve/cephfs/kubernetes/ifsc/sje/srv
+# mkdir -p bareos/config/{client,director,storage,webui}
+# mkdir -p bareos/data/{director,storage}
+# mkdir -p bareos/pgsql
+# chown -R 105:106 bareos
+#####
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -62,7 +70,7 @@ spec:
           - name: TZ
             value: "America/Sao_Paulo"
           - name: ADMIN_MAIL
-            value: ctic.sje@listas.ifsc.edu.br
+            value: humbertos@ifsc.edu.br,gabriel.souza@ifsc.edu.br,marcelo.muniz@ifsc.edu.br,rmartins@ifsc.edu.br
           - name: BAREOS_FD_HOST
             value: bareos-fd
           - name: BAREOS_FD_PASSWORD
@@ -99,7 +107,7 @@ spec:
                 name: bareos-db-password
                 key: bareos-db-password
           - name: DB_PORT
-            value: "3306"
+            value: "5432"
           - name: SMTP_HOST
             value: bareos-smtpd
         resources:
@@ -117,7 +125,10 @@ spec:
       volumes:
       - name: bareos-sd-password
         secret:
-          secretName: bareos-sd-password
+          secretName: bareos-sd-password      
+      - name: bareos-db-password
+        secret:
+          secretName: bareos-db-password
       - name: pv-bareos-dir-data
         persistentVolumeClaim:
           claimName: pv-bareos-dir-data
@@ -289,7 +300,9 @@ spec:
           - name: TZ
             value: "America/Sao_Paulo"
           - name: SMARTHOST_ADDRESS
-            value: "smtp.ifsc.edu.br"
+            value: "hermes.ifsc.edu.br"
+          - name: SMARTHOST_ALIASES
+            value: "*.ifsc.edu.br"
           - name: SMARTHOST_PORT
             value: "587"
           - name: SMARTHOST_USER

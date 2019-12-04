@@ -61,6 +61,27 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: bareos-sd-externo
+spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.25"
+  ports:
+  - name: bareos-sd
+    port: 9103
+    protocol: TCP
+    targetPort: 9103
+  selector:
+    app: bareos-sd
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
   name: bareos-webui
 spec:
   ports:
