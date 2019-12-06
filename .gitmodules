@@ -1,3 +1,7 @@
 [submodule "metrics-server"]
 	path = metrics-server
 	url = https://github.com/kubernetes-incubator/metrics-server/
+[submodule "srv/ensino/phaser3"]
+	path = srv/ensino/phaser3
+	url = https://github.com/boidacarapreta/phaser3/
+	branch = kubernetes
