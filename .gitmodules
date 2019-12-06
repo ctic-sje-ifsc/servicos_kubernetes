@@ -5,3 +5,7 @@
 	path = srv/ensino/phaser3
 	url = https://github.com/boidacarapreta/phaser3/
 	branch = kubernetes
+[submodule "srv/ensino/iot"]
+	path = srv/ensino/iot
+	url = http://github.com/boidacarapreta/iot
+	branch = kubernetes
