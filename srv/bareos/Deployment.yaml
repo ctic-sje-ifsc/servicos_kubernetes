@@ -29,7 +29,7 @@ spec:
                 name: bareos-db-password
                 key: bareos-db-password
           - name: TZ
-            value: "America/Sao_Paulo"
+            value: "America/Recife"
         resources:
           requests:
             cpu: 1
@@ -68,7 +68,7 @@ spec:
         image: barcus/bareos-director:pgsql_latest
         env:
           - name: TZ
-            value: "America/Sao_Paulo"
+            value: "America/Recife"
           - name: ADMIN_MAIL
             value: humbertos@ifsc.edu.br,gabriel.souza@ifsc.edu.br,marcelo.muniz@ifsc.edu.br,rmartins@ifsc.edu.br
           - name: BAREOS_FD_HOST
@@ -161,7 +161,7 @@ spec:
                 name: bareos-fd-password
                 key: bareos-fd-password
           - name: TZ
-            value: "America/Sao_Paulo"
+            value: "America/Recife"
         resources:
           requests:
             cpu: 1
@@ -210,7 +210,7 @@ spec:
                 name: bareos-sd-password
                 key: bareos-sd-password
           - name: TZ
-            value: "America/Sao_Paulo"
+            value: "America/Recife"
         ports:
         - name: bareos
           containerPort: 9103
@@ -259,7 +259,7 @@ spec:
           - name: BAREOS_DIR_HOST
             value: bareos-dir
           - name: TZ
-            value: "America/Sao_Paulo"
+            value: "America/Recife"
         ports:
         - name: bareos
           containerPort: 80
@@ -298,7 +298,7 @@ spec:
         image: namshi/smtp
         env:
           - name: TZ
-            value: "America/Sao_Paulo"
+            value: "America/Recife"
           - name: SMARTHOST_ADDRESS
             value: "hermes.ifsc.edu.br"
           - name: SMARTHOST_ALIASES
