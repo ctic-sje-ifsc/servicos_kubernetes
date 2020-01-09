@@ -1,9 +1,9 @@
 all: delete create
 
-namespace = producao
+namespace = testes
 
 delete:
-	helm delete --purge redis-moodle
+	helm delete redis-moodle --namespace=$(namespace)
 	
 create:
-	helm install --name redis-moodle --namespace=$(namespace) -f values.yaml stable/redis
+	helm install redis-moodle --namespace=$(namespace) -f values.yaml stable/redis

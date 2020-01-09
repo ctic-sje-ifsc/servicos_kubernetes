@@ -1,9 +1,9 @@
 all: delete create
 
-namespace = producao
+namespace = testes
 
 delete:
-	helm delete --purge memcached-moodle
+	helm delete memcached-moodle --namespace=$(namespace)
 	
 create:
-	helm install --name memcached-moodle --namespace=$(namespace) -f values.yaml stable/memcached
+	helm install memcached-moodle --namespace=$(namespace) -f values.yaml stable/memcached
