@@ -1,6 +1,6 @@
 all: delete create
 
-namespace = testes
+namespace = producao
 
 delete:
 	helm delete moodle --namespace=$(namespace)
