@@ -7,6 +7,8 @@ delete:
 	make -C zabbix -i delete
 	make -C wordpress -i delete
 	make -C netbox -i delete
+	make -C redis-moodle -i delete
+	make -C moodle -i delete
 	make -C fogproject -i delete
 	make -C matlab -i delete
 	make -C quartus -i delete
@@ -28,6 +30,8 @@ create:
 	make -C zabbix -i create
 	make -C wordpress -i create
 	make -C netbox -i create
+	make -C redis-moodle -i create
+	make -C moodle -i create
 	make -C criar_usuarios -i create
 	make -C cronJob_att_usuarios -i create
 	make -C fogproject -i create
