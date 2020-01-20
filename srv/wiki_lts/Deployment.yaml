@@ -1,0 +1,95 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wiki-mariadb
+  labels:
+    app: wiki-mariadb
+spec:
+  replicas: 1  
+  template:
+    metadata:
+      labels:
+        app: wiki-mariadb
+    spec:
+      containers:
+      - name: wiki-mariadb
+        image: mariadb:10.3
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-database        
+        - name: MYSQL_USER
+          valueFrom:  
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-password          
+        ports:        
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: wiki-mariadb
+          subPath: mysql
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: wiki-mariadb
+          persistentVolumeClaim:
+            claimName: wiki-mariadb
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wiki
+  labels:
+    app: wiki
+spec:
+  replicas: 1  
+  template:
+    metadata:
+      labels:
+        app: wiki
+    spec:
+      containers:
+      - name: wiki
+        image: mediawiki:lts        
+        ports:        
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - mountPath: /var/www/html/extensions
+          name: wiki-data
+          subPath: extensions
+        - mountPath: /var/www/html/images
+          name: wiki-data
+          subPath: images
+        - mountPath: /var/www/html/skins
+          name: wiki-data
+          subPath: skins
+        - mountPath: /var/www/html/LocalSettings.php
+          name: wiki-data
+          subPath: LocalSettings.php
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+      - name: wiki-data
+        persistentVolumeClaim:
+          claimName: wiki
