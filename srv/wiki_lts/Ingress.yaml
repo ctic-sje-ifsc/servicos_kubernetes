@@ -1,7 +1,9 @@
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: wiki 
+  name: wiki
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 32m
 spec:
   tls:
     - hosts:

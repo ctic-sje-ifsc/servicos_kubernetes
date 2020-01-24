@@ -66,12 +66,30 @@ spec:
       labels:
         app: wiki
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - "wiki-mariadb"        
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: wiki
-        image: mediawiki:lts        
+        image: cticsjeifsc/mediawiki:latest        
         ports:        
         - name: http
           containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /index.php/Página_principal
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 6
         volumeMounts:
         - mountPath: /var/www/html/extensions
           name: wiki-data
