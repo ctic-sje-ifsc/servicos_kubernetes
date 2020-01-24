@@ -11,15 +11,7 @@ spec:
         app: fogproject
     spec:
       hostNetwork: true
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - vmnuvem5
+      nodeName: vmnuvem5
       containers:
         - name: fogproject
           image: cticsjeifsc/fog
