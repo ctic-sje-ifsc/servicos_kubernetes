@@ -13,7 +13,7 @@ spec:
       - 10.10.10.1:6789
       - 10.10.10.5:6789
       - 10.10.10.6:6789
-      path: /kubernetes/ifsc/sje/srv/wiki/mariadb
+      path: /kubernetes/ifsc/sje/srv/mediawiki/mariadb
       user: admin
       secretRef:
         name: ceph-secret
@@ -35,7 +35,7 @@ spec:
       - 10.10.10.1:6789
       - 10.10.10.5:6789
       - 10.10.10.6:6789
-      path: /kubernetes/ifsc/sje/srv/wiki/wiki
+      path: /kubernetes/ifsc/sje/srv/mediawiki/wiki
       user: admin
       secretRef:
         name: ceph-secret
