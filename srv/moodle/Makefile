@@ -10,6 +10,6 @@ delete:
 
 
 create:
-	helm install redis-moodle --namespace=$(namespace) -f values.yaml stable/redis
+	helm install redis-moodle --namespace=$(namespace) -f values-redis-moodle.yaml stable/redis
 	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml
-	helm install moodle --namespace=$(namespace) -f values.yaml stable/moodle
+	helm install moodle --namespace=$(namespace) -f values-moodle.yaml stable/moodle
