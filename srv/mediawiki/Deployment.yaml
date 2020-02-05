@@ -80,7 +80,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: wiki
-        image: cticsjeifsc/mediawiki:latest
+        image: cticsjeifsc/mediawiki:1.31.6
         env:
           - name: TZ
             value: "America/Recife"
