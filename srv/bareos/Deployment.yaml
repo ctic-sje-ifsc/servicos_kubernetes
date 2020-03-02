@@ -65,7 +65,7 @@ spec:
     spec:
       containers:
       - name: bareos-dir
-        image: barcus/bareos-director:pgsql_latest
+        image: barcus/bareos-director:18-ubuntu-pgsql
         env:
           - name: TZ
             value: "America/Recife"
@@ -153,7 +153,7 @@ spec:
     spec:
       containers:
       - name: bareos-fd
-        image: barcus/bareos-client
+        image: barcus/bareos-client:18-ubuntu
         env:
           - name: BAREOS_FD_PASSWORD
             valueFrom:
@@ -202,7 +202,7 @@ spec:
     spec:
       containers:
       - name: bareos-sd
-        image: barcus/bareos-storage
+        image: barcus/bareos-storage:18-ubuntu
         env:
           - name: BAREOS_SD_PASSWORD
             valueFrom:
@@ -254,7 +254,7 @@ spec:
     spec:
       containers:
       - name: bareos-webui
-        image: barcus/bareos-webui
+        image: barcus/bareos-webui:18-ubuntu
         env:
           - name: BAREOS_DIR_HOST
             value: bareos-dir
