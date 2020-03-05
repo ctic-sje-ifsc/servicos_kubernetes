@@ -11,6 +11,7 @@ spec:
     - name: ldap
       port: 389
       protocol: TCP
+      # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile#L24
       targetPort: 1024
   selector:
     app: openldap
@@ -36,9 +37,11 @@ spec:
       name: openldap
     spec:
       containers:
+        # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile
         - image: "cticsjeifsc/openldap:latest"
           name: openldap
           ports:
+            # # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile#L24
             - containerPort: 1024
           resources:
             limits:
