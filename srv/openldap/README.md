@@ -3,7 +3,7 @@
 A base `dc=nuvem,dc=sj,dc=ifsc,dc=edu,dc=br` é utilizada para aplicações de ensino na área de Telecomunicações, como MATLAB e Octave.
 
 O arquivo `Makefile` facilita a criação dos objetos Kubernetes:
-- Objetos sensíveis: arquivo `Secret.yaml` (analisado a seguir).
+- Objetos sensíveis: arquivo `Secret.yaml`.
 - Objetos públicos: arquivos `openldap.yaml`.
 
 ## `Secret.yaml`

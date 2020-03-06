@@ -51,7 +51,6 @@ spec:
     - name: ldap
       port: 389
       protocol: TCP
-      # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile#L24
       targetPort: 1024
   selector:
     app: openldap-openldap
@@ -77,9 +76,11 @@ spec:
       name: openldap-phpldapadmin
     spec:
       containers:
+        # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/phpldapadmin/Dockerfile
         - image: "cticsjeifsc/phpldapadmin:latest"
           name: openldap-phpldapadmin
           ports:
+            # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/phpldapadmin/Dockerfile#L25
             - containerPort: 80
           resources:
             limits:
@@ -122,7 +123,7 @@ spec:
         - image: "cticsjeifsc/openldap:latest"
           name: openldap-openldap
           ports:
-            # # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile#L24
+            # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile#L24
             - containerPort: 1024
           resources:
             limits:
