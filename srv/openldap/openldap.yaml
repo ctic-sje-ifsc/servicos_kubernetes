@@ -36,7 +36,6 @@ spec:
       targetPort: 80
   selector:
     app: openldap-phpldapadmin
-  type: LoadBalancer
 
 ---
 apiVersion: v1
@@ -54,7 +53,6 @@ spec:
       targetPort: 1024
   selector:
     app: openldap-openldap
-  type: LoadBalancer
 
 ---
 apiVersion: apps/v1
