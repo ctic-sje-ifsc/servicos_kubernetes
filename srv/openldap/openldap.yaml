@@ -1,10 +1,50 @@
 ---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: openldap-phpldapadmin
+  name: openldap-phpldapadmin
+  namespace: testes
+spec:
+  rules:
+    - host: phpldapadmin.sj.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: openldap-phpldapadmin
+              servicePort: 80
+            path: /
+  tls:
+    - hosts:
+        - phpldapadmin.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje
+
+---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: openldap
-  name: openldap
+    app: openldap-phpldapadmin
+  name: openldap-phpldapadmin
+  namespace: testes
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: openldap-phpldapadmin
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: openldap-openldap
+  name: openldap-openldap
   namespace: testes
 spec:
   ports:
@@ -14,7 +54,7 @@ spec:
       # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile#L24
       targetPort: 1024
   selector:
-    app: openldap
+    app: openldap-openldap
   type: LoadBalancer
 
 ---
@@ -22,24 +62,65 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: openldap
-  name: openldap
+    app: openldap-phpldapadmin
+  name: openldap-phpldapadmin
   namespace: testes
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: openldap
+      app: openldap-phpldapadmin
   template:
     metadata:
       labels:
-        app: openldap
-      name: openldap
+        app: openldap-phpldapadmin
+      name: openldap-phpldapadmin
+    spec:
+      containers:
+        - image: "cticsjeifsc/phpldapadmin:latest"
+          name: openldap-phpldapadmin
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 1
+              memory: "512Mi"
+            requests:
+              cpu: "125m"
+              memory: "64Mi"
+          volumeMounts:
+            - mountPath: /etc/phpldapadmin/config.php
+              name: openldap-conf
+              readOnly: true
+              subPath: config.php
+      volumes:
+        - name: openldap-conf
+          secret:
+            secretName: openldap
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: openldap-openldap
+  name: openldap-openldap
+  namespace: testes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openldap-openldap
+  template:
+    metadata:
+      labels:
+        app: openldap-openldap
+      name: openldap-openldap
     spec:
       containers:
         # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile
         - image: "cticsjeifsc/openldap:latest"
-          name: openldap
+          name: openldap-openldap
           ports:
             # # https://github.com/ctic-sje-ifsc/container_imagens/blob/master/openldap/Dockerfile#L24
             - containerPort: 1024
