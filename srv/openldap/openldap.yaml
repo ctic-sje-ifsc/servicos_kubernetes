@@ -126,10 +126,10 @@ spec:
           resources:
             limits:
               cpu: 1
-              memory: "1Gi"
+              memory: "2Gi"
             requests:
               cpu: "125m"
-              memory: "128Mi"
+              memory: "1Gi"
           volumeMounts:
             - mountPath: /etc/openldap/slapd.conf
               name: openldap-conf
