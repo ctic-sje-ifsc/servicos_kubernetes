@@ -5,7 +5,7 @@ metadata:
   labels:
     app: wiki-mariadb
 spec:
-  replicas: 1  
+  replicas: 1
   template:
     metadata:
       labels:
@@ -26,9 +26,9 @@ spec:
           valueFrom:
             secretKeyRef:
               name: wiki-mariadb
-              key: mysql-database        
+              key: mysql-database
         - name: MYSQL_USER
-          valueFrom:  
+          valueFrom:
             secretKeyRef:
               name: wiki-mariadb
               key: mysql-user
@@ -36,8 +36,8 @@ spec:
           valueFrom:
             secretKeyRef:
               name: wiki-mariadb
-              key: mysql-password          
-        ports:        
+              key: mysql-password
+        ports:
         - name: mysql
           containerPort: 3306
         volumeMounts:
@@ -45,6 +45,9 @@ spec:
           name: wiki-mariadb
           subPath: mysql
         resources:
+            limits:
+                memory: 4Gi
+                cpu: 2
             requests:
                 memory: 512Mi
                 cpu: 300m
@@ -62,7 +65,7 @@ metadata:
   labels:
     app: wiki
 spec:
-  replicas: 1  
+  replicas: 1
   template:
     metadata:
       labels:
@@ -76,7 +79,7 @@ spec:
               - key: app
                 operator: In
                 values:
-                - "wiki-mariadb"        
+                - "wiki-mariadb"
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: wiki
@@ -84,7 +87,7 @@ spec:
         env:
           - name: TZ
             value: "America/Recife"
-        ports:        
+        ports:
         - name: http
           containerPort: 80
         livenessProbe:
