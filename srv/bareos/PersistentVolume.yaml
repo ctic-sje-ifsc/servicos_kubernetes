@@ -134,7 +134,7 @@ metadata:
   name: pv-bareos-sd-data
 spec:
   capacity:
-    storage: 1000Gi
+    storage: 5000Gi
   accessModes:
     - ReadWriteOnce
   iscsi:
