@@ -300,11 +300,13 @@ spec:
           - name: TZ
             value: "America/Recife"
           - name: SMARTHOST_ADDRESS
-            value: "hermes.ifsc.edu.br"
+            value: "zimbra.ifsc.edu.br"
           - name: SMARTHOST_ALIASES
             value: "*.ifsc.edu.br"
           - name: SMARTHOST_PORT
             value: "587"
+          - name: RELAY_NETWORKS
+            value: ":10.42.0.0/16"
           - name: SMARTHOST_USER
             valueFrom:
               secretKeyRef:
