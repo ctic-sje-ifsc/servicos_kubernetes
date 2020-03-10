@@ -3,7 +3,7 @@ all: delete create
 namespace = producao
 
 delete:
-	helm delete moodle --namespace=$(namespace)	
+	helm delete moodle --namespace=$(namespace)
 	kubectl delete pvc --namespace=$(namespace) data-moodle-mariadb-0
 	kubectl delete --namespace=$(namespace) -f PersistentVolume.yaml
 	helm delete redis-moodle --namespace=$(namespace)
