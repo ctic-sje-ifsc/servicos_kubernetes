@@ -1,0 +1,2 @@
+#qgis no Kubernetes
+======
