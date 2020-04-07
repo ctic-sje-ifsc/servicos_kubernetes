@@ -27,6 +27,7 @@ create:
 	helm install rancher-stable/rancher --name rancher --namespace cattle-system --set hostname=projetos.sj.ifsc.edu.br --set ingress.tls.source=tls-rancher-ingress
 	make -C proxmox -i create
 	make -C ldap_config -i create
+	make -C bind9 -i create
 	make -C zabbix -i create
 	make -C wordpress -i create
 	make -C netbox -i create
