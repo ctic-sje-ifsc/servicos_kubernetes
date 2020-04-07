@@ -1,2 +1,0 @@
-#JupyterHub no Kubernetes
-======
