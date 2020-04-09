@@ -17,7 +17,7 @@ data:
       version none;
     };
     masters sje {
-      191.36.8.2;
+      191.36.8.66;
     };
     zone "sj.ifsc.edu.br" IN {
       type slave;
