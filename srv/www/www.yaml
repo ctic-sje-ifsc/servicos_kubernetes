@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      return 301 https://www.ifsc.edu.br/web/campus-sao-jose;
+  name: sj.ifsc.edu.br
+  namespace: producao
+spec:
+  rules:
+    - host: sj.ifsc.edu.br
+  tls:
+    - hosts:
+        - sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      return 301 https://www.ifsc.edu.br/web/campus-sao-jose;
+  name: www.sj.ifsc.edu.br
+  namespace: producao
+spec:
+  rules:
+    - host: www.sj.ifsc.edu.br
+  tls:
+    - hosts:
+        - www.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
