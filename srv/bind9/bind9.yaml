@@ -1,60 +1,11 @@
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: bind9
-  name: bind9-udp
-  namespace: testes
-spec:
-  externalIPs:
-    - "191.36.8.1"
-    - "191.36.8.4"
-    - "191.36.8.6"
-    - "191.36.8.7"
-    - "191.36.8.25"
-  ports:
-    - name: dns-udp
-      port: 53
-      protocol: UDP
-      targetPort: 53
-  selector:
-    app: bind9
-  type: LoadBalancer
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: bind9
-  name: bind9-tcp
-  namespace: testes
-spec:
-  externalIPs:
-    - "191.36.8.1"
-    - "191.36.8.4"
-    - "191.36.8.6"
-    - "191.36.8.7"
-    - "191.36.8.25"
-  ports:
-    - name: dns-tcp
-      port: 53
-      protocol: TCP
-      targetPort: 53
-  selector:
-    app: bind9
-  type: LoadBalancer
-
----
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   labels:
     app: bind9
   name: bind9
   namespace: testes
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: bind9
@@ -69,6 +20,9 @@ spec:
           name: bind9
           ports:
             - containerPort: 53
+              protocol: UDP
+            - containerPort: 53
+              protocol: TCP
           resources:
             limits:
               cpu: 2
@@ -81,28 +35,8 @@ spec:
               name: bind9-conf
               readOnly: true
               subPath: named.conf
+      hostNetwork: true
       volumes:
         - secret:
             secretName: bind9
           name: bind9-conf
-
----
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: bind9
-  namespace: testes
-spec:
-  maxReplicas: 4
-  metrics:
-    - resource:
-        name: cpu
-        target:
-          averageUtilization: 50
-          type: Utilization
-      type: Resource
-  minReplicas: 2
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: bind9
