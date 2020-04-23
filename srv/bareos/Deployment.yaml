@@ -66,6 +66,7 @@ spec:
       containers:
       - name: bareos-dir
         image: barcus/bareos-director:18-ubuntu-pgsql
+        imagePullPolicy: Always
         env:
           - name: TZ
             value: "America/Recife"
@@ -113,10 +114,10 @@ spec:
         resources:
           requests:
             cpu: 1
-            memory: 1Gi
+            memory: 256Mi
           limits:
-            cpu: 2
-            memory: 2Gi
+            cpu: 1
+            memory: 1Gi
         volumeMounts:
         - name: pv-bareos-dir-data
           mountPath: /var/lib/bareos
@@ -154,6 +155,7 @@ spec:
       containers:
       - name: bareos-fd
         image: barcus/bareos-client:18-ubuntu
+        imagePullPolicy: Always
         env:
           - name: BAREOS_FD_PASSWORD
             valueFrom:
@@ -165,10 +167,10 @@ spec:
         resources:
           requests:
             cpu: 1
-            memory: 1Gi
+            memory: 256Mi
           limits:
-            cpu: 2
-            memory: 2Gi
+            cpu: 1
+            memory: 512Mi
         volumeMounts:
         - name: pv-bareos-fd-etc
           mountPath: /etc/bareos
@@ -203,6 +205,7 @@ spec:
       containers:
       - name: bareos-sd
         image: barcus/bareos-storage:18-ubuntu
+        imagePullPolicy: Always
         env:
           - name: BAREOS_SD_PASSWORD
             valueFrom:
@@ -254,7 +257,8 @@ spec:
     spec:
       containers:
       - name: bareos-webui
-        image: barcus/bareos-webui:18-ubuntu
+        image: barcus/bareos-webui:19-ubuntu
+        imagePullPolicy: Always
         env:
           - name: BAREOS_DIR_HOST
             value: bareos-dir
@@ -266,10 +270,10 @@ spec:
         resources:
           requests:
             cpu: 1
-            memory: 1Gi
+            memory: 256Mi
           limits:
-            cpu: 2
-            memory: 2Gi
+            cpu: 1
+            memory: 512Mi
         volumeMounts:
         - name: pv-bareos-webui
           mountPath: /etc/bareos-webui
@@ -296,6 +300,7 @@ spec:
       containers:
       - name: bareos-smtpd
         image: namshi/smtp
+        imagePullPolicy: Always
         env:
           - name: TZ
             value: "America/Recife"
@@ -320,10 +325,10 @@ spec:
         resources:
           requests:
             cpu: 1
-            memory: 1Gi
+            memory: 128Mi
           limits:
-            cpu: 2
-            memory: 2Gi
+            cpu: 1
+            memory: 256Mi
       volumes:
       - name: bareos-smtpd-password
         secret:
