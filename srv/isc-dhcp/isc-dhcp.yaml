@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: isc-dhcp
+  name: isc-dhcp-udp
+spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.25"
+  ports:
+    - name: dhcp
+      port: 67
+      protocol: UDP
+      targetPort: 67
+  selector:
+    app: isc-dhcp
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: isc-dhcp
+  name: isc-dhcp-tcp
+spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.25"
+  ports:
+    - name: dhcp
+      port: 67
+      protocol: TCP
+      targetPort: 67
+  selector:
+    app: isc-dhcp
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: isc-dhcp
+  name: isc-dhcp
+  namespace: testes
+spec:
+  selector:
+    matchLabels:
+      app: isc-dhcp
+  template:
+    metadata:
+      labels:
+        app: isc-dhcp
+      name: isc-dhcp
+    spec:
+      containers:
+        - image: "cticsjeifsc/isc-dhcp:latest"
+          name: isc-dhcp
+          ports:
+            - containerPort: 67
+              protocol: UDP
+            - containerPort: 67
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1
+              memory: 256Mi
+            requests:
+              cpu: 125m
+              memory: 32Mi
+          volumeMounts:
+            - mountPath: /etc/dhcp/dhcpd.conf
+              name: isc-dhcp-conf
+              readOnly: true
+              subPath: dhcpd.conf
+      nodeName: vmnuvem1
+      volumes:
+        - secret:
+            secretName: isc-dhcp
+          name: isc-dhcp-conf
