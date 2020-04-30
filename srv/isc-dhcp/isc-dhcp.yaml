@@ -1,47 +1,40 @@
 apiVersion: v1
-kind: Service
+kind: PersistentVolume
 metadata:
   labels:
     app: isc-dhcp
-  name: isc-dhcp-udp
+  name: isc-dhcp
 spec:
-  externalIPs:
-    - "191.36.8.1"
-    - "191.36.8.4"
-    - "191.36.8.6"
-    - "191.36.8.7"
-    - "191.36.8.25"
-  ports:
-    - name: dhcp
-      port: 67
-      protocol: UDP
-      targetPort: 67
-  selector:
-    app: isc-dhcp
-  type: LoadBalancer
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 100Mi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/isc-dhcp
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: isc-dhcp
 
 ---
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 metadata:
   labels:
     app: isc-dhcp
-  name: isc-dhcp-tcp
+  name: isc-dhcp
+  namespace: testes
 spec:
-  externalIPs:
-    - "191.36.8.1"
-    - "191.36.8.4"
-    - "191.36.8.6"
-    - "191.36.8.7"
-    - "191.36.8.25"
-  ports:
-    - name: dhcp
-      port: 67
-      protocol: TCP
-      targetPort: 67
-  selector:
-    app: isc-dhcp
-  type: LoadBalancer
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: isc-dhcp
 
 ---
 apiVersion: apps/v1
@@ -81,8 +74,14 @@ spec:
               name: isc-dhcp-conf
               readOnly: true
               subPath: dhcpd.conf
+            - mountPath: /var/lib/dhcp
+              name: isc-dhcp-leases
+      hostNetwork: true
       nodeName: vmnuvem1
       volumes:
-        - secret:
+        - name: isc-dhcp-conf
+          secret:
             secretName: isc-dhcp
-          name: isc-dhcp-conf
+        - name: isc-dhcp-leases
+          persistentVolumeClaim:
+            claimName: isc-dhcp
