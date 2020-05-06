@@ -55,7 +55,8 @@ spec:
       name: isc-dhcp
     spec:
       containers:
-        - image: "cticsjeifsc/isc-dhcp:latest"
+        - args: ["/usr/sbin/dhcpd", "-4", "-f", "-d", "-user", "dhcp", "-group", "dhcp", "-cf", "/var/lib/dhcp/dhcpd.conf"]
+          image: "cticsjeifsc/isc-dhcp:latest"
           name: isc-dhcp
           ports:
             - containerPort: 67
@@ -70,18 +71,11 @@ spec:
               cpu: 125m
               memory: 32Mi
           volumeMounts:
-            - mountPath: /etc/dhcp/dhcpd.conf
-              name: isc-dhcp-conf
-              readOnly: true
-              subPath: dhcpd.conf
             - mountPath: /var/lib/dhcp
-              name: isc-dhcp-leases
+              name: isc-dhcp
       hostNetwork: true
       nodeName: vmnuvem1
       volumes:
-        - name: isc-dhcp-conf
-          secret:
-            secretName: isc-dhcp
-        - name: isc-dhcp-leases
+        - name: isc-dhcp
           persistentVolumeClaim:
             claimName: isc-dhcp
