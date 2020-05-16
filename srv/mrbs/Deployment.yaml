@@ -1,0 +1,118 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs-mariadb
+  labels:
+    app: mrbs-mariadb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs-mariadb
+    spec:
+      containers:
+      - name: mrbs-mariadb
+        image: mariadb:10.3
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-mariadb
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-mariadb
+              key: mysql-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mrbs-mariadb
+          subPath: mysql
+        resources:
+            limits:
+                memory: 4Gi
+                cpu: 2
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: mrbs-mariadb
+          persistentVolumeClaim:
+            claimName: mrbs-mariadb
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs
+  labels:
+    app: mrbs
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - "mrbs-mariadb"
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: mrbs
+        image: cticsjeifsc/mrbs:1.7.5
+        env:
+          - name: TZ
+            value: "America/Recife"
+        ports:
+        - name: http
+          containerPort: 80
+        # livenessProbe:
+        #   httpGet:
+        #     path: /index.php/Página_principal
+        #     port: 80
+        #     scheme: HTTP
+        #   initialDelaySeconds: 60
+        #   timeoutSeconds: 10
+        #   failureThreshold: 6
+        volumeMounts:
+        - mountPath: /var/www/html/config.inc.php
+          name: mrbs-data
+          subPath: config.inc.php
+        - mountPath: /var/www/html/Themes/ifsc
+          name: mrbs-data
+          subPath: Themes/ifsc
+        - mountPath: /var/www/html/logo-icon.svg
+          name: mrbs-data
+          subPath: logo-icon.svg
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+      - name: mrbs-data
+        persistentVolumeClaim:
+          claimName: mrbs
