@@ -1,0 +1,246 @@
+apiVersion: v1
+data:
+  nginx.conf: |-
+      events {
+        worker_connections 1024;
+      }
+      http {
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        server_tokens off;
+        gzip on;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        server {
+          listen 80 default_server;
+          server_name localhost;
+          location /static/ {
+            alias /opt/netbox/netbox/static/;
+          }
+          location / {
+            proxy_pass http://127.0.0.1:8001/;
+            add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+          }
+        }
+      }
+kind: ConfigMap
+metadata:
+  labels:
+    app: netbox
+  name: netbox-nginx-conf
+  namespace: producao
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: netbox
+  name: netbox-postgresql-base
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/netbox/postgresql/base
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: netbox-postgresql
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: netbox
+  name: netbox-postgresql-base
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: netbox-postgresql
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "172.18.0.0/18,172.30.0.0/24,191.36.0.0/17,2804:1454::/32"
+  labels:
+    app: netbox
+  name: netbox
+  namespace: producao
+spec:
+  rules:
+    - host: netbox.sj.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: netbox
+              servicePort: 80
+            path: /
+  tls:
+    - hosts:
+        - netbox.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: netbox
+  name: netbox
+  namespace: producao
+spec:
+  ports:
+    -
+      name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: netbox
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: netbox
+  name: netbox
+  namespace: producao
+spec:
+  selector:
+    matchLabels:
+      app: netbox
+  template:
+    metadata:
+      labels:
+        app: netbox
+    spec:
+      containers:
+        - env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgresql_password
+                  name: netbox-secret
+            - name: POSTGRES_DB
+              value: netbox
+          image: "postgres:9.6"
+          name: netbox-postgresql
+          resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+            requests:
+              cpu: 128m
+              memory: 64Mi
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data/pgdata
+              name: netbox-postgresql-base
+        - env:
+            - name: SUPERUSER_NAME
+              value: admin
+            - name: SUPERUSER_EMAIL
+              value: ctic.sje@listas.sj.ifsc.edu.br
+            - name: SUPERUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: netbox_superuser_password
+                  name: netbox-secret
+            - name: ALLOWED_HOSTS
+              value: "*"
+            - name: DB_NAME
+              value: netbox
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: netbox_db_password
+                  name: netbox-secret
+            - name: DB_HOST
+              value: localhost
+            - name: DB_PORT
+              value: "5432"
+            - name: NETBOX_USERNAME
+              value: admin
+            - name: NETBOX_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: netbox_password
+                  name: netbox-secret
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: netbox_secret_key
+                  name: netbox-secret
+            - name: EXEMPT_VIEW_PERMISSIONS
+              value: "*"
+          image: netboxcommunity/netbox
+          name: netbox-netbox
+          resources:
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 128m
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /opt/netbox/netbox/static
+              name: netbox-netbox-static
+        - image: "nginx:1.13.1"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+          name: netbox-nginx
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 1
+              memory: 128Mi
+            requests:
+              cpu: 128m
+              memory: 32Mi
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: netbox-nginx-conf
+              readOnly: true
+              subPath: nginx.conf
+            - mountPath: /opt/netbox/netbox/static
+              name: netbox-netbox-static
+      restartPolicy: Always
+      volumes:
+        - name: netbox-secret
+          secret:
+            secretName: netbox-secret
+        - name: netbox-postgresql-base
+          persistentVolumeClaim:
+            claimName: netbox-postgresql-base
+        - configMap:
+            name: netbox-nginx-conf
+          name: netbox-nginx-conf
+        - emptyDir: {}
+          name: netbox-netbox-static
