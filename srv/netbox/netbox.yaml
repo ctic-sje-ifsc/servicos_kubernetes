@@ -1,33 +1,33 @@
 apiVersion: v1
 data:
   nginx.conf: |-
-      events {
-        worker_connections 1024;
-      }
-      http {
-        include /etc/nginx/mime.types;
-        default_type application/octet-stream;
-        sendfile on;
-        tcp_nopush on;
-        tcp_nodelay on;
-        server_tokens off;
-        gzip on;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-Host $server_name;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        server {
-          listen 80 default_server;
-          server_name localhost;
-          location /static/ {
-            alias /opt/netbox/netbox/static/;
-          }
-          location / {
-            proxy_pass http://127.0.0.1:8001/;
-            add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
-          }
+    events {
+      worker_connections 1024;
+    }
+    http {
+      include /etc/nginx/mime.types;
+      default_type application/octet-stream;
+      sendfile on;
+      tcp_nopush on;
+      tcp_nodelay on;
+      server_tokens off;
+      gzip on;
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-Host $server_name;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      server {
+        listen 80 default_server;
+        server_name localhost;
+        location /static/ {
+          alias /opt/netbox/netbox/static/;
+        }
+        location / {
+          proxy_pass http://127.0.0.1:8001/;
+          add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
         }
       }
+    }
 kind: ConfigMap
 metadata:
   labels:
@@ -108,8 +108,7 @@ metadata:
   namespace: producao
 spec:
   ports:
-    -
-      name: http
+    - name: http
       port: 80
       protocol: TCP
       targetPort: 80
@@ -213,7 +212,6 @@ spec:
               path: /
               port: 80
             initialDelaySeconds: 30
-            timeoutSeconds: 1
           name: netbox-nginx
           ports:
             - containerPort: 80
