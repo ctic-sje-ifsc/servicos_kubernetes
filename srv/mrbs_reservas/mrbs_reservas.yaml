@@ -1,0 +1,246 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mrbs-reservas-mariadb
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mrbs-reservas-mariadb
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mrbs-reservas/mariadb
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mrbs-reservas
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mrbs-reservas
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mrbs-reservas/mrbs
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mrbs-reservas-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-reservas-mariadb
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: mrbs-reservas-mariadb
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mrbs-reservas
+  namespace: testes
+  labels:
+    app: mrbs-reservas
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: mrbs-reservas
+
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: reservas
+  namespace: testes
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 32m
+spec:
+  tls:
+    - hosts:
+        - reservas.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: reservas.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: mrbs-reservas
+              servicePort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mrbs-reservas-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-reservas-mariadb
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: mrbs-reservas-mariadb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mrbs-reservas
+  namespace: testes
+  labels:
+    app: mrbs-reservas
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: mrbs-reservas
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs-reservas-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-reservas-mariadb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs-reservas-mariadb
+    spec:
+      containers:
+      - name: mrbs-reservas-mariadb
+        image: mariadb:10.3
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mrbs-reservas-mariadb
+          subPath: mysql
+        resources:
+            limits:
+                memory: 4Gi
+                cpu: 2
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: mrbs-reservas-mariadb
+          persistentVolumeClaim:
+            claimName: mrbs-reservas-mariadb
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs-reservas
+  namespace: testes
+  labels:
+    app: mrbs-reservas
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs-reservas
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - "mrbs-reservas-mariadb"
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: mrbs-reservas
+        image: cticsjeifsc/mrbs:1.7.5
+        env:
+          - name: TZ
+            value: "America/Recife"
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /admin.php
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 6
+        volumeMounts:
+        - mountPath: /var/www/html/config.inc.php
+          name: mrbs-reservas-data
+          subPath: config.inc.php
+        - mountPath: /var/www/html/Themes/ifsc
+          name: mrbs-reservas-data
+          subPath: Themes/ifsc
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+      - name: mrbs-reservas-data
+        persistentVolumeClaim:
+          claimName: mrbs-reservas
