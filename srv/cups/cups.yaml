@@ -9,7 +9,7 @@ metadata:
   labels:
     app: cups
   name: ldap-conf
-  namespace: desenvolvimento
+  namespace: testes
 
 ---
 apiVersion: v1
@@ -372,7 +372,7 @@ metadata:
   labels:
     app: cups
   name: cups
-  namespace: desenvolvimento
+  namespace: testes
 
 ---
 apiVersion: v1
@@ -404,7 +404,7 @@ metadata:
   labels:
     app: cups
   name: cups-ppd
-  namespace: desenvolvimento
+  namespace: testes
 spec:
   accessModes:
     - ReadWriteOnce
@@ -423,7 +423,7 @@ metadata:
   labels:
     app: cups
   name: cups
-  namespace: desenvolvimento
+  namespace: testes
 spec:
   rules:
     - host: cups.sj.ifsc.edu.br
@@ -445,7 +445,7 @@ metadata:
   labels:
     app: cups
   name: cups
-  namespace: desenvolvimento
+  namespace: testes
 spec:
   ports:
     - name: cups
@@ -462,7 +462,7 @@ metadata:
   labels:
     app: cups
   name: cups
-  namespace: desenvolvimento
+  namespace: testes
 spec:
   selector:
     matchLabels:
