@@ -229,7 +229,6 @@ spec:
               subPath: nginx.conf
             - mountPath: /opt/netbox/netbox/static
               name: netbox-netbox-static
-      restartPolicy: Always
       volumes:
         - name: netbox-secret
           secret:
