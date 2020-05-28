@@ -1,0 +1,249 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mrbs-veiculos-mariadb
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mrbs-veiculos-mariadb
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mrbs-veiculos/mariadb
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mrbs-veiculos
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mrbs-veiculos
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mrbs-veiculos/mrbs
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mrbs-veiculos-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-veiculos-mariadb
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: mrbs-veiculos-mariadb
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mrbs-veiculos
+  namespace: testes
+  labels:
+    app: mrbs-veiculos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: mrbs-veiculos
+
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: veiculos
+  namespace: testes
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 32m
+spec:
+  tls:
+    - hosts:
+        - veiculos.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: veiculos.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: mrbs-veiculos
+              servicePort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mrbs-veiculos-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-veiculos-mariadb
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: mrbs-veiculos-mariadb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mrbs-veiculos
+  namespace: testes
+  labels:
+    app: mrbs-veiculos
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: mrbs-veiculos
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs-veiculos-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-veiculos-mariadb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs-veiculos-mariadb
+    spec:
+      containers:
+      - name: mrbs-veiculos-mariadb
+        image: mariadb:10.3
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-veiculos-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-veiculos-mariadb
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-veiculos-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-veiculos-mariadb
+              key: mysql-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mrbs-veiculos-mariadb
+          subPath: mysql
+        resources:
+            limits:
+                memory: 4Gi
+                cpu: 2
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: mrbs-veiculos-mariadb
+          persistentVolumeClaim:
+            claimName: mrbs-veiculos-mariadb
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs-veiculos
+  namespace: testes
+  labels:
+    app: mrbs-veiculos
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs-veiculos
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - "mrbs-veiculos-mariadb"
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: mrbs-veiculos
+        image: cticsjeifsc/mrbs:1.7.5
+        env:
+          - name: TZ
+            value: "America/Recife"
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /admin.php
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 6
+        volumeMounts:
+        - mountPath: /var/www/html/config.inc.php
+          name: mrbs-veiculos-data
+          subPath: config.inc.php
+        - mountPath: /var/www/html/Themes/ifsc
+          name: mrbs-veiculos-data
+          subPath: Themes/ifsc
+        - mountPath: /var/www/html/lang/lang.pt-br
+          name: mrbs-veiculos-data
+          subPath: lang.pt-br
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+      - name: mrbs-veiculos-data
+        persistentVolumeClaim:
+          claimName: mrbs-veiculos

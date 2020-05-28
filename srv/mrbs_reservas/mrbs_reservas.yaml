@@ -1,0 +1,636 @@
+apiVersion: v1
+data:
+  footer.inc: |-
+    <?php // -*-mode: PHP; coding:utf-8;-*-
+    // $Id$
+    function print_theme_footer()
+    {
+    ?>
+      </body>
+    </html>
+    <?php
+    } 
+  header.inc: |-
+    <?php
+
+    // $Id$
+
+
+    // Print the page header
+    function print_theme_header($day, $month, $year, $area, $room)
+    {
+      global $mrbs_company, $mrbs_company_logo, $mrbs_company_url, $mrbs_company_more_info,
+            $search_str, $locale_warning;
+      global $tbl_entry, $tbl_room, $tbl_area;
+      global $PHP_SELF, $HTTP_HOST, $QUERY_STRING;
+      global $view_week_number, $weekstarts, $times_along_top, $periods, $enable_periods;
+      global $auth, $max_level;
+      global $default_language_tokens, $disable_automatic_language_changing, $override_locale;
+      global $select_options;
+      global $ajax_refresh_rate;
+      global $main_table_cell_border_width, $main_cell_height;
+      global $timetohighlight;
+      
+      $page = basename($PHP_SELF, ".php");
+      $user = getUserName();
+      $is_admin = (authGetUserLevel($user) >= $max_level);
+      
+      // Need to set the timezone before we can use date()
+      get_area_settings($area);
+
+      // If we dont know the right date then make it up 
+      if (!$day)
+      {
+        $day   = date("d");
+      }
+      if (!$month)
+      {
+        $month = date("m");
+      }
+      if (!$year)
+      {
+        $year  = date("Y");
+      }
+      if (!isset($search_str))
+      {
+        $search_str = "";
+      }
+      
+      http_headers();
+      echo DOCTYPE;
+    ?>
+
+    <html>
+      <head>
+      
+      <meta charset="<?php echo get_charset(); ?>">
+      <title><?php echo get_vocab("mrbs") ?></title>
+      
+      <?php
+      require_once "style.inc";
+      require_once "js.inc";
+      ?>
+      
+      </head>
+      
+      <?php
+      // Put the filename in as a class to aid styling.   
+      // (Use a class rather than id to avoid specificity problems)
+      echo "<body class=\"non_js ".htmlspecialchars($page)."\">\n";
+      
+        // Add a class of "js" so that we know if we're using JavaScript or not
+        // and remove the non_js class (it's sometimes useful to know that we're
+        // not running JavaScript)
+      ?>
+        <script type="text/javascript">
+          //<![CDATA[
+          $('body').addClass('js').removeClass('non_js');
+          //]]>
+        </script> 
+
+        <div class="screenonly">
+
+    <?php
+      if (!empty($locale_warning))
+      {
+        echo "[Warning: ".$locale_warning."]";
+      }
+    ?>
+
+      <table id="banner">
+        <tr>
+          <td id="company">
+            <div>
+              <?php
+              echo "<div id=\"logo\">\n";
+              if (!empty($mrbs_company_url))
+              {
+                echo "<a href=\"$mrbs_company_url\">\n";
+              }
+              if (empty($mrbs_company_logo))
+              {
+                echo "<span>$mrbs_company</span>\n";
+              }
+              else
+              {
+                // Suppress error messages in case the logo is a URL and allow_url_fopen
+                // is not enabled in php.ini
+                $logo_size = @getimagesize($mrbs_company_logo);
+                echo "<img src=\"$mrbs_company_logo\" " . $logo_size[3] . " alt=\"$mrbs_company\">\n";
+              }
+              if (!empty($mrbs_company_url))
+              {
+                echo "</a>\n";
+              }
+              echo "</div>\n";
+              if (!empty($mrbs_company_more_info))
+              {
+                echo "<div id=\"more_info\">$mrbs_company_more_info</div>\n";
+              }
+              ?>
+              <div id="mrbs">
+                <a href="index.php"><?php echo get_vocab("mrbs") ?></a>
+              </div>
+            </div>
+          </td>
+          <td>
+            <form action="day.php" method="get" id="Form1">
+              <div>
+                <?php
+                // Give the form id as the optional fifth parameter because we want
+                // the form to be automatically submitted when the datepicker is closed
+                genDateSelector("", $day, $month, $year, "Form1");
+                if (!empty($area))
+                {
+                  echo "<input type=\"hidden\" name=\"area\" value=\"$area\">\n";
+                }
+                if (!empty($room))
+                {
+                  echo "<input type=\"hidden\" name=\"room\" value=\"$room\">\n";
+                }
+                // Although the datepicker will automatically go to the new date when
+                // the date is changed, we still need a submit button because there
+                // are occasions when you want to go to the date without changing it -
+                // for example when you've been on a Search or Report page
+                echo "<input type=\"submit\" value=\"" . get_vocab("goto") . "\">\n";
+                ?>
+              </div>
+            </form>
+            <?php
+            // Provide a link to the list of bookings awaiting approval
+            // (if there are any enabled areas where we require bookings to be approved)
+
+            $approval_somewhere = some_area('approval_enabled', TRUE);
+            if ($approval_somewhere && (authGetUserLevel($user) >= 1))
+            {
+              $sql_approval_enabled = some_area_predicate('approval_enabled');
+              // Find out how many bookings are awaiting approval
+              // (but only for areas where approval is required)
+              $sql = "SELECT COUNT(*)
+                        FROM $tbl_entry E, $tbl_room R, $tbl_area A
+                      WHERE (status&" . STATUS_AWAITING_APPROVAL . " != 0)
+                        AND E.room_id = R.id
+                        AND R.area_id = A.id
+                        AND R.disabled = 0
+                        AND A.disabled = 0
+                        AND $sql_approval_enabled";
+              if (!$is_admin)
+              {
+                // Ordinary users can only see their own
+                $sql .= " AND create_by='" . sql_escape($user) . "'";
+              }
+              $n_outstanding = sql_query1($sql);
+              if ($n_outstanding < 0)
+              {
+                trigger_error(sql_error(), E_USER_WARNING);
+                fatal_error(FALSE, get_vocab("fatal_db_error"));
+              }
+              echo "<div id=\"n_outstanding\"" .
+                  (($n_outstanding > 0) ? " class=\"outstanding\"" : '') .
+                  ">\n";
+              echo "<a href=\"pending.php?day=$day&amp;month=$month&amp;year=$year&amp;area=$area" . 
+                  ((!empty($room)) ? "&amp;room=$room" : "") . 
+                  "\">$n_outstanding " . get_vocab("outstanding") . "</a>\n";
+              echo "</div>\n";
+            }
+            ?>
+          </td>
+          <?php
+          $query_str = "day=$day&amp;month=$month&amp;year=$year";
+          if (!empty($area))
+          {
+            $query_str .= "&amp;area=$area";
+          }
+          if (!empty($room))
+          {
+            $query_str .= "&amp;room=$room";
+          }
+          
+          echo "<td>\n";
+          echo "<a href=\"help.php?$query_str\">" . get_vocab("help") . "</a>\n";
+          echo "</td>\n";
+          
+          echo "<td>\n";
+          echo "<a href=\"admin.php?$query_str\">" . get_vocab("rooms") . "</a>\n";
+          echo "</td>\n";
+          
+          echo "<td>\n";
+          echo "<a href=\"report.php?$query_str\">" . get_vocab("report") . "</a>\n";
+          echo "</td>\n";
+          ?>
+          
+          <td>
+            <form id="header_search" method="get" action="search.php">
+              <div>
+                <a href="search.php?advanced=1"><?php echo get_vocab("search") ?>:</a>
+                <input type="search" name="search_str" value="<?php echo htmlspecialchars($search_str) ?>" required>
+                <input type="hidden" name="day"        value="<?php echo $day        ?>">
+                <input type="hidden" name="month"      value="<?php echo $month      ?>">
+                <input type="hidden" name="year"       value="<?php echo $year       ?>">
+                <?php
+                if (!empty($area))
+                {
+                  echo "<input type=\"hidden\" name=\"area\" value=\"$area\">\n";
+                }
+                if (!empty($room))
+                {
+                  echo "<input type=\"hidden\" name=\"room\" value=\"$room\">\n";
+                }
+                ?>
+              </div>
+            </form>
+          </td>
+          <?php
+          // For session protocols that define their own logon box...
+          if (function_exists('PrintLogonBox'))
+          {
+            echo "<td>\n";
+            echo "<div id=\"logon_box\">\n";
+            PrintLogonBox(); 
+            echo "</div>\n";
+            echo "</td>\n";
+          }
+          ?>
+        </tr>
+      </table>
+    </div>
+
+    <div id="contents">
+    <?php
+
+    } // end of print_theme_header()
+  styling.inc: |-
+    <?php
+
+    // $Id$
+
+    // DEFAULT THEME
+
+    // ***** COLOURS ************************
+    // Colours used in MRBS.    All the colours are defined here as PHP variables
+
+    $body_background_color          = "#d6e6da";    // background colour for the main body
+    $standard_font_color            = "#005817";    // default font color
+    $header_font_color              = "#ffffff";    // font color for text in headers
+    $highlight_font_color           = "#f93c32";    // used for highlighting text (eg links, errors)
+    $colour_key_font_color          = $standard_font_color;    // used in the colour key table
+
+    $banner_back_color              = "#438748";    // background colour for banner
+    $banner_border_color            = $body_background_color;    // border colour for banner
+    $banner_font_color              = $header_font_color;       // font colour for banner
+
+    $header_back_color              = $banner_back_color;  // background colour for headers
+
+    $admin_table_header_back_color  = $header_back_color;     // background colour for header and also border colour for table cells
+    $admin_table_header_sep_color   = $body_background_color; // vertical separator colour in header
+    $admin_table_header_font_color  = $header_font_color;     // font colour for header
+    $admin_table_border_color       = "#438748";
+
+    $main_table_border_color        = $body_background_color; // border colour for day/week/month tables - outside
+    $main_table_header_border_color = $body_background_color; // border colour for day/week/month tables - header
+    $main_table_body_h_border_color = "#d6e6da";              // border colour for day/week/month tables - body, horizontal
+    $main_table_body_v_border_color = $body_background_color; // border colour for day/week/month tables - body, vertical
+    $main_table_month_color         = "#ffffff";    // background colour for days in the month view
+    $main_table_month_invalid_color = "#d1d9de";    // background colour for invalid days in the month view
+    $main_table_slot_invalid_color  = "#d1d9de";    // background colour for invalid slots in the day and week views
+    $main_table_labels_back_color   = $header_back_color;     // background colour for the row labels column
+
+    // border colours for the main table when it is printed.     These are used by mrbs-print.css.php
+    $main_table_border_color_print        = "#879AA8";    // border colour for the main table (print view)
+    $main_table_header_border_color_print = "#879AA8";    // border colour for day/week/month tables - header (print view)
+    $main_table_body_h_border_color_print = "#879AA8";    // border colour for day/week/month tables - body, horizontal (print view)
+    $main_table_body_v_border_color_print = "#879AA8";    // border colour for day/week/month tables - body, vertical (print view)
+
+    // font colours for the main table when it is printed
+    $header_font_color_print        = "#0B263B";
+    $anchor_link_color_header_print = "#0B263B";
+
+    $report_table_border_color      = $standard_font_color;
+    $report_h2_border_color         = $banner_back_color;     // border colour for <h2> in report.php
+    $report_h3_border_color         = "#879AA8";              // border colour for <h2> in report.php
+
+    $search_table_border_color      = $standard_font_color;
+
+    $site_faq_entry_border_color    = "#3CCD3";
+
+    $trailer_border_color           = $standard_font_color;
+
+    $anchor_link_color              = $standard_font_color;        // link color
+    $anchor_visited_color           = $anchor_link_color;          // link color (visited)
+    $anchor_hover_color             = $highlight_font_color;       // link color (hover)
+
+    $anchor_link_color_banner       = $header_font_color;          // link color
+    $anchor_visited_color_banner    = $anchor_link_color_banner;   // link color (visited)
+    $anchor_hover_color_banner      = $anchor_link_color_banner;   // link color (hover)
+
+    $anchor_link_color_header       = $header_font_color;          // link color
+    $anchor_visited_color_header    = $anchor_link_color_header;   // link color (visited)
+    $anchor_hover_color_header      = $anchor_link_color_header;   // link color (hover)
+
+    $column_hidden_color            = $main_table_month_invalid_color;    // hidden days in the week and month views
+    $calendar_hidden_color          = "#0828fd";                          // hidden days in the mini-cals
+    $row_even_color                 = "#ffffff";        // even rows in the day and week views
+    $row_odd_color                  = "#d6e6da";        // even rows in the day and week views
+    $row_highlight_color            = "#f93c32";        // used for highlighting a row
+    //$row_highlight_color            = "#ffec00";        // used for highlighting a row
+
+    $help_highlight_color           = "#FFFFFF";        // highlighting text on the help page  -- Página de ajuda
+
+    $multiple_control_color         = "#FFFFFF";        // background colour for the multiple booking controls
+
+    // These are the colours used for distinguishing between the dfferent types of bookings in the main
+    // displays in the day, week and month views
+    $color_types = array(
+        'A' => "#ffff99",
+        'B' => "#99cccc",
+        'C' => "#ffffcd",
+        'D' => "#cde6e6",
+        'E' => "#6dd9c4",
+        'F' => "#82adad",
+        'G' => "#ccffcc",
+        'H' => "#d9d982",
+        'I' => "#99cc66",
+        'J' => "#e6ffe6"); 
+
+    // colours used for pending.php and bookings awaiting approval
+    $outstanding_color         = "#FFF36C"; // font colour for the outstanding reservations message in the header
+    $pending_header_back_color = $header_back_color;; // background colour for series headers
+    $series_entry_back_color   = "#FFFCDA"; // background colour for entries in a series
+    $pending_control_color     = "#FFF36C"; // background colour for the series +/- controls in pending.php
+        
+    // ***** DIMENSIONS *******************
+    $banner_border_width          = '0';  // (px)  border width for the outside of the banner
+    $banner_border_cell_width     = '1';  // (px)  border width for the cells of the banner
+    $main_table_border_width      = '0';  // (px)  border width for the outside of the main day/week/month tables    
+    $main_table_cell_border_width = '1';  // (px)  border width for the cells of the main day/week/month tables
+    $main_cell_height             = '17'; // (px)  height of the cells in the main day/week tables
+            
+        
+    // ***** FONTS ************************    
+    $standard_font_family  = "Arial, 'Arial Unicode MS', Verdana, sans-serif";
+kind: ConfigMap
+metadata:
+  labels:
+    app: mrbs-reservas
+  name: mrbs-reservas-conf
+  namespace: testes
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mrbs-reservas-mariadb
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mrbs-reservas-mariadb
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mrbs-reservas/mariadb
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mrbs-reservas
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: mrbs-reservas
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mrbs-reservas/mrbs
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mrbs-reservas-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-reservas-mariadb
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: mrbs-reservas-mariadb
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mrbs-reservas
+  namespace: testes
+  labels:
+    app: mrbs-reservas
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: mrbs-reservas
+
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: reservas
+  namespace: testes
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 32m
+spec:
+  tls:
+    - hosts:
+        - reservas.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: reservas.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: mrbs-reservas
+              servicePort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mrbs-reservas-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-reservas-mariadb
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: mrbs-reservas-mariadb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mrbs-reservas
+  namespace: testes
+  labels:
+    app: mrbs-reservas
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: mrbs-reservas
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs-reservas-mariadb
+  namespace: testes
+  labels:
+    app: mrbs-reservas-mariadb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs-reservas-mariadb
+    spec:
+      containers:
+      - name: mrbs-reservas-mariadb
+        image: mariadb:10.3
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mrbs-reservas-mariadb
+              key: mysql-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mrbs-reservas-mariadb
+          subPath: mysql
+        resources:
+            limits:
+                memory: 4Gi
+                cpu: 2
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: mrbs-reservas-mariadb
+          persistentVolumeClaim:
+            claimName: mrbs-reservas-mariadb
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mrbs-reservas
+  namespace: testes
+  labels:
+    app: mrbs-reservas
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mrbs-reservas
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - "mrbs-reservas-mariadb"
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: mrbs-reservas
+        image: cticsjeifsc/mrbs:1.7.5
+        env:
+          - name: TZ
+            value: "America/Recife"
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /admin.php
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 6
+        volumeMounts:
+        - mountPath: "/var/www/html/config.inc.php"
+          name: mrbs-reservas
+          readOnly: true
+        # - mountPath: /var/www/html/Themes/ifsc
+        #   name: mrbs-reservas-conf
+        #   subPath: footer.inc
+        # - mountPath: /var/www/html/Themes/ifsc
+        #   name: mrbs-reservas-conf
+        #   subPath: header.inc
+        # - mountPath: /var/www/html/Themes/ifsc
+        #   name: mrbs-reservas-conf
+        #   subPath: styling.inc
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: mrbs-reservas
+          secret:
+            secretName: config.inc.php
+      # - name: mrbs-reservas-data
+      #   persistentVolumeClaim:
+      #     claimName: mrbs-reservas
+      # - configMap:
+      #     name: mrbs-reservas-conf
+      #   name: mrbs-reservas-conf
