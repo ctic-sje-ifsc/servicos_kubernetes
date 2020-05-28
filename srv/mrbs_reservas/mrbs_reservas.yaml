@@ -138,27 +138,6 @@ spec:
         name: ceph-secret
 
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: mrbs-reservas
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: mrbs-reservas
-  cephfs:
-      monitors:
-      - 10.10.10.1:6789
-      - 10.10.10.5:6789
-      - 10.10.10.6:6789
-      path: /kubernetes/ifsc/sje/srv/mrbs-reservas/mrbs
-      user: admin
-      secretRef:
-        name: ceph-secret
-
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -173,22 +152,6 @@ spec:
     requests:
       storage: 2Gi
   storageClassName: mrbs-reservas-mariadb
-
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: mrbs-reservas
-  namespace: testes
-  labels:
-    app: mrbs-reservas
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: mrbs-reservas
 
 ---
 kind: Ingress
