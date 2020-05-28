@@ -9,7 +9,7 @@ data:
       </body>
     </html>
     <?php
-    } 
+    }
   header.inc: |-
     <?php
 
@@ -30,15 +30,15 @@ data:
       global $ajax_refresh_rate;
       global $main_table_cell_border_width, $main_cell_height;
       global $timetohighlight;
-      
+
       $page = basename($PHP_SELF, ".php");
       $user = getUserName();
       $is_admin = (authGetUserLevel($user) >= $max_level);
-      
+
       // Need to set the timezone before we can use date()
       get_area_settings($area);
 
-      // If we dont know the right date then make it up 
+      // If we dont know the right date then make it up
       if (!$day)
       {
         $day   = date("d");
@@ -55,29 +55,29 @@ data:
       {
         $search_str = "";
       }
-      
+
       http_headers();
       echo DOCTYPE;
     ?>
 
     <html>
       <head>
-      
+
       <meta charset="<?php echo get_charset(); ?>">
       <title><?php echo get_vocab("mrbs") ?></title>
-      
+
       <?php
       require_once "style.inc";
       require_once "js.inc";
       ?>
-      
+
       </head>
-      
+
       <?php
-      // Put the filename in as a class to aid styling.   
+      // Put the filename in as a class to aid styling.
       // (Use a class rather than id to avoid specificity problems)
       echo "<body class=\"non_js ".htmlspecialchars($page)."\">\n";
-      
+
         // Add a class of "js" so that we know if we're using JavaScript or not
         // and remove the non_js class (it's sometimes useful to know that we're
         // not running JavaScript)
@@ -86,7 +86,7 @@ data:
           //<![CDATA[
           $('body').addClass('js').removeClass('non_js');
           //]]>
-        </script> 
+        </script>
 
         <div class="screenonly">
 
@@ -188,8 +188,8 @@ data:
               echo "<div id=\"n_outstanding\"" .
                   (($n_outstanding > 0) ? " class=\"outstanding\"" : '') .
                   ">\n";
-              echo "<a href=\"pending.php?day=$day&amp;month=$month&amp;year=$year&amp;area=$area" . 
-                  ((!empty($room)) ? "&amp;room=$room" : "") . 
+              echo "<a href=\"pending.php?day=$day&amp;month=$month&amp;year=$year&amp;area=$area" .
+                  ((!empty($room)) ? "&amp;room=$room" : "") .
                   "\">$n_outstanding " . get_vocab("outstanding") . "</a>\n";
               echo "</div>\n";
             }
@@ -205,20 +205,20 @@ data:
           {
             $query_str .= "&amp;room=$room";
           }
-          
+
           echo "<td>\n";
           echo "<a href=\"help.php?$query_str\">" . get_vocab("help") . "</a>\n";
           echo "</td>\n";
-          
+
           echo "<td>\n";
           echo "<a href=\"admin.php?$query_str\">" . get_vocab("rooms") . "</a>\n";
           echo "</td>\n";
-          
+
           echo "<td>\n";
           echo "<a href=\"report.php?$query_str\">" . get_vocab("report") . "</a>\n";
           echo "</td>\n";
           ?>
-          
+
           <td>
             <form id="header_search" method="get" action="search.php">
               <div>
@@ -246,7 +246,7 @@ data:
           {
             echo "<td>\n";
             echo "<div id=\"logon_box\">\n";
-            PrintLogonBox(); 
+            PrintLogonBox();
             echo "</div>\n";
             echo "</td>\n";
           }
@@ -350,23 +350,23 @@ data:
         'G' => "#ccffcc",
         'H' => "#d9d982",
         'I' => "#99cc66",
-        'J' => "#e6ffe6"); 
+        'J' => "#e6ffe6");
 
     // colours used for pending.php and bookings awaiting approval
     $outstanding_color         = "#FFF36C"; // font colour for the outstanding reservations message in the header
     $pending_header_back_color = $header_back_color;; // background colour for series headers
     $series_entry_back_color   = "#FFFCDA"; // background colour for entries in a series
     $pending_control_color     = "#FFF36C"; // background colour for the series +/- controls in pending.php
-        
+
     // ***** DIMENSIONS *******************
     $banner_border_width          = '0';  // (px)  border width for the outside of the banner
     $banner_border_cell_width     = '1';  // (px)  border width for the cells of the banner
-    $main_table_border_width      = '0';  // (px)  border width for the outside of the main day/week/month tables    
+    $main_table_border_width      = '0';  // (px)  border width for the outside of the main day/week/month tables
     $main_table_cell_border_width = '1';  // (px)  border width for the cells of the main day/week/month tables
     $main_cell_height             = '17'; // (px)  height of the cells in the main day/week tables
-            
-        
-    // ***** FONTS ************************    
+
+
+    // ***** FONTS ************************
     $standard_font_family  = "Arial, 'Arial Unicode MS', Verdana, sans-serif";
 kind: ConfigMap
 metadata:
@@ -611,6 +611,7 @@ spec:
         - mountPath: "/var/www/html/config.inc.php"
           name: mrbs-reservas
           readOnly: true
+          subPath: config.inc.php
         # - mountPath: /var/www/html/Themes/ifsc
         #   name: mrbs-reservas-conf
         #   subPath: footer.inc
@@ -627,7 +628,7 @@ spec:
       volumes:
         - name: mrbs-reservas
           secret:
-            secretName: config.inc.php
+            secretName: mrbs-reservas
       # - name: mrbs-reservas-data
       #   persistentVolumeClaim:
       #     claimName: mrbs-reservas
