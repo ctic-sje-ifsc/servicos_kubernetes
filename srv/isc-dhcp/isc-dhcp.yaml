@@ -55,7 +55,7 @@ spec:
       name: isc-dhcp
     spec:
       containers:
-        - args: ["/usr/sbin/dhcpd", "-4", "-f", "-d", "-cf", "/var/lib/dhcp/dhcpd.conf"]
+        - args: ["/usr/sbin/dhcpd", "-4", "-d", "-cf", "/var/lib/dhcp/dhcpd.conf"]
           image: "cticsjeifsc/isc-dhcp:latest"
           name: isc-dhcp
           ports:
