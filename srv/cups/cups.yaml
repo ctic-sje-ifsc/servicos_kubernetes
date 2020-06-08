@@ -414,31 +414,6 @@ spec:
   storageClassName: cups-ppd
 
 ---
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/whitelist-source-range: "172.18.0.0/18,172.30.0.0/24,191.36.0.0/17,2804:1454::/32"
-  labels:
-    app: cups
-  name: cups
-  namespace: testes
-spec:
-  rules:
-    - host: cups.sj.ifsc.edu.br
-      http:
-        paths:
-          - backend:
-              serviceName: cups
-              servicePort: 631
-            path: /
-  tls:
-    - hosts:
-        - cups.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje-wildcard
-
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -447,6 +422,12 @@ metadata:
   name: cups
   namespace: testes
 spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.25"
   ports:
     - name: cups
       port: 631
@@ -454,6 +435,7 @@ spec:
       targetPort: 631
   selector:
     app: cups
+  type: LoadBalancer
 
 ---
 apiVersion: apps/v1
