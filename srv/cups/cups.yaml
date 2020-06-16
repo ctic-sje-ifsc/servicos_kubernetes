@@ -32,374 +32,11 @@ metadata:
 
 ---
 apiVersion: v1
-data:
-  cups-files.conf: |
-    AccessLog stderr
-    ErrorLog stderr
-    PageLog stderr
-  cupsd.conf: |
-    LogLevel warn
-    MaxJobTime 300
-    Listen *:631
-    Browsing On
-    BrowseLocalProtocols none
-    DefaultAuthType Basic
-    DefaultEncryption IfRequested
-    DefaultLanguage en
-    WebInterface Yes
-    ServerName cups.sj.ifsc.edu.br
-    ServerAlias cups
-    MaxLogSize 0
-    <Location />
-      Order allow,deny
-      Allow all
-    </Location>
-    <Location /admin>
-      AuthType Default
-      Require user @SYSTEM
-    </Location>
-    <Location /admin/conf>
-      AuthType Default
-      Require user @SYSTEM
-    </Location>
-    <Policy default>
-      JobPrivateAccess default
-      JobPrivateValues none
-      SubscriptionPrivateAccess default
-      SubscriptionPrivateValues default
-      <Limit Create-Job Print-Job Print-URI Validate-Job>
-        Order deny,allow
-      </Limit>
-      <Limit Send-Document Send-URI Hold-Job Release-Job Restart-Job Purge-Jobs Set-Job-Attributes Create-Job-Subscription Renew-Subscription Cancel-Subscription Get-Notifications Reprocess-Job Cancel-Current-Job Suspend-Current-Job Resume-Job Cancel-My-Jobs Close-Job CUPS-Move-Job CUPS-Get-Document>
-        Require user @OWNER @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit CUPS-Add-Modify-Printer CUPS-Delete-Printer CUPS-Add-Modify-Class CUPS-Delete-Class CUPS-Set-Default CUPS-Get-Devices>
-        AuthType Default
-        Require user @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit Pause-Printer Resume-Printer Enable-Printer Disable-Printer Pause-Printer-After-Current-Job Hold-New-Jobs Release-Held-New-Jobs Deactivate-Printer Activate-Printer Restart-Printer Shutdown-Printer Startup-Printer Promote-Job Schedule-Job-After Cancel-Jobs CUPS-Accept-Jobs CUPS-Reject-Jobs>
-        AuthType Default
-        Require user @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit Cancel-Job CUPS-Authenticate-Job>
-        Require user @OWNER @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit All>
-        Order deny,allow
-      </Limit>
-    </Policy>
-    <Policy authenticated>
-      JobPrivateAccess default
-      JobPrivateValues default
-      SubscriptionPrivateAccess default
-      SubscriptionPrivateValues default
-      <Limit Create-Job Print-Job Print-URI Validate-Job>
-        AuthType Default
-        Order deny,allow
-      </Limit>
-      <Limit Send-Document Send-URI Hold-Job Release-Job Restart-Job Purge-Jobs Set-Job-Attributes Create-Job-Subscription Renew-Subscription Cancel-Subscription Get-Notifications Reprocess-Job Cancel-Current-Job Suspend-Current-Job Resume-Job Cancel-My-Jobs Close-Job CUPS-Move-Job CUPS-Get-Document>
-        AuthType Default
-        Require user @OWNER @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit CUPS-Add-Modify-Printer CUPS-Delete-Printer CUPS-Add-Modify-Class CUPS-Delete-Class CUPS-Set-Default>
-        AuthType Default
-        Require user @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit Pause-Printer Resume-Printer Enable-Printer Disable-Printer Pause-Printer-After-Current-Job Hold-New-Jobs Release-Held-New-Jobs Deactivate-Printer Activate-Printer Restart-Printer Shutdown-Printer Startup-Printer Promote-Job Schedule-Job-After Cancel-Jobs CUPS-Accept-Jobs CUPS-Reject-Jobs>
-        AuthType Default
-        Require user @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit Cancel-Job CUPS-Authenticate-Job>
-        AuthType Default
-        Require user @OWNER @SYSTEM
-        Order deny,allow
-      </Limit>
-      <Limit All>
-        Order deny,allow
-      </Limit>
-    </Policy>
-  printers.conf: |
-    <Printer ImpCGP>
-    UUID urn:uuid:d715e5dc-7178-3e8d-5f44-7012443466bc
-    Info Lexmark MX611dhe
-    Location CGP
-    MakeModel Lexmark MX610 Series
-    DeviceURI socket://172.18.118.9:9100
-    State Idle
-    StateTime 1587130527
-    ConfigTime 1564511407
-    Reason output-area-almost-full-report
-    Type 8425684
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-cgp
-    AllowUser @sj-comaf
-    AllowUser @sj-compras
-    AllowUser @sj-dam
-    AllowUser cristiane.laurentino
-    AllowUser edson
-    AllowUser gabriel.souza
-    AllowUser humbertos
-    AllowUser ifsc
-    AllowUser ponto
-    AllowUser rmartins
-    AllowUser rodrigo.silva
-    AllowUser souzagaabriel
-    OpPolicy default
-    ErrorPolicy abort-job
-    Option media-col media-bottom-margin
-    Attribute marker-colors \#000000,#000000,none
-    Attribute marker-levels 100,73,100
-    Attribute marker-names Imaging Unit,Black Cartridge,Maintenance Kit
-    Attribute marker-types other,toner,fuser
-    Attribute marker-change-time 1587130527
-    </Printer>
-    <Printer ImpCompras>
-    UUID urn:uuid:1101979c-312e-3bf2-7b77-3d4e37848272
-    Info Lexmark MX622adhe
-    Location Impressora Compras
-    MakeModel Lexmark MX610 Series
-    DeviceURI socket://172.18.118.5:9100
-    State Idle
-    StateTime 1587135911
-    ConfigTime 1580925346
-    Type 8425684
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-comaf
-    AllowUser @sj-compras
-    AllowUser @sj-financeiro
-    AllowUser adriane
-    AllowUser ana.martens
-    AllowUser diego.sarda
-    AllowUser edson
-    AllowUser humbertos
-    AllowUser marcelo.muniz
-    OpPolicy default
-    ErrorPolicy abort-job
-    Attribute marker-colors \#000000,#000000,none
-    Attribute marker-levels 100,73,100
-    Attribute marker-names Imaging Unit,Black Cartridge,Maintenance Kit
-    Attribute marker-types other,toner,fuser
-    Attribute marker-change-time 1587135911
-    </Printer>
-    <Printer ImpDirecaoColor>
-    UUID urn:uuid:a24181f7-e0c1-3ce6-541d-9cc52ee9f9f2
-    Info Lexmark CX725dhe
-    Location Direcao
-    MakeModel Lexmark CX725 Series
-    DeviceURI socket://172.18.118.4:9100
-    State Idle
-    StateTime 1587136391
-    ConfigTime 1583521235
-    Type 8433884
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-dam
-    AllowUser @sj-direcao
-    AllowUser @sj-gabinete
-    AllowUser diego.sarda
-    AllowUser ifsc
-    AllowUser joao.carlos
-    AllowUser jvela
-    AllowUser marcelo.muniz
-    OpPolicy default
-    ErrorPolicy abort-job
-    Option media-col media-bottom-margin
-    Attribute marker-colors \#00FFFF,#FF00FF,#FFFF00,#000000,none,#00FFFF,#FF00FF,#FFFF00,#000000,#00FFFF,#FF00FF,#FFFF00,#000000,none
-    Attribute marker-levels -1,-1,50,75,0,73,73,73,63,73,73,73,63,-1
-    Attribute marker-names Cyan Toner,Magenta Toner,Yellow Toner,Black Toner,Waste Toner,Cyan Photoconductive Drum,Magenta Photoconductive Drum,Yellow Photoconductive Drum,Black Photoconductive Drum,Cyan Developer,Magenta Developer,Yellow Developer,Black Developer,Fusing Unit
-    Attribute marker-types toner,toner,toner,toner,waste-toner,opc,opc,opc,opc,developer,developer,developer,developer,fuser
-    Attribute marker-change-time 1580913415
-    </Printer>
-    <Printer ImpFinanceiro>
-    UUID urn:uuid:ab4361e0-c24c-3b1e-4307-22d869620253
-    Info Lexmark MX611dhe
-    Location Financeiro
-    MakeModel Lexmark MX610 Series
-    DeviceURI socket://172.18.118.7:9100
-    State Idle
-    StateTime 1586437944
-    ConfigTime 1556217656
-    Type 8425684
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-compras
-    AllowUser @sj-contratos
-    AllowUser @sj-financeiro
-    AllowUser humbertos
-    AllowUser ifsc
-    AllowUser root
-    OpPolicy default
-    ErrorPolicy abort-job
-    Option media-col media-bottom-margin
-    Attribute marker-colors \#000000,#000000,none
-    Attribute marker-levels 100,58,100
-    Attribute marker-names Imaging Unit,Black Cartridge,Maintenance Kit
-    Attribute marker-types other,toner,fuser
-    Attribute marker-change-time 1586268439
-    </Printer>
-    <Printer ImpRegistro>
-    UUID urn:uuid:75d1778d-cedc-312b-42b7-7d05c538f3f4
-    Info Lexmark MX611dhe
-    Location Registro Academico
-    MakeModel Lexmark MX610 Series
-    DeviceURI socket://172.18.118.3:9100
-    State Idle
-    StateTime 1584386325
-    ConfigTime 1572433082
-    Type 8425684
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-ctic
-    AllowUser @sj-estagios
-    AllowUser @sj-registro
-    AllowUser andrea.souza
-    AllowUser fernanda.tasso
-    AllowUser icaro.niculas
-    AllowUser janete.bromer
-    AllowUser juliana.kons
-    AllowUser portaria.sj
-    OpPolicy default
-    ErrorPolicy abort-job
-    Attribute marker-colors \#000000,#000000,none
-    Attribute marker-levels 94,46,100
-    Attribute marker-names Imaging Unit,Black Cartridge,Maintenance Kit
-    Attribute marker-types other,toner,fuser
-    Attribute marker-change-time 1584386325
-    </Printer>
-    <DefaultPrinter ImpSecretaria>
-    UUID urn:uuid:81f5a635-f301-3630-452f-ed201b33e272
-    Info Lexmark MX611dhe
-    Location Secretaria
-    MakeModel Lexmark MX610 Series
-    DeviceURI socket://172.18.118.8:9100
-    State Stopped
-    StateMessage Paused
-    StateTime 1584131138
-    ConfigTime 1581704965
-    Reason paused
-    Type 8425684
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-impressao
-    AllowUser biblioteca
-    AllowUser ctic
-    AllowUser roberto
-    AllowUser souzagaabriel
-    AllowUser vigilante
-    OpPolicy default
-    ErrorPolicy abort-job
-    Option media-col media-bottom-margin
-    Attribute marker-colors \#000000,#000000,none
-    Attribute marker-levels 93,416,100
-    Attribute marker-names Imaging Unit,Black Cartridge,Maintenance Kit
-    Attribute marker-types other,toner,fuser
-    Attribute marker-change-time 1584130570
-    </DefaultPrinter>
-    <Printer reprografia_principal>
-    UUID urn:uuid:60ee47e9-dfb0-375c-74c6-f978046b3426
-    Info Kyocera Taskalfa 5501i
-    Location Reprografia
-    MakeModel Kyocera TASKalfa 5501i (KPDL)
-    DeviceURI socket://172.18.118.1:9100
-    State Idle
-    StateTime 1584471675
-    ConfigTime 1581948974
-    Type 8433876
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-impressao
-    AllowUser biblioteca
-    AllowUser diego
-    AllowUser ifsc
-    AllowUser motorista.sj
-    AllowUser roberto
-    OpPolicy default
-    ErrorPolicy abort-job
-    Attribute marker-colors \#000000,none
-    Attribute marker-levels 15,-1
-    Attribute marker-names TK-6307,Waste Toner Box
-    Attribute marker-types toner,waste-toner
-    Attribute marker-change-time 1501702872
-    </Printer>
-    <Printer reprografia_reserva>
-    UUID urn:uuid:03768eee-e53e-304f-4cc9-075007705592
-    Info Kyocera Taskalfa 5003i
-    Location Reprografia
-    MakeModel Kyocera TASKalfa 5501i (KPDL)
-    DeviceURI socket://172.18.118.10:9100
-    State Idle
-    StateTime 1584363341
-    ConfigTime 1583866803
-    Type 8433748
-    Accepting Yes
-    Shared Yes
-    JobSheets none none
-    QuotaPeriod 0
-    PageLimit 0
-    KLimit 0
-    AllowUser @sj-impressao
-    AllowUser diego
-    AllowUser motorista.sj
-    AllowUser roberto
-    OpPolicy default
-    ErrorPolicy abort-job
-    Attribute marker-colors \#000000,none
-    Attribute marker-levels 97,-1
-    Attribute marker-names TK-6327,Waste Toner Box
-    Attribute marker-types toner,waste-toner
-    Attribute marker-change-time 1584363341
-    </Printer>
-kind: ConfigMap
-metadata:
-  labels:
-    app: cups
-  name: cups
-  namespace: testes
-
----
-apiVersion: v1
 kind: PersistentVolume
 metadata:
   labels:
     app: cups
-  name: cups-ppd
+  name: cups
 spec:
   accessModes:
     - ReadWriteOnce
@@ -410,11 +47,11 @@ spec:
       - "10.10.10.1:6789"
       - "10.10.10.5:6789"
       - "10.10.10.6:6789"
-    path: /kubernetes/ifsc/sje/srv/cups/ppd
+    path: /kubernetes/ifsc/sje/srv/cups
     secretRef:
       name: ceph-secret
     user: admin
-  storageClassName: cups-ppd
+  storageClassName: cups
 
 ---
 apiVersion: v1
@@ -422,7 +59,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: cups
-  name: cups-ppd
+  name: cups
   namespace: testes
 spec:
   accessModes:
@@ -430,7 +67,7 @@ spec:
   resources:
     requests:
       storage: 10Mi
-  storageClassName: cups-ppd
+  storageClassName: cups
 
 ---
 apiVersion: v1
@@ -474,7 +111,13 @@ spec:
         app: cups
     spec:
       containers:
-        - image: cticsjeifsc/cups
+        - env:
+          - name: ROOT_PASSWD
+            valueFrom:
+              secretKeyRef:
+                key: root-passwd
+                name: cups
+          image: cticsjeifsc/cups
           name: cups
           ports:
             - containerPort: 631
@@ -484,30 +127,18 @@ spec:
               memory: 1Gi
             requests:
               cpu: 128m
-              memory: 256Mi
+              memory: 32Mi
           volumeMounts:
             - mountPath: /etc/nsswitch.conf
               name: nsswitch-conf
               readOnly: true
               subPath: nsswitch.conf
-            - mountPath: /etc/ldap.conf
+            - mountPath: /etc/ldap/ldap.conf
               name: ldap-conf
               readOnly: true
               subPath: ldap.conf
-            - mountPath: /etc/cups/cups-files.conf
+            - mountPath: /etc/cups
               name: cups
-              readOnly: true
-              subPath: cups-files.conf
-            - mountPath: /etc/cups/cupsd.conf
-              name: cups
-              readOnly: true
-              subPath: cupsd.conf
-            - mountPath: /etc/cups/printers.conf
-              name: cups
-              readOnly: true
-              subPath: printers.conf
-            - mountPath: /etc/cups/ppd
-              name: cups-ppd
       volumes:
         - configMap:
             name: nsswitch-conf
@@ -515,9 +146,6 @@ spec:
         - configMap:
             name: ldap-conf
           name: ldap-conf
-        - configMap:
-            name: cups
-          name: cups
-        - name: cups-ppd
+        - name: cups
           persistentVolumeClaim:
-            claimName: cups-ppd
+            claimName: cups
