@@ -1,96 +1,86 @@
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: alunos
   labels:
     namespace: alunos
+  name: alunos
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: desenvolvimento
   labels:
     namespace: desenvolvimento
+  name: desenvolvimento
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: ensino
   labels:
     namespace: ensino
+  name: ensino
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: pesquisa
   labels:
     namespace: pesquisa
+  name: pesquisa
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: producao
   labels:
     namespace: producao
+  name: producao
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: projetos
   labels:
     namespace: projetos
+  name: projetos
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: testes
   labels:
     namespace: testes
+  name: testes
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: awx
   labels:
     namespace: awx
+  name: awx
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: jaragua-do-sul-rau
   labels:
     namespace: jaragua-do-sul-rau
+  name: jaragua-do-sul-rau
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: cattle-system
   labels:
     namespace: cattle-system
+  name: cattle-system
 
 ---
-
-kind: Namespace
 apiVersion: v1
+kind: Namespace
 metadata:
-  name: continente
   labels:
     namespace: continente
+  name: continente
