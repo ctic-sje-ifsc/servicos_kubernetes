@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-awx-postgresql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/awx/postgresql
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: awx-postgresql
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: awx-postgresql
+  name: pvc-awx-postgresql
+  namespace: awx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: awx-postgresql
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "191.36.0.0/17,2804:1454::/32,172.30.0.0/24"
+  name: awx
+  namespace: awx
+spec:
+  rules:
+    - host: awx.sj.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: awx-web-svc
+              servicePort: 80
+            path: /
+  tls:
+    - hosts:
+        - awx.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard

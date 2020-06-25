@@ -1,27 +1,28 @@
-Baseado na documentação oficial do [AWX em kubernetes.](https://github.com/ansible/awx/blob/devel/INSTALL.md#kubernetes)
+# AWX
 
-Criado o namespace awx:
+Baseado na documentação oficial do [AWX em Kubernetes.](https://github.com/ansible/awx/blob/devel/INSTALL.md#kubernetes)
 
-```bash
-$ kubectl create namespace awx
-```
-Criado o PV e PVC para o PostgreSQL:
+Criar o _namespace_ `awx`:
 
 ```bash
-$ kubectl create -f PersistentVolume.yaml
-
-$ kubectl create -f PersistentVolumeClaim.yaml
+kubectl create namespace awx
 ```
 
-Instalado o [PostgreSQL](https://github.com/kubernetes/charts/tree/master/stable/postgresql) via [helm charts](https://github.com/kubernetes/charts) com o seguinte comando:
+Criar os objetos _PersistentVolume_ e _PersistentVolumeClaim_ para o PostgreSQL e _Ingress_ para o AWX:
 
 ```bash
-	helm install --name awx --namespace awx --set postgresqlUsername=awx,postgresPassword=XXXXX,postgresDatabase=awx,persistence.existingClaim=pvc-awx-postgresql stable/postgresql --version=1.0.0
+kubectl create -f awx.yaml
 ```
 
-Modificado as seguintes linhas do arquivo [inventory:](https://github.com/ansible/awx/blob/devel/installer/inventory)
+Instalar o [PostgreSQL](https://github.com/kubernetes/charts/tree/master/stable/postgresql) via [_helm charts_](https://github.com/kubernetes/charts) com o seguinte comando:
 
+```bash
+helm install --name awx --namespace awx --set postgresqlUsername=awx,postgresPassword=XXXXX,postgresDatabase=awx,persistence.existingClaim=pvc-awx-postgresql stable/postgresql --version=1.0.0
 ```
+
+Modificar as seguintes linhas do arquivo [`inventory`](https://github.com/ansible/awx/blob/devel/installer/inventory):
+
+```bash
 kubernetes_context=kubernetes_rke
 kubernetes_namespace=awx
 tiller_namespace=kube-system
@@ -36,23 +37,14 @@ web_mem_request=3
 web_cpu_request=500
 ```
 
-Depois executado o comando: 
+Depois executar o comando:
+
 ```bash
-$ ansible-playbook -i inventory install.yml
+ansible-playbook -i inventory install.yml
 ```
 
-Deletar o ingress padrão criado:
-```bash
-$ kubectl delete ingress awx-web-svc -n awx
-```	
-
-Criar a chave com os certificados do https no namespace awx:
-```bash
-$ kubectl create -f Secret.yaml -n awx
-```	
-
-Criar o ingress:
+Remover o _Ingress_ padrão criado pelo _helm_:
 
 ```bash
-$ kubectl create -f Ingress.yaml
+kubectl delete ingress awx-web-svc -n awx
 ```
