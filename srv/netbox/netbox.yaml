@@ -206,7 +206,7 @@ spec:
           volumeMounts:
             - mountPath: /opt/netbox/netbox/static
               name: netbox-netbox-static
-        - image: "nginx:1.13.1"
+        - image: "nginx:1.13"
           livenessProbe:
             httpGet:
               path: /
