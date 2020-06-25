@@ -27,7 +27,7 @@ metadata:
   labels:
     app: isc-dhcp
   name: isc-dhcp
-  namespace: testes
+  namespace: producao
 spec:
   accessModes:
     - ReadWriteOnce
@@ -43,7 +43,7 @@ metadata:
   labels:
     app: isc-dhcp
   name: isc-dhcp
-  namespace: testes
+  namespace: producao
 spec:
   selector:
     matchLabels:
