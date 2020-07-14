@@ -7,15 +7,15 @@ metadata:
   name: mosquitto
   namespace: producao
 spec:
-  tls:
-    - hosts:
-        - mqtt.sj.ifsc.edu.br
-      secretName: tls-ifsc-sje
   rules:
     - host: mqtt.sj.ifsc.edu.br
       http:
         paths:
-          - path: /
-            backend:
+          - backend:
               serviceName: mosquitto-ws
               servicePort: 9001
+            path: /
+  tls:
+    - hosts:
+        - mqtt.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
