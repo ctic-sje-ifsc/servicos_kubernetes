@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: criar-usuarios-home
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Gi
+  mountOptions:
+    - nolock
+    - nfsvers=3
+  nfs:
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
+    server: "191.36.8.71"
+  storageClassName: criar-usuarios-home
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: criar-usuarios-etc
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/users/etc
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: criar-usuarios-etc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: criar-usuarios-home
+  name: criar-usuarios-home
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: criar-usuarios-home
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: criar-usuarios-etc
+  name: criar-usuarios-etc
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: criar-usuarios-etc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: criar-usuarios
+  name: criar-usuarios
+  namespace: producao
+spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.25"
+  ports:
+    - name: ssh
+      port: 2225
+      protocol: TCP
+      targetPort: 22
+  selector:
+    app: criar-usuarios
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: criar-usuarios
+  name: criar-usuarios
+  namespace: producao
+spec:
+  selector:
+    matchLabels:
+      app: criar-usuarios
+  template:
+    metadata:
+      labels:
+        app: criar-usuarios
+    spec:
+      containers:
+        - image: cticsjeifsc/base_debian_servicos_ensino_ctic
+          name: criar-usuarios
+          resources:
+            limits:
+              cpu: 1
+              memory: 256Mi
+            requests:
+              cpu: 125m
+              memory: 32Mi
+          ports:
+            - containerPort: 22
+              name: ssh
+          volumeMounts:
+            - mountPath: /home
+              name: criar-usuarios-home
+            - mountPath: /etc
+              name: criar-usuarios-etc
+            - mountPath: /root/.ssh/authorized_keys
+              name: ssh-keys
+              readOnly: true
+              subPath: authorized_keys
+      volumes:
+        - name: criar-usuarios-home
+          persistentVolumeClaim:
+            claimName: criar-usuarios-home
+        - name: criar-usuarios-etc
+          persistentVolumeClaim:
+            claimName: criar-usuarios-etc
+        - name: ssh-keys
+          secret:
+            secretName: authorized-keys-ctic
