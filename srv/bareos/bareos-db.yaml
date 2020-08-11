@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-bareos-db-postgresql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/bareos/pgsql
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: pv-bareos-db-postgresql
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: pv-bareos-db-postgresql
+  name: pv-bareos-db-postgresql
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: pv-bareos-db-postgresql
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bareos-db
+  namespace: producao
+spec:
+  ports:
+    - name: bareos-db
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    app: bareos-db
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bareos-db
+  name: bareos-db
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-db
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: bareos-db-password
+                  name: bareos-db-password
+            - name: TZ
+              value: America/Recife
+          image: "postgres:9.3"
+          name: bareos-db
+          resources:
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pv-bareos-db-postgresql
+      volumes:
+        - name: bareos-db-password
+          secret:
+            secretName: bareos-db-password
+        - name: pv-bareos-db-postgresql
+          persistentVolumeClaim:
+            claimName: pv-bareos-db-postgresql

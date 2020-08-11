@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-bareos-webui
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/bareos/config/webui
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: pv-bareos-webui
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: pv-bareos-webui
+  name: pv-bareos-webui
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: pv-bareos-webui
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "191.36.0.0/17,2804:1454::/32,172.30.0.0/24,172.18.0.0/18"
+  name: bareos
+  namespace: producao
+spec:
+  rules:
+    - host: bareos.sj.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: bareos-webui
+              servicePort: 80
+            path: /
+  tls:
+    - hosts:
+        - bareos.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bareos-webui
+  namespace: producao
+spec:
+  ports:
+    - name: bareos-webui
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: bareos-webui
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bareos-smtpd
+  namespace: producao
+spec:
+  ports:
+    - name: bareos-smtpd
+      port: 25
+      protocol: TCP
+      targetPort: 25
+  selector:
+    app: bareos-smtpd
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bareos-webui
+  name: bareos-webui
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-webui
+    spec:
+      containers:
+        - env:
+            - name: BAREOS_DIR_HOST
+              value: bareos-dir
+            - name: TZ
+              value: America/Recife
+          image: "barcus/bareos-webui:19-ubuntu"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+          name: bareos-webui
+          ports:
+            - containerPort: 80
+              name: bareos
+          resources:
+            limits:
+              cpu: 1
+              memory: 512Mi
+            requests:
+              cpu: 1
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /etc/bareos-webui
+              name: pv-bareos-webui
+      volumes:
+        - name: pv-bareos-webui
+          persistentVolumeClaim:
+            claimName: pv-bareos-webui

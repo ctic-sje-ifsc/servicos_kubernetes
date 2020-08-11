@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bareos-smtpd
+  name: bareos-smtpd
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bareos-smtpd
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: America/Recife
+            - name: SMARTHOST_ADDRESS
+              value: zimbra.ifsc.edu.br
+            - name: SMARTHOST_ALIASES
+              value: "*.ifsc.edu.br"
+            - name: SMARTHOST_PORT
+              value: "587"
+            - name: RELAY_NETWORKS
+              value: ":10.42.0.0/16"
+            - name: SMARTHOST_USER
+              valueFrom:
+                secretKeyRef:
+                  key: bareos-smtpd-user
+                  name: bareos-smtpd-user
+            - name: SMARTHOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: bareos-smtpd-password
+                  name: bareos-smtpd-password
+          image: namshi/smtp
+          name: bareos-smtpd
+          resources:
+            limits:
+              cpu: 1
+              memory: 256Mi
+            requests:
+              cpu: 1
+              memory: 128Mi
+      volumes:
+        - name: bareos-smtpd-password
+          secret:
+            secretName: bareos-smtpd-password
+        - name: bareos-smtpd-user
+          secret:
+            secretName: bareos-smtpd-user
