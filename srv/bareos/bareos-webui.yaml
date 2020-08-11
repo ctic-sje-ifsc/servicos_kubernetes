@@ -95,7 +95,9 @@ metadata:
   name: bareos-webui
   namespace: producao
 spec:
-  replicas: 1
+  selector:
+    matchLabels:
+      app: bareos-webui
   template:
     metadata:
       labels:

@@ -6,7 +6,9 @@ metadata:
   name: bareos-smtpd
   namespace: producao
 spec:
-  replicas: 1
+  selector:
+    matchLabels:
+      app: bareos-smtpd
   template:
     metadata:
       labels:

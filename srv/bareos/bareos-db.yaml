@@ -58,7 +58,9 @@ metadata:
   name: bareos-db
   namespace: producao
 spec:
-  replicas: 1
+  selector:
+    matchLabels:
+      app: bareos-db
   template:
     metadata:
       labels:

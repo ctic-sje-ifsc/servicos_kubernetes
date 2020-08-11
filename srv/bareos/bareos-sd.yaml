@@ -119,7 +119,9 @@ metadata:
   name: bareos-sd
   namespace: producao
 spec:
-  replicas: 1
+  selector:
+    matchLabels:
+      app: bareos-sd
   template:
     metadata:
       labels:
