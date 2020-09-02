@@ -1,0 +1,309 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: moodle-mariadb
+spec:
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: moodle-mariadb
+  cephfs:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    path: /kubernetes/ifsc/sje/srv/moodle/mariadb
+    user: admin
+    secretRef:
+      name: ceph-secret
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: moodle
+spec:
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: moodle
+  cephfs:
+    monitors:
+    - 10.10.10.1:6789
+    - 10.10.10.5:6789
+    - 10.10.10.6:6789
+    path: /kubernetes/ifsc/sje/srv/moodle/moodle
+    user: admin
+    secretRef:
+      name: ceph-secret
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: moodle-mariadb
+  labels:
+    app: moodle-mariadb
+  namespace: producao
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: moodle-mariadb
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: moodle
+  labels:
+    app: moodle
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: moodle
+
+---
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: moodle
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 256m    
+    nginx.ingress.kubernetes.io/whitelist-source-range: "172.18.0.0/18,172.30.0.0/24,191.36.0.0/17,2804:1454::/32"
+  namespace: producao
+spec:
+  tls:
+    - hosts:
+        - moodle.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: moodle.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: moodle
+              servicePort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: moodle-mariadb
+  name: moodle-mariadb
+  namespace: producao
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: moodle-mariadb
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: moodle
+  name: moodle
+  namespace: producao
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: moodle
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: moodle-redis
+  name: moodle-redis
+  namespace: producao
+spec:
+  ports:
+    - name: redis
+      port: 6379
+      protocol: TCP
+      targetPort: 6379
+  selector:
+    app: moodle-redis
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: moodle-redis
+  labels:
+    app: moodle-redis
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: moodle-redis
+    spec:
+      containers:
+      - name: moodle-redis
+        image: redis
+        command:
+          - redis-server
+          - "/redis-master/redis.conf"
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MASTER
+          value: "true"
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            cpu: "0.1"
+        volumeMounts:
+        - mountPath: /redis-master-data
+          name: data
+        - mountPath: /redis-master
+          name: config
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config
+          secret:
+            secretName: moodle-redis
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: moodle-mariadb
+  labels:
+    app: moodle-mariadb
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: moodle-mariadb
+    spec:
+      containers:
+      - name: moodle-mariadb
+        image: mariadb:10.3
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: moodle-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: moodle-mariadb
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: moodle-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: moodle-mariadb
+              key: mysql-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: moodle-mariadb
+          subPath: mysql
+        resources:
+            limits:
+                memory: 4Gi
+                cpu: 2
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: moodle-mariadb
+          persistentVolumeClaim:
+            claimName: moodle-mariadb
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: moodle
+  labels:
+    app: moodle
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: moodle
+    spec:   
+      containers:
+      - name: moodle
+        image: cticsjeifsc/moodle:3.9
+        env:
+          - name: TZ
+            value: "America/Recife"
+        ports:
+        - name: http
+          containerPort: 80
+        # livenessProbe:
+        #   httpGet:
+        #     path: ???
+        #     port: 80
+        #     scheme: HTTP
+        #   initialDelaySeconds: 60
+        #   timeoutSeconds: 10
+        #   failureThreshold: 6
+        volumeMounts:
+        - mountPath: /var/www/moodledata
+          name: moodle
+          subPath: moodledata    
+        - mountPath: /var/www/html/config.php
+          name: moodle-config
+          readOnly: false
+          subPath: config.php
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+      - name: moodle
+        persistentVolumeClaim:
+          claimName: moodle
+      - name: moodle-config
+        secret:
+          secretName: moodle-config
