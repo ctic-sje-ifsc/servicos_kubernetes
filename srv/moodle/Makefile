@@ -1,15 +1,10 @@
 all: delete create
 
-namespace = producao
-
 delete:
-	helm delete moodle --namespace=$(namespace)
-	kubectl delete pvc --namespace=$(namespace) data-moodle-mariadb-0
-	kubectl delete --namespace=$(namespace) -f PersistentVolume.yaml
-	helm delete redis-moodle --namespace=$(namespace)
+	kubectl delete -f moodle.yaml
+	kubectl delete -f Secret.yaml
 
 
 create:
-	helm install redis-moodle --namespace=$(namespace) -f values-redis-moodle.yaml bitnami/redis
-	kubectl create --namespace=$(namespace) -f PersistentVolume.yaml
-	helm install moodle --namespace=$(namespace) -f values-moodle.yaml bitnami/moodle
+	kubectl create -f Secret.yaml
+	kubectl create -f moodle.yaml
