@@ -81,8 +81,7 @@ apiVersion: extensions/v1beta1
 metadata:
   name: moodle
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 256m    
-    nginx.ingress.kubernetes.io/whitelist-source-range: "172.18.0.0/18,172.30.0.0/24,191.36.0.0/17,2804:1454::/32"
+    nginx.ingress.kubernetes.io/proxy-body-size: 256m
   namespace: producao
 spec:
   tls:
@@ -280,14 +279,14 @@ spec:
         ports:
         - name: http
           containerPort: 80
-        # livenessProbe:
-        #   httpGet:
-        #     path: ???
-        #     port: 80
-        #     scheme: HTTP
-        #   initialDelaySeconds: 60
-        #   timeoutSeconds: 10
-        #   failureThreshold: 6
+        livenessProbe:
+          httpGet:
+            path: /login/index.php
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 6
         volumeMounts:
         - mountPath: /var/www/moodledata
           name: moodle
@@ -307,3 +306,33 @@ spec:
       - name: moodle-config
         secret:
           secretName: moodle-config
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: moodle-cron
+  labels:
+    app: moodle-cron
+  namespace: producao
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: moodle-cron
+            image: busybox
+            env:
+            - name: CRON_PHP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: moodle-cron
+                  key: cron-php-password
+            args:
+              - /bin/sh
+              - -c
+              - "wget --no-check-certificate -q -O /dev/null https://moodle.sj.ifsc.edu.br/admin/cron.php?password=$(CRON_PHP_PASSWORD)"
+          restartPolicy: OnFailure
