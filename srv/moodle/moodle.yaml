@@ -273,6 +273,7 @@ spec:
       containers:
       - name: moodle
         image: cticsjeifsc/moodle:3.9
+        imagePullPolicy: Always
         env:
           - name: TZ
             value: "America/Recife"
@@ -293,7 +294,7 @@ spec:
           subPath: moodledata    
         - mountPath: /var/www/html/config.php
           name: moodle-config
-          readOnly: false
+          readOnly: true
           subPath: config.php
         resources:
             requests:
