@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: cronjobattusuarios-path
+  name: cronjobattusuarios-path
+spec:
+  accessModes:
+    - ReadOnlyMany
+  capacity:
+    storage: 10Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/users
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: cronjobattusuarios-path
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: cronjobattusuarios-path
+  name: cronjobattusuarios-path
+  namespace: producao
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: cronjobattusuarios-path
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    app: cronjobattusuarios-path
+  name: cronjobattusuarios
+  namespace: producao
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - args:
+                - /bin/sh
+                - /opt/atualiza_usuarios.sh
+              image: busybox
+              name: cronjobattusuarios
+              resources:
+                limits:
+                  cpu: 1
+                  memory: 256Mi
+                requests:
+                  cpu: 125m
+                  memory: 32Mi
+              volumeMounts:
+                - mountPath: /opt
+                  name: cronjobattusuarios-path
+          restartPolicy: OnFailure
+          volumes:
+            - name: cronjobattusuarios-path
+              persistentVolumeClaim:
+                claimName: cronjobattusuarios-path
+  schedule: "*/1 * * * *"

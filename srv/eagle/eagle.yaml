@@ -1,0 +1,192 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: eagle-usuarios-home
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Gi
+  mountOptions:
+    - nolock
+    - nfsvers=3
+  nfs:
+    path: /nfs_kubernetes/kubernetes/ifsc/sje/a/home
+    server: "191.36.8.71"
+  storageClassName: eagle-usuarios-home
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: eagle-servicos-etc
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Mi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/users
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: eagle-servicos-etc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: eagle-usuarios-home
+  name: eagle-usuarios-home
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: eagle-usuarios-home
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: eagle-servicos-etc
+  name: eagle-servicos-etc
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: eagle-servicos-etc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: eagle
+  name: eagle
+  namespace: producao
+spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.25"
+  ports:
+    - name: ssh
+      port: 2227
+      protocol: TCP
+      targetPort: 22
+  selector:
+    app: eagle
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eagle
+  name: eagle
+  namespace: producao
+spec:
+  selector:
+    matchLabels:
+      app: eagle
+  template:
+    metadata:
+      labels:
+        app: eagle
+    spec:
+      containers:
+        - image: cticsjeifsc/eagle
+          name: eagle
+          ports:
+            - containerPort: 22
+              name: ssh
+          resources:
+            limits:
+              cpu: 2
+              memory: 4Gi
+            requests:
+              cpu: 1
+              memory: 2Gi
+          volumeMounts:
+            - mountPath: /home
+              name: eagle-home
+            - mountPath: /mnt/shadow
+              name: eagle-users
+              subPath: shadow
+            - mountPath: /mnt/passwd
+              name: eagle-users
+              subPath: passwd
+            - mountPath: /mnt/group
+              name: eagle-users
+              subPath: group
+            - mountPath: /mnt/cron_att_users.sh
+              name: eagle-users
+              subPath: cron_att_users.sh
+            - mountPath: /mnt/corrige_permissao.sh
+              name: eagle-users
+              subPath: corrige_permissao.sh
+            - mountPath: /etc/ldap.conf
+              name: ldap-conf
+              subPath: ldap.conf
+            - mountPath: /etc/ldap/ldap.conf
+              name: ldap-ldap-conf
+              subPath: ldap.conf
+            - mountPath: /etc/nsswitch.conf
+              name: nsswitch-ldap-conf
+              subPath: nsswitch.conf
+            - mountPath: /etc/libnss-ldap.conf
+              name: libnss-ldap-conf
+              subPath: libnss-ldap.conf
+            - mountPath: /etc/pam_ldap.conf
+              name: pam-ldap-conf
+              subPath: pam_ldap.conf
+            - mountPath: /etc/pam.d/common-session
+              name: pam-common-session
+              subPath: common-session
+            - mountPath: /root/.ssh/authorized_keys
+              name: ssh-keys
+              readOnly: true
+              subPath: authorized_keys
+      volumes:
+        - name: eagle-home
+          persistentVolumeClaim:
+            claimName: eagle-usuarios-home
+        - name: eagle-users
+          persistentVolumeClaim:
+            claimName: eagle-servicos-etc
+        - configMap:
+            name: ldap-conf
+          name: ldap-conf
+        - configMap:
+            name: ldap-ldap-conf
+          name: ldap-ldap-conf
+        - configMap:
+            name: nsswitch-ldap-conf
+          name: nsswitch-ldap-conf
+        - configMap:
+            name: pam-ldap-conf
+          name: pam-ldap-conf
+        - configMap:
+            name: libnss-ldap-conf
+          name: libnss-ldap-conf
+        - configMap:
+            name: pam-common-session
+          name: pam-common-session
+        - name: ssh-keys
+          secret:
+            secretName: authorized-keys-ctic

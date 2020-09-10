@@ -20,7 +20,7 @@ delete:
 	kubectl -i delete ns awx
 	make -C ldap_config -i delete
 	make -C criar_usuarios -i delete
-	make -C cronJob_att_usuarios -i delete
+	make -C att_usuarios -i delete
 	make -C proxmox -i delete
 
 create:
@@ -34,7 +34,7 @@ create:
 	make -C redis-moodle -i create
 	make -C moodle -i create
 	make -C criar_usuarios -i create
-	make -C cronJob_att_usuarios -i create
+	make -C att_usuarios -i create
 	make -C fogproject -i create
 	make -C matlab -i create
 	make -C quartus -i create
