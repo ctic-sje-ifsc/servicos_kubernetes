@@ -7,7 +7,6 @@ delete:
 	make -C zabbix -i delete
 	make -C wordpress -i delete
 	make -C netbox -i delete
-	make -C redis-moodle -i delete
 	make -C moodle -i delete
 	make -C fogproject -i delete
 	make -C matlab -i delete
@@ -31,7 +30,6 @@ create:
 	make -C zabbix -i create
 	make -C wordpress -i create
 	make -C netbox -i create
-	make -C redis-moodle -i create
 	make -C moodle -i create
 	make -C criar_usuarios -i create
 	make -C att_usuarios -i create
@@ -40,8 +38,6 @@ create:
 	make -C quartus -i create
 	make -C omnet -i create
 	make -C mosquitto -i create
-	make -C kit_lanche -i create
-	make -C hugo -i create
 	make -C motioneye -i create
 	make -C eagle -i create
 	make -C externos/campus-continente/bareos_sd -i create
