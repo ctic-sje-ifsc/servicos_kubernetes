@@ -30,18 +30,14 @@ data:
     }
 kind: ConfigMap
 metadata:
-  labels:
-    app: netbox
   name: netbox-nginx-conf
-  namespace: producao
+  namespace: jaragua-do-sul-rau
 
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  labels:
-    app: netbox
-  name: netbox-postgresql-base
+  name: netbox-postgresql-jaragua-rau
 spec:
   accessModes:
     - ReadWriteOnce
@@ -52,41 +48,37 @@ spec:
       - "10.10.10.1:6789"
       - "10.10.10.5:6789"
       - "10.10.10.6:6789"
-    path: /kubernetes/ifsc/sje/srv/netbox/postgresql/base
+    path: /kubernetes/ifsc/sje/srv/externos/jaragua-rau/postgresql/base
     secretRef:
       name: ceph-secret
     user: admin
-  storageClassName: netbox-postgresql
+  storageClassName: netbox-postgresql-jaragua-rau
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  labels:
-    app: netbox
   name: netbox-postgresql-base
-  namespace: producao
+  namespace: jaragua-do-sul-rau
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
-  storageClassName: netbox-postgresql
+  storageClassName: netbox-postgresql-jaragua-rau
 
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/whitelist-source-range: "172.18.0.0/18,172.30.0.0/24,191.36.0.0/17,2804:1454::/32"
-  labels:
-    app: netbox
+    nginx.ingress.kubernetes.io/whitelist-source-range: "191.36.0.0/17,2804:1454::/32,172.30.0.0/24,172.18.0.0/18"
   name: netbox
-  namespace: producao
+  namespace: jaragua-do-sul-rau
 spec:
   rules:
-    - host: netbox.sj.ifsc.edu.br
+    - host: netboxgw.sj.ifsc.edu.br
       http:
         paths:
           - backend:
@@ -95,8 +87,27 @@ spec:
             path: /
   tls:
     - hosts:
-        - netbox.sj.ifsc.edu.br
+        - netboxgw.sj.ifsc.edu.br
       secretName: tls-ifsc-sje-wildcard
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "https://netboxrau.sj.ifsc.edu.br"
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+  name: gtampto
+  namespace: jaragua-do-sul-rau
+spec:
+  rules:
+    - host: netbox.gw.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: netbox
+              servicePort: 80
+            path: /
 
 ---
 apiVersion: v1
@@ -105,7 +116,7 @@ metadata:
   labels:
     app: netbox
   name: netbox
-  namespace: producao
+  namespace: jaragua-do-sul-rau
 spec:
   ports:
     - name: http
@@ -119,10 +130,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: netbox
   name: netbox
-  namespace: producao
+  namespace: jaragua-do-sul-rau
 spec:
   selector:
     matchLabels:
@@ -159,7 +168,7 @@ spec:
             - name: SUPERUSER_NAME
               value: admin
             - name: SUPERUSER_EMAIL
-              value: ctic.sje@listas.sj.ifsc.edu.br
+              value: ti.gw@@.ifsc.edu.br
             - name: SUPERUSER_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -192,8 +201,6 @@ spec:
                 secretKeyRef:
                   key: netbox_secret_key
                   name: netbox-secret
-            - name: EXEMPT_VIEW_PERMISSIONS
-              value: "*"
           image: netboxcommunity/netbox
           name: netbox-netbox
           resources:
@@ -206,12 +213,13 @@ spec:
           volumeMounts:
             - mountPath: /opt/netbox/netbox/static
               name: netbox-netbox-static
-        - image: "nginx:1.13"
+        - image: "nginx:1.13.1"
           livenessProbe:
             httpGet:
               path: /
               port: 80
             initialDelaySeconds: 30
+            timeoutSeconds: 1
           name: netbox-nginx
           ports:
             - containerPort: 80

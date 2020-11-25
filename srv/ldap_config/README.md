@@ -1,3 +1,3 @@
-#NSS/PAM Client LDAP no Kubernetes
-======
-Arquivos de configuração NSS/PAM Client LDAP utilizado por outros Deployments.
+# NSS/PAM Client LDAP
+
+Arquivos de configuração NSS/PAM Client LDAP utilizados por outras aplicações.

@@ -1,0 +1,209 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fogproject-mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/fog/data/mysql
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: fogproject-mysql
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fogproject-pmagic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/fog/data/pmagic
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: fogproject-pmagic
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fogproject-images
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1501Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/fog/images
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: fogproject-images
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: fogproject-mysql
+  name: fogproject-mysql
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: fogproject-mysql
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: fogproject-pmagic
+  name: fogproject-pmagic
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: fogproject-pmagic
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: fogproject-images
+  name: fogproject-images
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1501Gi
+  storageClassName: fogproject-images
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
+    nginx.ingress.kubernetes.io/rewrite-target: /fog
+  name: fogproject
+  namespace: producao
+spec:
+  rules:
+    - host: fogproject.sj.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: fogproject
+              servicePort: 8083
+            path: /
+    - host: fog.sj.ifsc.edu.br
+      http:
+        paths:
+          - backend:
+              serviceName: fogproject
+              servicePort: 8083
+            path: /
+  tls:
+    - hosts:
+        - fogproject.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+    - hosts:
+        - fog.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fogproject
+  name: fogproject
+  namespace: producao
+spec:
+  ports:
+    - name: http1
+      port: 80
+      protocol: TCP
+      targetPort: 8083
+    - name: http2
+      port: 8083
+      protocol: TCP
+      targetPort: 8083
+  selector:
+    app: fogproject
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fogproject
+  namespace: producao
+spec:
+  selector:
+    matchLabels:
+      app: fogproject
+  template:
+    metadata:
+      labels:
+        app: fogproject
+      name: fogproject
+    spec:
+      containers:
+        - image: cticsjeifsc/fog
+          name: fogproject
+          resources:
+            limits:
+              cpu: 2
+              memory: 4Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql
+            - mountPath: /var/www/pmagic
+              name: pmagic
+            - mountPath: /images
+              name: images
+      hostNetwork: true
+      nodeName: vmnuvem5
+      volumes:
+        - name: mysql
+          persistentVolumeClaim:
+            claimName: fogproject-mysql
+        - name: pmagic
+          persistentVolumeClaim:
+            claimName: fogproject-pmagic
+        - name: images
+          persistentVolumeClaim:
+            claimName: fogproject-images

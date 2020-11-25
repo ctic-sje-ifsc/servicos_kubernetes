@@ -1,0 +1,153 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-bareos-sd-continente-conf
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  cephfs:
+    monitors:
+      - "10.10.10.1:6789"
+      - "10.10.10.5:6789"
+      - "10.10.10.6:6789"
+    path: /kubernetes/ifsc/sje/srv/externos/continente/bareos-sd-continente
+    secretRef:
+      name: ceph-secret
+    user: admin
+  storageClassName: pv-bareos-sd-continente-conf
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-bareos-sd-continente-bkp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1000Gi
+  iscsi:
+    chapAuthDiscovery: true
+    chapAuthSession: true
+    fsType: ext4
+    initiatorName: "iqn.2019-06.pv-bareos-sd-continente:00:2955d7e72762"
+    iqn: "iqn.1992-04.com.emc:cx.ckm00123700157.a4"
+    iscsiInterface: default
+    lun: 0
+    readOnly: false
+    secretRef:
+      name: chap-secret-pv-bareos-sd
+    targetPortal: "172.18.31.1:3260"
+  storageClassName: pv-bareos-sd-continente-bkp
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: pv-bareos-sd-continente-conf
+  name: pv-bareos-sd-continente-conf
+  namespace: continente
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: pv-bareos-sd-continente-conf
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: pv-bareos-sd-continente-bkp
+  name: pv-bareos-sd-continente-bkp
+  namespace: continente
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+  storageClassName: pv-bareos-sd-continente-bkp
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: svc-bareos-sd-continente
+  name: svc-bareos-sd-continente
+  namespace: continente
+spec:
+  externalIPs:
+    - "191.36.8.1"
+    - "191.36.8.4"
+    - "191.36.8.6"
+    - "191.36.8.7"
+    - "191.36.8.25"
+  ports:
+    - name: bareos
+      port: 9113
+      protocol: TCP
+      targetPort: 9103
+  selector:
+    app: bareos-sd-continente
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bareos-sd-continente
+  name: bareos-sd-continente
+  namespace: continente
+spec:
+  selector:
+    matchLabels:
+      app: bareos-sd-continente
+  template:
+    metadata:
+      labels:
+        app: bareos-sd-continente
+    spec:
+      containers:
+        - env:
+            - name: BAREOS_SD_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: bareos-sd-password
+                  name: bareos-sd-password
+            - name: TZ
+              value: America/Sao_Paulo
+          image: "barcus/bareos-storage:17.2"
+          name: bareos-sd-continente
+          ports:
+            - containerPort: 9103
+              name: bareos
+          resources:
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 1
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /var/lib/bareos/storage
+              name: pv-bareos-sd-continente-bkp
+            - mountPath: /etc/bareos
+              name: pv-bareos-sd-continente-conf
+      volumes:
+        - name: bareos-sd-password
+          secret:
+            secretName: bareos-sd-password
+        - name: pv-bareos-sd-continente-bkp
+          persistentVolumeClaim:
+            claimName: pv-bareos-sd-continente-bkp
+        - name: pv-bareos-sd-continente-conf
+          persistentVolumeClaim:
+            claimName: pv-bareos-sd-continente-conf
