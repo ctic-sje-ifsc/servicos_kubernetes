@@ -1,0 +1,312 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wiki-mariadb
+spec:
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: wiki-mariadb
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mediawiki/mariadb
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wiki
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: wiki
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/mediawiki/wiki
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: wiki-mariadb
+  labels:
+    app: wiki-mariadb
+  namespace: producao
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: wiki-mariadb
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: wiki
+  labels:
+    app: wiki
+  namespace: producao
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: wiki
+
+---
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: wiki
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 32m
+  namespace: producao
+spec:
+  tls:
+    - hosts:
+        - wiki.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: wiki.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: wiki
+              servicePort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wiki-memcached
+  name: wiki-memcached
+  namespace: producao
+spec:
+  ports:
+    - name: memcached
+      port: 11211
+      protocol: TCP
+      targetPort: 11211
+  selector:
+    app: wiki-memcached
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wiki-mariadb
+  name: wiki-mariadb
+  namespace: producao
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: wiki-mariadb
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wiki
+  name: wiki
+  namespace: producao
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: wiki
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wiki-memcached
+  labels:
+    app: wiki-memcached
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wiki-memcached
+    spec:
+      containers:
+      - name: wiki-memcached
+        image: memcached:alpine
+        env:
+        - name: TZ
+          value: "America/Recife"        
+        ports:
+        - containerPort: 11211
+        args:
+        - -m 512
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: 1
+          requests:
+            memory: 512Mi
+            cpu: 300m
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wiki-mariadb
+  labels:
+    app: wiki-mariadb
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wiki-mariadb
+    spec:
+      containers:
+      - name: wiki-mariadb
+        image: mariadb:10.3
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wiki-mariadb
+              key: mysql-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: wiki-mariadb
+          subPath: mysql
+        resources:
+            limits:
+                memory: 4Gi
+                cpu: 2
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+        - name: wiki-mariadb
+          persistentVolumeClaim:
+            claimName: wiki-mariadb
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wiki
+  labels:
+    app: wiki
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wiki
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - "wiki-mariadb"
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: wiki
+        image: cticsjeifsc/mediawiki:1.31.10
+        env:
+          - name: TZ
+            value: "America/Recife"
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /index.php/Página_principal
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 6
+        volumeMounts:
+        - mountPath: /var/www/html/extensions
+          name: wiki-data
+          subPath: extensions
+        - mountPath: /var/www/html/images
+          name: wiki-data
+          subPath: images
+        - mountPath: /var/www/html/skins
+          name: wiki-data
+          subPath: skins
+        - mountPath: /var/www/html/LocalSettings.php
+          name: wiki-data
+          subPath: LocalSettings.php
+        resources:
+            requests:
+                memory: 512Mi
+                cpu: 300m
+      volumes:
+      - name: wiki-data
+        persistentVolumeClaim:
+          claimName: wiki
