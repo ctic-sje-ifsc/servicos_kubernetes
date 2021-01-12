@@ -27,19 +27,3 @@ spec:
     requests:
       storage: 2Gi
   storageClassName: fogproject-pmagic
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: fogproject-images
-  name: fogproject-images
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1501Gi
-  storageClassName: fogproject-images

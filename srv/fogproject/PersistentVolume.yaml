@@ -39,25 +39,3 @@ spec:
     user: admin
     secretRef:
       name: ceph-secret
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: fogproject-images
-spec:
-  capacity:
-    storage: 1501Gi
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: fogproject-images
-  cephfs:
-    monitors:
-    - 10.10.10.1:6789
-    - 10.10.10.5:6789
-    - 10.10.10.6:6789
-    path: /kubernetes/ifsc/sje/srv/fog/images
-    user: admin
-    secretRef:
-      name: ceph-secret

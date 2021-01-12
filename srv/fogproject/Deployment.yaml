@@ -18,14 +18,15 @@ spec:
           resources:
             requests:
               cpu: "500m"
+              memory: "256Mi"
+            limits:
+              cpu: "2"
               memory: "1Gi"
           volumeMounts:
             - name: mysql
               mountPath: /var/lib/mysql
             - name: pmagic
               mountPath: /var/www/pmagic
-            - name: images
-              mountPath: /images
       restartPolicy: Always
       volumes:
         - name: mysql
@@ -34,6 +35,4 @@ spec:
         - name: pmagic
           persistentVolumeClaim:
             claimName: fogproject-pmagic
-        - name: images
-          persistentVolumeClaim:
-            claimName: fogproject-images
+
