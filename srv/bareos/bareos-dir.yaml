@@ -148,7 +148,7 @@ spec:
               value: "5432"
             - name: SMTP_HOST
               value: bareos-smtpd
-          image: "barcus/bareos-director:18-ubuntu-pgsql"
+          image: "barcus/bareos-director:19-ubuntu-pgsql"
           name: bareos-dir
           resources:
             limits:

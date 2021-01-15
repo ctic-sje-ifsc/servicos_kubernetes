@@ -112,7 +112,7 @@ spec:
                   name: bareos-fd-password
             - name: TZ
               value: America/Recife
-          image: "barcus/bareos-client:18-ubuntu"
+          image: "barcus/bareos-client:19-ubuntu"
           name: bareos-fd
           resources:
             limits:

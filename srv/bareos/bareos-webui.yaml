@@ -1,40 +1,40 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-bareos-webui
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 1Gi
-  cephfs:
-    monitors:
-      - "10.10.10.1:6789"
-      - "10.10.10.5:6789"
-      - "10.10.10.6:6789"
-    path: /kubernetes/ifsc/sje/srv/bareos/config/webui
-    secretRef:
-      name: ceph-secret
-    user: admin
-  storageClassName: pv-bareos-webui
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: pv-bareos-webui
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   capacity:
+#     storage: 1Gi
+#   cephfs:
+#     monitors:
+#       - "10.10.10.1:6789"
+#       - "10.10.10.5:6789"
+#       - "10.10.10.6:6789"
+#     path: /kubernetes/ifsc/sje/srv/bareos/config/webui
+#     secretRef:
+#       name: ceph-secret
+#     user: admin
+#   storageClassName: pv-bareos-webui
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: pv-bareos-webui
-  name: pv-bareos-webui
-  namespace: producao
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: pv-bareos-webui
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   labels:
+#     app: pv-bareos-webui
+#   name: pv-bareos-webui
+#   namespace: producao
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Gi
+#   storageClassName: pv-bareos-webui
 
----
+# ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -126,10 +126,10 @@ spec:
             requests:
               cpu: 1
               memory: 256Mi
-          volumeMounts:
-            - mountPath: /etc/bareos-webui
-              name: pv-bareos-webui
-      volumes:
-        - name: pv-bareos-webui
-          persistentVolumeClaim:
-            claimName: pv-bareos-webui
+      #     volumeMounts:
+      #       - mountPath: /etc/bareos-webui
+      #         name: pv-bareos-webui
+      # volumes:
+      #   - name: pv-bareos-webui
+      #     persistentVolumeClaim:
+      #       claimName: pv-bareos-webui
