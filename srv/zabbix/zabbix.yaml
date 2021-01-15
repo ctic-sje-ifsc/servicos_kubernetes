@@ -1,0 +1,320 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zabbix-mariadb
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: zabbix-mariadb
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/zabbix/mariadb
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zabbix-scripts
+spec:
+  capacity:
+    storage: 128Mi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: zabbix-scripts
+  cephfs:
+      monitors:
+      - 10.10.10.1:6789
+      - 10.10.10.5:6789
+      - 10.10.10.6:6789
+      path: /kubernetes/ifsc/sje/srv/zabbix/scripts
+      user: admin
+      secretRef:
+        name: ceph-secret
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zabbix-mariadb
+  namespace: producao
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: zabbix-mariadb
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zabbix-scripts
+  namespace: producao
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: zabbix-scripts
+
+---
+
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: "172.18.0.0/18,172.30.0.0/24,191.36.0.0/17,2804:1454::/32"
+  name: zabbix
+  namespace: producao
+spec:
+  tls:
+    - hosts:
+        - zabbix.sj.ifsc.edu.br
+      secretName: tls-ifsc-sje-wildcard
+  rules:
+    - host: zabbix.sj.ifsc.edu.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: zabbix
+              servicePort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix
+  labels:
+    app: zabbix
+  namespace: producao
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: zabbix-web-nginx-mysql
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: zabbix-mariadb
+  name: zabbix-mariadb
+  namespace: producao
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: zabbix-mariadb
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zabbix-server-mysql
+  labels:
+    app: zabbix-server-mysql
+  namespace: producao
+spec:
+  ports:
+  - port: 10051
+    targetPort: 10051
+    name: zabbix  
+  selector:
+    app: zabbix-server-mysql
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zabbix-mariadb
+  labels:
+    app: zabbix-mariadb
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zabbix-mariadb
+    spec:
+      containers:
+      - name: zabbix-mariadb
+        image: mariadb:10.3
+        args:          
+          - "--character-set-server=utf8mb4"
+          - "--collation-server=utf8mb4_unicode_ci"
+        env:
+        - name: TZ
+          value: "America/Recife"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-mariadb
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-mariadb
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-mariadb
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: zabbix-mariadb
+              key: mysql-password
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: zabbix-mariadb
+          subPath: mysql
+        resources:
+            limits:
+                memory: 2Gi
+                cpu: 2
+            requests:
+                memory: 256Mi
+                cpu: 300m
+      volumes:
+        - name: zabbix-mariadb
+          persistentVolumeClaim:
+            claimName: zabbix-mariadb
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zabbix-server-mysql
+  labels:
+    app: zabbix-server-mysql
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zabbix-server-mysql
+    spec:   
+      containers:
+      - name: zabbix-server-mysql
+        image: zabbix/zabbix-server-mysql:ubuntu-5.0-latest
+        imagePullPolicy: Always
+        env:
+          - name: PHP_TZ
+            value: "America/Recife"
+          - name: DB_SERVER_HOST
+            value: "zabbix-mariadb"
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: zabbix-mariadb
+                key: mysql-user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: zabbix-mariadb
+                key: mysql-password
+        ports:
+          - containerPort: 10051
+            name: zabbix          
+        resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+            requests:
+              memory: "512Mi"
+              cpu: "300m"
+        volumeMounts:
+          - name: zabbix-scripts
+            mountPath: /usr/lib/zabbix/alertscripts
+      volumes:
+      - name: zabbix-scripts
+        persistentVolumeClaim:
+          claimName: zabbix-scripts
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zabbix-web-nginx-mysql
+  labels:
+    app: zabbix-web-nginx-mysql
+  namespace: producao
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zabbix-web-nginx-mysql
+    spec:   
+      containers:
+      - name: zabbix-web-nginx-mysql
+        image: zabbix/zabbix-web-nginx-mysql:ubuntu-5.0-latest
+        imagePullPolicy: Always
+        env:
+          - name: ZBX_SERVER_NAME
+            value: zabbix.sj.ifsc.edu.br
+          - name: PHP_TZ
+            value: "America/Recife"
+          - name: ZBX_SERVER_HOST
+            value: "zabbix-server-mysql"
+          - name: DB_SERVER_HOST
+            value: "zabbix-mariadb"
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: zabbix-mariadb
+                key: mysql-user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: zabbix-mariadb
+                key: mysql-password          
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /index.php
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 6
+        resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "128Mi"
+              cpu: "300m"
