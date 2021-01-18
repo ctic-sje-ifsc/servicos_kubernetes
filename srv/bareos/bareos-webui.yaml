@@ -121,11 +121,11 @@ spec:
               name: bareos
           resources:
             limits:
-              cpu: 1
+              cpu: 500m
               memory: 512Mi
             requests:
-              cpu: 1
-              memory: 256Mi
+              cpu: 4m
+              memory: 128Mi
       #     volumeMounts:
       #       - mountPath: /etc/bareos-webui
       #         name: pv-bareos-webui

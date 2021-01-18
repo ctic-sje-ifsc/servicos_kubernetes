@@ -40,11 +40,11 @@ spec:
           name: bareos-smtpd
           resources:
             limits:
-              cpu: 1
-              memory: 256Mi
+              cpu: 500m
+              memory: 64Mi
             requests:
-              cpu: 1
-              memory: 128Mi
+              cpu: 1m
+              memory: 16Mi
       volumes:
         - name: bareos-smtpd-password
           secret:

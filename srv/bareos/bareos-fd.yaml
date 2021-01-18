@@ -119,8 +119,8 @@ spec:
               cpu: 1
               memory: 512Mi
             requests:
-              cpu: 1
-              memory: 256Mi
+              cpu: 40m
+              memory: 16Mi
           volumeMounts:
             - mountPath: /etc/bareos
               name: pv-bareos-fd-etc
