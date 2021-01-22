@@ -258,12 +258,12 @@ spec:
           name: mrbs-veiculos-mariadb
           subPath: mysql
         resources:
-            limits:
-                memory: 4Gi
-                cpu: 2
-            requests:
-                memory: 512Mi
-                cpu: 300m
+          limits:
+            memory: 512Mi
+            cpu: 1
+          requests:
+            memory: 256Mi
+            cpu: 300m
       volumes:
         - name: mrbs-veiculos-mariadb
           persistentVolumeClaim:
@@ -320,9 +320,12 @@ spec:
           name: mrbs-veiculos-conf
           subPath: styling.inc
         resources:
-            requests:
-                memory: 512Mi
-                cpu: 300m
+          limits:
+            memory: 256Mi
+            cpu: 1
+          requests:
+            memory: 128Mi
+            cpu: 300m
       volumes:
         - name: mrbs-veiculos
           secret:

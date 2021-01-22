@@ -183,7 +183,7 @@ spec:
             cpu: 1
           requests:
             memory: 512Mi
-            cpu: 300m
+            cpu: 30m
 
 ---
 
@@ -236,11 +236,11 @@ spec:
           subPath: mysql
         resources:
             limits:
-                memory: 4Gi
+                memory: 2Gi
                 cpu: 2
             requests:
-                memory: 512Mi
-                cpu: 300m
+                memory: 576Mi
+                cpu: 30m
       volumes:
         - name: wiki-mariadb
           persistentVolumeClaim:
@@ -303,9 +303,12 @@ spec:
           name: wiki-data
           subPath: LocalSettings.php
         resources:
+            limits:
+              memory: 4Gi
+              cpu: 2
             requests:
-                memory: 512Mi
-                cpu: 300m
+              memory: 2Gi
+              cpu: 300m
       volumes:
       - name: wiki-data
         persistentVolumeClaim:
