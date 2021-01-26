@@ -168,7 +168,7 @@ spec:
           - "--collation-server=utf8mb4_unicode_ci"
         env:
         - name: TZ
-          value: "America/Recife"
+          value: "America/Sao_Paulo"
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -229,8 +229,10 @@ spec:
         image: zabbix/zabbix-server-mysql:ubuntu-5.0-latest
         imagePullPolicy: Always
         env:
+          - name: TZ
+            value: "America/Sao_Paulo"
           - name: PHP_TZ
-            value: "America/Recife"
+            value: "America/Sao_Paulo"
           - name: DB_SERVER_HOST
             value: "zabbix-mariadb"
           - name: MYSQL_USER
@@ -282,10 +284,12 @@ spec:
         image: zabbix/zabbix-web-nginx-mysql:ubuntu-5.0-latest
         imagePullPolicy: Always
         env:
+          - name: TZ
+            value: "America/Sao_Paulo"
           - name: ZBX_SERVER_NAME
             value: zabbix.sj.ifsc.edu.br
           - name: PHP_TZ
-            value: "America/Recife"
+            value: "America/Sao_Paulo"
           - name: ZBX_SERVER_HOST
             value: "zabbix-server-mysql"
           - name: DB_SERVER_HOST
