@@ -18,7 +18,7 @@ data:
       proxy_set_header X-Forwarded-Proto $scheme;
       server {
         listen 80 default_server;
-        server_name localhost;
+        server_name netbox.sj.ifsc.edu.br;
         location /static/ {
           alias /opt/netbox/netbox/static/;
         }
@@ -194,7 +194,7 @@ spec:
                   name: netbox-secret
             - name: EXEMPT_VIEW_PERMISSIONS
               value: "*"
-          image: netboxcommunity/netbox
+          image: netboxcommunity/netbox:v2.10.3
           name: netbox-netbox
           resources:
             limits:
