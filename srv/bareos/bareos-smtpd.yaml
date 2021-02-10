@@ -17,25 +17,17 @@ spec:
       containers:
         - env:
             - name: TZ
-              value: America/Recife
-            - name: SMARTHOST_ADDRESS
-              value: zimbra.ifsc.edu.br
-            - name: SMARTHOST_ALIASES
-              value: "*.ifsc.edu.br"
-            - name: SMARTHOST_PORT
-              value: "587"
-            - name: RELAY_NETWORKS
-              value: ":10.42.0.0/16"
-            - name: SMARTHOST_USER
+              value: America/Recife            
+            - name: GMAIL_USER
               valueFrom:
                 secretKeyRef:
+                  name: bareos-smtpd
                   key: bareos-smtpd-user
-                  name: bareos-smtpd-user
-            - name: SMARTHOST_PASSWORD
+            - name: GMAIL_PASSWORD
               valueFrom:
                 secretKeyRef:
+                  name: bareos-smtpd
                   key: bareos-smtpd-password
-                  name: bareos-smtpd-password
           image: namshi/smtp
           name: bareos-smtpd
           resources:
@@ -45,10 +37,4 @@ spec:
             requests:
               cpu: 1m
               memory: 16Mi
-      volumes:
-        - name: bareos-smtpd-password
-          secret:
-            secretName: bareos-smtpd-password
-        - name: bareos-smtpd-user
-          secret:
-            secretName: bareos-smtpd-user
+
