@@ -23,19 +23,19 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: zabbix-scripts
+  name: zabbix-mibs
 spec:
   capacity:
     storage: 128Mi
   accessModes:
     - ReadWriteMany
-  storageClassName: zabbix-scripts
+  storageClassName: zabbix-mibs
   cephfs:
       monitors:
       - 10.10.10.1:6789
       - 10.10.10.5:6789
       - 10.10.10.6:6789
-      path: /kubernetes/ifsc/sje/srv/zabbix/scripts
+      path: /kubernetes/ifsc/sje/srv/zabbix/mibs
       user: admin
       secretRef:
         name: ceph-secret
@@ -60,7 +60,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: zabbix-scripts
+  name: zabbix-mibs
   namespace: producao
 spec:
   accessModes:
@@ -68,7 +68,7 @@ spec:
   resources:
     requests:
       storage: 128Mi
-  storageClassName: zabbix-scripts
+  storageClassName: zabbix-mibs
 
 ---
 
@@ -256,12 +256,12 @@ spec:
               memory: "512Mi"
               cpu: "300m"
         volumeMounts:
-          - name: zabbix-scripts
-            mountPath: /usr/lib/zabbix/alertscripts
+          - name: zabbix-mibs
+            mountPath: /var/lib/zabbix/mibs 
       volumes:
-      - name: zabbix-scripts
+      - name: zabbix-mibs
         persistentVolumeClaim:
-          claimName: zabbix-scripts
+          claimName: zabbix-mibs
 
 ---
 
