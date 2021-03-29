@@ -28,6 +28,8 @@ spec:
                 secretKeyRef:
                   name: bareos-smtpd
                   key: bareos-smtpd-password
+            - name: RELAY_NETWORKS
+              value: ":10.42.0.0/16"
           image: namshi/smtp
           name: bareos-smtpd
           resources:
