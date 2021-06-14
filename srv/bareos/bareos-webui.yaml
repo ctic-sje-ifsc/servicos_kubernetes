@@ -40,6 +40,7 @@ kind: Ingress
 metadata:
   annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: "191.36.0.0/17,2804:1454::/32,172.30.0.0/24,172.18.0.0/18"
+    nginx.ingress.kubernetes.io/proxy-body-size: 4m
   name: bareos
   namespace: producao
 spec:
