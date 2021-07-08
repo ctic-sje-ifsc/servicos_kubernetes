@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: bareos-sd-continente
-        image: barcus/bareos-storage:17.2
+        image: barcus/bareos-storage:latest
         env:
           - name: BAREOS_SD_PASSWORD
             valueFrom:
