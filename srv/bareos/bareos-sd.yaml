@@ -12,13 +12,13 @@ spec:
     chapAuthSession: true
     fsType: ext4
     initiatorName: "iqn.2019-11.pv-bareos-sje:00:2955d7e72762"
-    iqn: "iqn.1992-04.com.emc:cx.ckm00123700157.a5"
+    iqn: "iqn.1992-04.com.emc:cx.ckm00123700157.b5"
     iscsiInterface: default
     lun: 0
     readOnly: false
     secretRef:
       name: chap-secret-pv-bareos-sd-sje
-    targetPortal: "172.18.31.2:3260"
+    targetPortal: "172.18.31.6:3260"
   storageClassName: pv-bareos-sd-data
 
 ---
